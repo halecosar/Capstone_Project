@@ -6,7 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 //Veteriner doktorların kaydedilmesi, bilgilerinin güncellenmesi, görüntülenmesi ve silinmesi
 @RestController
-@RequestMapping ("/v1/doctors") public class DoctorController {
+@RequestMapping ("/v1/doctors")
+public class DoctorController {
     private final IDoctorService doctorService;
 
     public DoctorController(IDoctorService doctorService) {

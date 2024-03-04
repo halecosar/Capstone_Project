@@ -32,4 +32,8 @@ public class Appointment {
     @ManyToOne  (fetch = FetchType.EAGER)
     @JoinColumn(name = "appointment_doctor_id", referencedColumnName = "doctor_id")
     private Doctor doctor;
+
+    @OneToOne
+    @JoinColumn(name = "appointment_report_id", referencedColumnName = "id")
+    private Report report;
 }
