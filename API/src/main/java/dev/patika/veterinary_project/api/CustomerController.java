@@ -39,12 +39,17 @@ public class CustomerController {
         return this.customerService.getById(id);
     }
 
-
     //Hayvan sahipleri isme göre filtrelenecek şekilde end point oluşturmak.
     @GetMapping("/getFilteredCustomerByName/{name}")
     @ResponseStatus(HttpStatus.OK)
     public List<Customer> getFilteredCustomerByName(@PathVariable("name") String name) {
         return this.customerService.getFilteredCustomerByName(name);
+    }
+
+    @GetMapping("/findAll")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Customer> findAll() {
+        return this.customerService.findAll();
     }
 }
 
