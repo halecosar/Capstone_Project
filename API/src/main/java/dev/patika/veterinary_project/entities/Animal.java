@@ -5,6 +5,9 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -51,5 +54,6 @@ public class Animal {
     @ManyToOne (fetch = FetchType.EAGER)
     @JoinColumn(name = "animal_customer_id", referencedColumnName = "customer_id")
     private Customer customer;
+
 
 }

@@ -57,3 +57,104 @@ export const deleteCustomer = async (id) => {
     }
 };
 
+//Doktor CRUD İşlemleri:
+export const saveDoctor = async (doctorModel) => {
+    try {
+        const response = await api.post('doctors/save', doctorModel);
+        return response.data;
+    } catch (error) {
+        console.error('Error', error);
+        throw error;
+    }
+};
+
+export const updateDoctor = async (doctorModel) => {
+    try {
+        const response = await api.put('doctors/update', customerModel);
+        return response.data;
+    } catch (error) {
+        console.error('Error', error);
+        throw error;
+    }
+};
+
+export const findAllDoctor = async () => {
+    try {
+        const response = await api.get('doctors/findAll');
+        return response.data;
+    } catch (error) {
+        console.error('Error', error);
+        throw error;
+    }
+};
+
+export const getByIdDoctor = async () => {
+    try {
+        const response = await api.get('doctors/getById/${id}');
+        return response.data;
+    } catch (error) {
+        console.error('Error', error);
+        throw error;
+    }
+};
+
+export const deleteDoctor = async (id) => {
+    try {
+        const response = await api.delete('doctors/delete/' + id);
+        return response.data;
+    } catch (error) {
+        console.error('Error', error);
+        throw error;
+    }
+};
+
+//Animal CRUD İşlemleri:
+
+export const saveAnimal = async (animalModel) => {
+    try {
+        const response = await api.post('animals/save', animalModel);
+        return response.data;
+    } catch (error) {
+        console.error('Error', error);
+        throw error;
+    }
+};
+export const updateAnimal = async (animalModel) => {
+    try {
+        const response = await api.put('animals/update', customerModel);
+        return response.data;
+    } catch (error) {
+        console.error('Error', error);
+        throw error;
+    }
+};
+
+export const findAllAnimal = async () => {
+    try {
+        const response = await api.get('animal/findAll');
+        return response.data;
+    } catch (error) {
+        console.error('Error', error);
+        throw error;
+    }
+};
+
+export const getByIdAnimal = async () => {
+    try {
+        const response = await api.get('animal/getById/${id}');
+        return response.data;
+    } catch (error) {
+        console.error('Error', error);
+        throw error;
+    }
+};
+
+export const deleteAnimal = async (id) => {
+    try {
+        const response = await api.delete('animal/delete/' + id);
+        return response.data;
+    } catch (error) {
+        console.error('Error', error);
+        throw error;
+    }
+};

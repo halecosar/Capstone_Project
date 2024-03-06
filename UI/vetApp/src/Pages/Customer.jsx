@@ -1,44 +1,41 @@
-import React from 'react'
-import Navigation from '../Components/Navigation'
+import React, { useState, useEffect } from 'react';
+import Navigation from '../Components/Navigation';
 import { findAllCustomer, saveCustomer, deleteCustomer } from '../Api';
-import { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { Formik, Field, Form } from 'formik';
 import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-
-
 function Customer() {
     const [customers, setCustomers] = useState([]);
-    const [shouldFetchCustomers, setShouldFetchCustomers] = useState();
+    const [shouldFetchCustomers, setShouldFetchCustomers] = useState(false);
+    const [selectedRows, setSelectedRows] = useState([]);
 
     useEffect(() => {
-        const getCustomerList = async () => {
+        const fetchData = async () => {
             try {
                 const data = await findAllCustomer();
-                setCustomers(data); // datanın result arrayini oku.
+                setCustomers(data);
             } catch (error) {
-                console.error('Error', error);
+                console.error('Error fetching customer data:', error);
             }
         };
 
-        getCustomerList();
+        fetchData();
     }, [shouldFetchCustomers]);
 
-    function submit(values) {
-        const saveCustomerSubmit = async () => {
-            try {
-                await saveCustomer(values);
-                setShouldFetchCustomers(true);
-            } catch (error) {
-                console.error('Error', error);
-            }
-        };
+    useEffect(() => {
+        console.log('Selected rows:', selectedRows);
+    }, [selectedRows]);
 
-        saveCustomerSubmit();
-
-    }
+    const handleDelete = async (customerId) => {
+        try {
+            await deleteCustomer(customerId);
+            setShouldFetchCustomers(true);
+        } catch (error) {
+            console.error('Error', error);
+        }
+    };
 
     const columns = [
         { field: 'id', headerName: 'ID', width: 70 },
@@ -55,30 +52,24 @@ function Customer() {
                 <IconButton onClick={() => handleDelete(params.row.id)}>
                     <DeleteIcon />
                 </IconButton>
-            )
+            ),
         },
     ];
 
-    const handleDelete = async (customerId) => {
-        const deleteCustomerSubmit = async () => {
-            try {
-                await deleteCustomer(customerId);
-                setShouldFetchCustomers(true);
-            } catch (error) {
-                console.error('Error', error);
-            }
-        };
-
-        deleteCustomerSubmit();
+    const submit = async (values) => {
+        try {
+            await saveCustomer(values);
+            setShouldFetchCustomers(true);
+        } catch (error) {
+            console.error('Error', error);
+        }
     };
-
 
     return (
         <div>
             <Navigation />
             <h1>Müşteri Yönetimi</h1>
             <h2>Müşteri Listesi</h2>
-
             <div style={{ height: 400, width: '100%' }}>
                 <DataGrid
                     rows={customers}
@@ -90,51 +81,59 @@ function Customer() {
                     }}
                     pageSizeOptions={[5, 10]}
                     checkboxSelection
+                    onSelectionModelChange={(newSelection) => setSelectedRows(newSelection)}
+                    selectionModel={selectedRows}
                 />
-                <div>
-                    <h1>Müşteri Ekle</h1>
-                    <Formik
-                        initialValues={{
-                            name: '',
-                            phone: '',
-                            mail: '',
-                            address: '',
-                            city: '',
-                        }}
-                        onSubmit={async (values) => {
-                            await new Promise((r) => setTimeout(r, 500));
-                            await submit(values);
-                        }}
-                    >
-                        <Form>
-                            <label htmlFor="name">İsim</label>
-                            <Field id="name" name="name" />
-
-                            <label htmlFor="phone">Telefon Numarası</label>
-                            <Field id="phone" name="phone" />
-
-                            <label htmlFor="mail">Email</label>
-                            <Field
-                                id="mail"
-                                name="mail"
-
-                                type="mail"
-                            />
-                            <label htmlFor="address">Adres</label>
-                            <Field id="address" name="address" />
-
-                            <label htmlFor="city">Şehir</label>
-                            <Field id="city" name="city" />
-                            <button type="submit">Submit</button>
-                        </Form>
-                    </Formik>
-
-                </div>
+            </div>
+            <div>
+                <h2>Seçilen Satırlar</h2>
+                {selectedRows && selectedRows.length > 0 ? (
+                    selectedRows.map((id) => (
+                        <div key={id}>
+                            {customers.find((customer) => customer.id === id)?.name}
+                        </div>
+                    ))
+                ) : (
+                    <div>Seçili satır yok</div>
+                )}
             </div>
 
+            <div>
+                <h1>Müşteri Ekle</h1>
+                <Formik
+                    initialValues={{
+                        name: '',
+                        phone: '',
+                        mail: '',
+                        address: '',
+                        city: '',
+                    }}
+                    onSubmit={async (values) => {
+                        await submit(values);
+                    }}
+                >
+                    <Form>
+                        <label htmlFor="name">İsim</label>
+                        <Field id="name" name="name" />
 
+                        <label htmlFor="phone">Telefon Numarası</label>
+                        <Field id="phone" name="phone" />
+
+                        <label htmlFor="mail">Email</label>
+                        <Field id="mail" name="mail" type="mail" />
+
+                        <label htmlFor="address">Adres</label>
+                        <Field id="address" name="address" />
+
+                        <label htmlFor="city">Şehir</label>
+                        <Field id="city" name="city" />
+
+                        <button type="submit">Submit</button>
+                    </Form>
+                </Formik>
+            </div>
         </div>
-    )
+    );
 }
 
-export default Customer
+export default Customer;

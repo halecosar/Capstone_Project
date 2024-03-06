@@ -53,6 +53,12 @@ public class AnimalController {
         return this.iAnimalService.getAnimalsByCustomerId(customerId);
     }
 
+    @GetMapping("/findAll")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Animal> findAll() {
+        return this.iAnimalService.findAll();
+    }
+
 
 }
 
