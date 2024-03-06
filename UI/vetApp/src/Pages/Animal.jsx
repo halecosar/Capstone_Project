@@ -36,29 +36,28 @@ function Animal() {
         } catch (error) {
             console.error('Error', error);
         }
+    }
 
-        const columns = [
-            { field: 'id', headerName: 'ID', width: 70 },
-            { field: 'name', headerName: 'Name', width: 130 },
-            { field: 'gender', headerName: 'Gender', width: 190 },
-            { field: 'birthday', headerName: 'Birthday', width: 130 },
-            { field: 'species', headerName: 'Species', width: 180 },
-            { field: 'breed', headerName: 'Breed', width: 130 },
-            { field: 'color', headerName: 'Color', width: 130 },
-            { field: 'customerId', headerName: 'CustomerId', width: 130 },
-            {
-                field: 'remove',
-                headerName: 'Kaldır',
-                width: 130,
-                renderCell: (params) => (
-                    <IconButton onClick={() => handleDelete(params.row.id)}>
-                        <DeleteIcon />
-                    </IconButton>
-                ),
-            },
-        ];
-
-    };
+    const columns = [
+        { field: 'id', headerName: 'ID', width: 70 },
+        { field: 'name', headerName: 'Name', width: 130 },
+        { field: 'species', headerName: 'Species', width: 180 },
+        { field: 'breed', headerName: 'Breed', width: 130 },
+        { field: 'gender', headerName: 'Gender', width: 190 },
+        { field: 'color', headerName: 'Color', width: 130 },
+        { field: 'dateofBirth', headerName: 'Birthday', width: 130 },
+        { field: 'customerName', headerName: 'Customer Name', width: 130, valueGetter: (params) => params.row.customer.name },
+        {
+            field: 'remove',
+            headerName: 'Kaldır',
+            width: 130,
+            renderCell: (params) => (
+                <IconButton onClick={() => handleDelete(params.row.id)}>
+                    <DeleteIcon />
+                </IconButton>
+            ),
+        },
+    ];
 
     const submit = async (values) => {
         try {
@@ -78,7 +77,7 @@ function Animal() {
             <div style={{ height: 400, width: '100%' }}>
                 <DataGrid
                     rows={animals}
-                    columns={animals}
+                    columns={columns}
                     initialState={{
                         pagination: {
                             paginationModel: { page: 0, pageSize: 5 },

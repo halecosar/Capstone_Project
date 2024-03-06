@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import Navigation from '../Components/Navigation';
-import { findAllCustomer, saveCustomer, deleteCustomer } from '../Api';
+import { findAllCustomer, saveCustomer, deleteCustomer, updateCustomer } from '../Api';
 import { DataGrid } from '@mui/x-data-grid';
 import { Formik, Field, Form } from 'formik';
 import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import UpdateIcon from "@mui/icons-material/Update";
 
 function Customer() {
     const [customers, setCustomers] = useState([]);
     const [shouldFetchCustomers, setShouldFetchCustomers] = useState(false);
-    const [selectedRows, setSelectedRows] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -24,10 +24,6 @@ function Customer() {
         fetchData();
     }, [shouldFetchCustomers]);
 
-    useEffect(() => {
-        console.log('Selected rows:', selectedRows);
-    }, [selectedRows]);
-
     const handleDelete = async (customerId) => {
         try {
             await deleteCustomer(customerId);
@@ -39,11 +35,11 @@ function Customer() {
 
     const columns = [
         { field: 'id', headerName: 'ID', width: 70 },
-        { field: 'name', headerName: 'Name', width: 130 },
-        { field: 'phone', headerName: 'Phone', width: 190 },
-        { field: 'mail', headerName: 'Mail', width: 130 },
-        { field: 'address', headerName: 'Address', width: 180 },
-        { field: 'city', headerName: 'City', width: 130 },
+        { field: 'name', headerName: 'Name', width: 130, editable: true, },
+        { field: 'phone', headerName: 'Phone', width: 190, editable: true, },
+        { field: 'mail', headerName: 'Mail', width: 130, editable: true, },
+        { field: 'address', headerName: 'Address', width: 180, editable: true, },
+        { field: 'city', headerName: 'City', width: 130, editable: true, },
         {
             field: 'remove',
             headerName: 'Kaldır',
@@ -54,11 +50,30 @@ function Customer() {
                 </IconButton>
             ),
         },
+        {
+            field: 'update',
+            headerName: 'Güncelle',
+            width: 130,
+            renderCell: (params) => (
+                <IconButton onClick={() => handleUpdate(params.row)}>
+                    <UpdateIcon />
+                </IconButton>
+            ),
+        },
     ];
 
     const submit = async (values) => {
         try {
             await saveCustomer(values);
+            setShouldFetchCustomers(true);
+        } catch (error) {
+            console.error('Error', error);
+        }
+    };
+
+    const handleUpdate = async (params) => {
+        try {
+            await updateCustomer(params);
             setShouldFetchCustomers(true);
         } catch (error) {
             console.error('Error', error);
@@ -80,22 +95,7 @@ function Customer() {
                         },
                     }}
                     pageSizeOptions={[5, 10]}
-                    checkboxSelection
-                    onSelectionModelChange={(newSelection) => setSelectedRows(newSelection)}
-                    selectionModel={selectedRows}
                 />
-            </div>
-            <div>
-                <h2>Seçilen Satırlar</h2>
-                {selectedRows && selectedRows.length > 0 ? (
-                    selectedRows.map((id) => (
-                        <div key={id}>
-                            {customers.find((customer) => customer.id === id)?.name}
-                        </div>
-                    ))
-                ) : (
-                    <div>Seçili satır yok</div>
-                )}
             </div>
 
             <div>

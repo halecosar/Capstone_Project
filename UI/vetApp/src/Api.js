@@ -131,7 +131,7 @@ export const updateAnimal = async (animalModel) => {
 
 export const findAllAnimal = async () => {
     try {
-        const response = await api.get('animal/findAll');
+        const response = await api.get('animals/findAll');
         return response.data;
     } catch (error) {
         console.error('Error', error);
@@ -141,7 +141,7 @@ export const findAllAnimal = async () => {
 
 export const getByIdAnimal = async () => {
     try {
-        const response = await api.get('animal/getById/${id}');
+        const response = await api.get('animals/getById/${id}');
         return response.data;
     } catch (error) {
         console.error('Error', error);
@@ -151,7 +151,7 @@ export const getByIdAnimal = async () => {
 
 export const deleteAnimal = async (id) => {
     try {
-        const response = await api.delete('animal/delete/' + id);
+        const response = await api.delete('animals/delete/' + id);
         return response.data;
     } catch (error) {
         console.error('Error', error);
