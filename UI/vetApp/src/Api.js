@@ -9,9 +9,9 @@ const api = axios.create({ baseURL });
 
 
 
-export const saveCustomer = async () => {
+export const saveCustomer = async (customerModel) => {
     try {
-        const response = await api.post('customers/save', CustomerModel);
+        const response = await api.post('customers/save', customerModel);
         return response.data;
     } catch (error) {
         console.error('Error', error);
@@ -19,9 +19,9 @@ export const saveCustomer = async () => {
     }
 };
 
-export const updateCustomer = async () => {
+export const updateCustomer = async (customerModel) => {
     try {
-        const response = await api.put('customers/update', CustomerModel);
+        const response = await api.put('customers/update', customerModel);
         return response.data;
     } catch (error) {
         console.error('Error', error);
@@ -31,7 +31,7 @@ export const updateCustomer = async () => {
 
 export const findAllCustomer = async () => {
     try {
-        const response = await api.get('customers/findAll', CustomerModel);
+        const response = await api.get('customers/findAll');
         return response.data;
     } catch (error) {
         console.error('Error', error);
@@ -41,7 +41,7 @@ export const findAllCustomer = async () => {
 
 export const getByIdCustomer = async () => {
     try {
-        const response = await api.get('customers/getById/${id}', CustomerModel);
+        const response = await api.get('customers/getById/${id}');
         return response.data;
     } catch (error) {
         console.error('Error', error);
@@ -51,7 +51,7 @@ export const getByIdCustomer = async () => {
 
 export const deleteCustomer = async () => {
     try {
-        const response = await api.delete('customers/delete/${id}', CustomerModel);
+        const response = await api.delete('customers/delete/${id}');
         return response.data;
     } catch (error) {
         console.error('Error', error);
