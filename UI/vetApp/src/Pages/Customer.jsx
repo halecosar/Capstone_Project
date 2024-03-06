@@ -1,24 +1,17 @@
 import React from 'react'
 import Navigation from '../Components/Navigation'
-import { findAllCustomer, saveCustomer } from '../Api';
+import { findAllCustomer, saveCustomer, deleteCustomer } from '../Api';
 import { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { Formik, Field, Form } from 'formik';
+import { IconButton } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 
-const columns = [
-    { field: 'id', headerName: 'ID', width: 70 },
-    { field: 'name', headerName: 'Name', width: 130 },
-    { field: 'phone', headerName: 'Phone', width: 190 },
-    { field: 'mail', headerName: 'Mail', width: 130 },
-    { field: 'address', headerName: 'Address', width: 180 },
-    { field: 'city', headerName: 'City', width: 130 },
-];
+
 
 function Customer() {
-
     const [customers, setCustomers] = useState([]);
     const [shouldFetchCustomers, setShouldFetchCustomers] = useState();
-
 
     useEffect(() => {
         const getCustomerList = async () => {
@@ -44,8 +37,41 @@ function Customer() {
         };
 
         saveCustomerSubmit();
-        values = '';
+
     }
+
+    const columns = [
+        { field: 'id', headerName: 'ID', width: 70 },
+        { field: 'name', headerName: 'Name', width: 130 },
+        { field: 'phone', headerName: 'Phone', width: 190 },
+        { field: 'mail', headerName: 'Mail', width: 130 },
+        { field: 'address', headerName: 'Address', width: 180 },
+        { field: 'city', headerName: 'City', width: 130 },
+        {
+            field: 'remove',
+            headerName: 'Kaldır',
+            width: 130,
+            renderCell: (params) => (
+                <IconButton onClick={() => handleDelete(params.row.id)}>
+                    <DeleteIcon />
+                </IconButton>
+            )
+        },
+    ];
+
+    const handleDelete = async (customerId) => {
+        const deleteCustomerSubmit = async () => {
+            try {
+                await deleteCustomer(customerId);
+                setShouldFetchCustomers(true);
+            } catch (error) {
+                console.error('Error', error);
+            }
+        };
+
+        deleteCustomerSubmit();
+    };
+
 
     return (
         <div>
@@ -102,6 +128,7 @@ function Customer() {
                             <button type="submit">Submit</button>
                         </Form>
                     </Formik>
+
                 </div>
             </div>
 

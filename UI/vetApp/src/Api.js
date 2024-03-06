@@ -7,8 +7,6 @@ const api = axios.create({ baseURL });
 
 //Müşteri CRUD İşlemleri:
 
-
-
 export const saveCustomer = async (customerModel) => {
     try {
         const response = await api.post('customers/save', customerModel);
@@ -49,9 +47,9 @@ export const getByIdCustomer = async () => {
     }
 };
 
-export const deleteCustomer = async () => {
+export const deleteCustomer = async (id) => {
     try {
-        const response = await api.delete('customers/delete/${id}');
+        const response = await api.delete('customers/delete/' + id);
         return response.data;
     } catch (error) {
         console.error('Error', error);
