@@ -158,3 +158,55 @@ export const deleteAnimal = async (id) => {
         throw error;
     }
 };
+
+//Vaccine CRUD İşlemleri
+
+export const saveVaccine = async (vaccineModel) => {
+    try {
+        const response = await api.post('vaccines/save', vaccineModel);
+        return response.data;
+    } catch (error) {
+        console.error('Error', error);
+        throw error;
+    }
+};
+
+export const updateVaccine = async (vaccineModel) => {
+    try {
+        const response = await api.put('vaccines/update', vaccineModel);
+        return response.data;
+    } catch (error) {
+        console.error('Error', error);
+        throw error;
+    }
+};
+
+export const findAllVaccine = async () => {
+    try {
+        const response = await api.get('vaccines/findAll');
+        return response.data;
+    } catch (error) {
+        console.error('Error', error);
+        throw error;
+    }
+};
+
+export const getByIdVaccine = async () => {
+    try {
+        const response = await api.get('vaccines/getById/${id}');
+        return response.data;
+    } catch (error) {
+        console.error('Error', error);
+        throw error;
+    }
+};
+
+export const deleteVaccine = async (id) => {
+    try {
+        const response = await api.delete('vaccines/delete/' + id);
+        return response.data;
+    } catch (error) {
+        console.error('Error', error);
+        throw error;
+    }
+};

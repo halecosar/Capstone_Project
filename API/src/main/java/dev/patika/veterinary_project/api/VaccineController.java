@@ -3,6 +3,7 @@ package dev.patika.veterinary_project.api;
 import dev.patika.veterinary_project.business.abstracts.IVaccineService;
 import dev.patika.veterinary_project.dto.request.AnimalVaccineDTO;
 import dev.patika.veterinary_project.entities.Animal;
+import dev.patika.veterinary_project.entities.Doctor;
 import dev.patika.veterinary_project.entities.Vaccine;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -52,6 +53,12 @@ public class VaccineController {
     @ResponseStatus(HttpStatus.OK)
     public List<Animal> getAnimalsByComingVaccines(@RequestBody AnimalVaccineDTO animalVaccineDTO) {
         return this.vaccineService.getAnimalsByComingVaccines(animalVaccineDTO);
+    }
+
+    @GetMapping("/findAll")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Vaccine> findAll() {
+        return this.vaccineService.findAll();
     }
 
 }

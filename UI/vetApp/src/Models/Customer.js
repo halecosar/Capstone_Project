@@ -1,9 +1,16 @@
-const CustomerModel = {
-    name: "",
-    phone: "",
-    mail: "",
-    address: "",
-    city: ""
+class CustomerModel {
+    constructor() {
+        this.name = "",
+            this.phone = "",
+            this.mail = "",
+            this.address = "",
+            this.city = ""
+
+
+    }
+
 };
 
 export default CustomerModel;
+
+
