@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Navigation from '../Components/Navigation';
-import { findAllAnimal, saveAnimal, deleteAnimal } from '../Api';
+import { findAllAnimal, saveAnimal, deleteAnimal, updateAnimal } from '../Api';
 import { DataGrid } from '@mui/x-data-grid';
 import { Formik, Field, Form } from 'formik';
 import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-
+import UpdateIcon from "@mui/icons-material/Update";
 function Animal() {
 
     const [animals, setAnimals] = useState([]);
@@ -29,7 +29,7 @@ function Animal() {
         console.log('Selected rows:', selectedRows);
     }, [selectedRows]);
 
-    const handleDelete = async (customerId) => {
+    const handleDelete = async (animalId) => {
         try {
             await deleteAnimal(animalId);
             setShouldFetchAnimals(true);
@@ -39,14 +39,14 @@ function Animal() {
     }
 
     const columns = [
-        { field: 'id', headerName: 'ID', width: 70 },
-        { field: 'name', headerName: 'Name', width: 130 },
-        { field: 'species', headerName: 'Species', width: 180 },
-        { field: 'breed', headerName: 'Breed', width: 130 },
-        { field: 'gender', headerName: 'Gender', width: 190 },
-        { field: 'color', headerName: 'Color', width: 130 },
-        { field: 'dateofBirth', headerName: 'Birthday', width: 130 },
-        { field: 'customerName', headerName: 'Customer Name', width: 130, valueGetter: (params) => params.row.customer.name },
+        { field: 'id', headerName: 'ID', width: 70, editable: true, },
+        { field: 'name', headerName: 'İsim', width: 130, editable: true, },
+        { field: 'species', headerName: 'Tür', width: 180, editable: true, },
+        { field: 'breed', headerName: 'Cins', width: 130, editable: true, },
+        { field: 'gender', headerName: 'Cinsiyet', width: 190, editable: true, },
+        { field: 'color', headerName: 'Renk', width: 130, editable: true, },
+        { field: 'dateofBirth', headerName: 'Doğum Günü', width: 130, editable: true, },
+        { field: 'customerName', headerName: 'Tabi Olduğu Müşteri', width: 150, valueGetter: (params) => params.row.customer.name },
         {
             field: 'remove',
             headerName: 'Kaldır',
@@ -57,12 +57,32 @@ function Animal() {
                 </IconButton>
             ),
         },
+        {
+            field: 'update',
+            headerName: 'Güncelle',
+            width: 130,
+            renderCell: (params) => (
+                <IconButton onClick={() => handleUpdate(params.row)}>
+                    <UpdateIcon />
+                </IconButton>
+            ),
+        },
     ];
+
+    const handleUpdate = async (params) => {
+        try {
+            await updateAnimal(params);
+            setShouldFetchAnimals(true);
+        } catch (error) {
+            console.error('Error', error);
+        }
+    };
+
 
     const submit = async (values) => {
         try {
-            await saveCustomer(values);
-            setShouldFetchCustomers(true);
+            await saveAnimal(values);
+            setShouldFetchAnimals(true);
         } catch (error) {
             console.error('Error', error);
         }
@@ -89,18 +109,6 @@ function Animal() {
                     selectionModel={selectedRows}
                 />
             </div>
-            <div>
-                <h2>Seçilen Satırlar</h2>
-                {selectedRows && selectedRows.length > 0 ? (
-                    selectedRows.map((id) => (
-                        <div key={id}>
-                            {animals.find((animal) => animal.id === id)?.name}
-                        </div>
-                    ))
-                ) : (
-                    <div>Seçili satır yok</div>
-                )}
-            </div>
 
             <div>
                 <h1>Hayvan Ekle</h1>
@@ -108,7 +116,7 @@ function Animal() {
                     initialValues={{
                         name: '',
                         gender: '',
-                        birthday: '',
+                        birthday: new Date(),
                         species: '',
                         breed: '',
                         color: '',
@@ -126,7 +134,7 @@ function Animal() {
                         <Field id="gender" name="gender" />
 
                         <label htmlFor="birthday">Doğum Günü</label>
-                        <Field id="mail" name="mail" type="mail" />
+                        <Field id="birthday" name="birthday" type="date" />
 
                         <label htmlFor="species">Tür</label>
                         <Field id="species" name="species" />

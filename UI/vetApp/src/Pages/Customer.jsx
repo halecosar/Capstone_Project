@@ -35,11 +35,11 @@ function Customer() {
 
     const columns = [
         { field: 'id', headerName: 'ID', width: 70 },
-        { field: 'name', headerName: 'Name', width: 130, editable: true, },
-        { field: 'phone', headerName: 'Phone', width: 190, editable: true, },
+        { field: 'name', headerName: 'İsim', width: 130, editable: true, },
+        { field: 'phone', headerName: 'Telefon', width: 190, editable: true, },
         { field: 'mail', headerName: 'Mail', width: 130, editable: true, },
-        { field: 'address', headerName: 'Address', width: 180, editable: true, },
-        { field: 'city', headerName: 'City', width: 130, editable: true, },
+        { field: 'address', headerName: 'Adres', width: 180, editable: true, },
+        { field: 'city', headerName: 'Şehir', width: 130, editable: true, },
         {
             field: 'remove',
             headerName: 'Kaldır',

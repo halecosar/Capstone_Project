@@ -70,7 +70,7 @@ export const saveDoctor = async (doctorModel) => {
 
 export const updateDoctor = async (doctorModel) => {
     try {
-        const response = await api.put('doctors/update', customerModel);
+        const response = await api.put('doctors/update', doctorModel);
         return response.data;
     } catch (error) {
         console.error('Error', error);
@@ -121,7 +121,7 @@ export const saveAnimal = async (animalModel) => {
 };
 export const updateAnimal = async (animalModel) => {
     try {
-        const response = await api.put('animals/update', customerModel);
+        const response = await api.put('animals/update', animalModel);
         return response.data;
     } catch (error) {
         console.error('Error', error);

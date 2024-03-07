@@ -2,10 +2,11 @@
 import Navigation from '../Components/Navigation'
 import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { findAllDoctor, saveDoctor, deleteDoctor } from '../Api';
+import { findAllDoctor, saveDoctor, deleteDoctor, updateDoctor } from '../Api';
 import { Formik, Field, Form } from 'formik';
 import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import UpdateIcon from "@mui/icons-material/Update";
 function Doctor() {
     const [doctors, setDoctors] = useState([]);
     const [shouldFetchDoctors, setShouldFetchDoctors] = useState(false);
@@ -34,12 +35,12 @@ function Doctor() {
     };
 
     const columns = [
-        { field: 'id', headerName: 'ID', width: 70 },
-        { field: 'name', headerName: 'Name', width: 130 },
-        { field: 'phone', headerName: 'Phone', width: 190 },
-        { field: 'mail', headerName: 'Mail', width: 130 },
-        { field: 'address', headerName: 'Address', width: 180 },
-        { field: 'city', headerName: 'City', width: 130 },
+        { field: 'id', headerName: 'ID', width: 70, editable: true, },
+        { field: 'name', headerName: 'İsim', width: 130, editable: true, },
+        { field: 'phone', headerName: 'Telefon', width: 190, editable: true, },
+        { field: 'mail', headerName: 'Mail', width: 130, editable: true, },
+        { field: 'address', headerName: 'Adres', width: 180, editable: true, },
+        { field: 'city', headerName: 'Şehir', width: 130, editable: true, },
         {
             field: 'remove',
             headerName: 'Kaldır',
@@ -50,7 +51,26 @@ function Doctor() {
                 </IconButton>
             ),
         },
+        {
+            field: 'update',
+            headerName: 'Güncelle',
+            width: 130,
+            renderCell: (params) => (
+                <IconButton onClick={() => handleUpdate(params.row)}>
+                    <UpdateIcon />
+                </IconButton>
+            ),
+        },
     ];
+
+    const handleUpdate = async (params) => {
+        try {
+            await updateDoctor(params);
+            setShouldFetchDoctors(true);
+        } catch (error) {
+            console.error('Error', error);
+        }
+    };
 
     const submit = async (values) => {
         try {
@@ -82,18 +102,7 @@ function Doctor() {
                     selectionModel={selectedRows}
                 />
             </div>
-            <div>
-                <h2>Seçilen Satırlar</h2>
-                {selectedRows && selectedRows.length > 0 ? (
-                    selectedRows.map((id) => (
-                        <div key={id}>
-                            {doctors.find((customer) => customer.id === id)?.name}
-                        </div>
-                    ))
-                ) : (
-                    <div>Seçili satır yok</div>
-                )}
-            </div>
+
 
             <div>
                 <h1>Doktor Ekle</h1>

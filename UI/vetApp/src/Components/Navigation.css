@@ -1,0 +1,38 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+}
+
+
+.navbar {
+    display: flex;
+    flex-direction: row;
+    background-color: #FFF3F3;
+    border: 2px solid #FCACAC;
+    width: 100vw;
+    height: 50px;
+}
+
+
+.router {
+    display: flex;
+
+
+
+}
+
+.router a {
+    color: #FCACAC;
+    margin-top: 15px;
+    margin-left: 25px;
+    transition: 0.5s;
+    font-weight: bold;
+
+}
+
+.router a:hover {
+
+    color: #6B555E
+}
