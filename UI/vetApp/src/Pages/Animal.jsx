@@ -27,6 +27,7 @@ function Animal() {
                 }));
                 setOptions(customerOptions);
 
+                setShouldFetchAnimals(false);
             } catch (error) {
                 console.error('Error fetching customer data:', error);
             }

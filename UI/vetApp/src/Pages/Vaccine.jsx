@@ -8,8 +8,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import UpdateIcon from "@mui/icons-material/Update";
 import VaccineModel from '../Models/Vaccine';
 
-
-
 function Vaccine() {
 
     const [vaccines, setVaccines] = useState([]);
@@ -30,6 +28,8 @@ function Vaccine() {
                 }));
                 setOptions(animalOptions);
 
+                setShouldFetchVaccines(false);
+
             } catch (error) {
                 console.error('Error fetching customer data:', error);
             }
@@ -40,7 +40,7 @@ function Vaccine() {
 
     const handleDelete = async (vaccineId) => {
         try {
-            await deleteVaccine(animalId);
+            await deleteVaccine(vaccineId);
             setShouldFetchVaccines(true);
         } catch (error) {
             console.error('Error', error);

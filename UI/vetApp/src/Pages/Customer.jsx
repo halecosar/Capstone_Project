@@ -16,6 +16,8 @@ function Customer() {
             try {
                 const data = await findAllCustomer();
                 setCustomers(data);
+
+                setShouldFetchCustomers(false);
             } catch (error) {
                 console.error('Error fetching customer data:', error);
             }
