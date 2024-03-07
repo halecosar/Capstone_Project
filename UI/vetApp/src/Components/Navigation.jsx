@@ -10,7 +10,10 @@ function Navigation() {
 
             <div className='router'>
                 <div className='logo'>
-                    <img src={logo} style={{ width: '35px', height: '40px' }} alt="logo" />
+                    <a href="/">
+                        <img src={logo} style={{ width: '35px', height: '40px' }} alt="logo" />
+                    </a>
+
                 </div>
 
                 <a href="/">Anasayfa</a>

@@ -1,22 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import Navigation from '../Components/Navigation';
-import { findAllAnimal, saveAnimal, deleteAnimal, updateAnimal } from '../Api';
+import { findAllAnimal, saveAnimal, deleteAnimal, updateAnimal, findAllCustomer } from '../Api';
 import { DataGrid } from '@mui/x-data-grid';
 import { Formik, Field, Form } from 'formik';
-import { IconButton } from '@mui/material';
+import { IconButton, MenuItem, Select } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import UpdateIcon from "@mui/icons-material/Update";
-function Animal() {
+import AnimalModel from '../Models/Animal';
 
+function Animal() {
     const [animals, setAnimals] = useState([]);
+    const [options, setOptions] = useState([]);
     const [shouldFetchAnimals, setShouldFetchAnimals] = useState(false);
-    const [selectedRows, setSelectedRows] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const data = await findAllAnimal();
                 setAnimals(data);
+
+                const data2 = await findAllCustomer();
+
+                const customerOptions = data2.map(customer => ({
+                    value: customer.id,
+                    label: customer.name
+                }));
+                setOptions(customerOptions);
+
             } catch (error) {
                 console.error('Error fetching customer data:', error);
             }
@@ -24,10 +34,6 @@ function Animal() {
 
         fetchData();
     }, [shouldFetchAnimals]);
-
-    useEffect(() => {
-        console.log('Selected rows:', selectedRows);
-    }, [selectedRows]);
 
     const handleDelete = async (animalId) => {
         try {
@@ -78,10 +84,18 @@ function Animal() {
         }
     };
 
-
     const submit = async (values) => {
         try {
-            await saveAnimal(values);
+            const model = new AnimalModel();
+            model.name = values.name;
+            model.gender = values.gender;
+            model.dateofBirth = values.birthday;
+            model.species = values.species;
+            model.breed = values.breed;
+            model.color = values.color;
+            model.customer.id = values.customerId;
+
+            await saveAnimal(model);
             setShouldFetchAnimals(true);
         } catch (error) {
             console.error('Error', error);
@@ -104,9 +118,6 @@ function Animal() {
                         },
                     }}
                     pageSizeOptions={[5, 10]}
-                    checkboxSelection
-                    onSelectionModelChange={(newSelection) => setSelectedRows(newSelection)}
-                    selectionModel={selectedRows}
                 />
             </div>
 
@@ -126,29 +137,45 @@ function Animal() {
                         await submit(values);
                     }}
                 >
-                    <Form>
-                        <label htmlFor="name">İsim</label>
-                        <Field id="name" name="name" />
+                    {({ values, setFieldValue }) => (
+                        <Form>
+                            <label htmlFor="name">İsim</label>
+                            <Field id="name" name="name" />
 
-                        <label htmlFor="gender">Cinsiyet</label>
-                        <Field id="gender" name="gender" />
+                            <label htmlFor="gender">Cinsiyet</label>
+                            <Field id="gender" name="gender" />
 
-                        <label htmlFor="birthday">Doğum Günü</label>
-                        <Field id="birthday" name="birthday" type="date" />
+                            <label htmlFor="birthday">Doğum Günü</label>
+                            <Field id="birthday" name="birthday" type="date" />
 
-                        <label htmlFor="species">Tür</label>
-                        <Field id="species" name="species" />
+                            <label htmlFor="species">Tür</label>
+                            <Field id="species" name="species" />
 
-                        <label htmlFor="breed">Cins</label>
-                        <Field id="breed" name="breed" />
+                            <label htmlFor="breed">Cins</label>
+                            <Field id="breed" name="breed" />
 
-                        <label htmlFor="color">Renk</label>
-                        <Field id="color" name="color" />
+                            <label htmlFor="color">Renk</label>
+                            <Field id="color" name="color" />
 
-                        <label htmlFor="customerId">Sahibi</label>
-                        <Field id="customerId" name="customerId" />
-                        <button type="submit">Submit</button>
-                    </Form>
+                            <label htmlFor="customerId">Sahibi</label>
+                            <Field name="customerId">
+                                {({ field }) => (
+                                    <Select
+                                        {...field}
+                                        value={values.selectedOption}
+                                        onChange={(event) => setFieldValue('customerId', event.target.value)}
+                                    >
+                                        <MenuItem value="">Select an option</MenuItem>
+                                        {options.map(option => (
+                                            <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
+                                        ))}
+                                    </Select>
+                                )}
+                            </Field>
+
+                            <button type="submit">Submit</button>
+                        </Form>
+                    )}
                 </Formik>
             </div>
         </div>
