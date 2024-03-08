@@ -1,9 +1,12 @@
 package dev.patika.veterinary_project.api;
 
 import dev.patika.veterinary_project.business.abstracts.IReportService;
+import dev.patika.veterinary_project.entities.Appointment;
 import dev.patika.veterinary_project.entities.Report;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/v1/reports")
@@ -35,5 +38,11 @@ public class ReportController {
     @ResponseStatus(HttpStatus.OK)
     public Report getById(@PathVariable("id") Long id) {
         return this.iReportService.getById(id);
+    }
+
+    @GetMapping("/findAll")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Report> findAll() {
+        return this.iReportService.findAll();
     }
 }

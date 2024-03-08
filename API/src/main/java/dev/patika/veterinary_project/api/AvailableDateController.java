@@ -4,6 +4,9 @@ import dev.patika.veterinary_project.business.abstracts.IAvailableDateService;
 import dev.patika.veterinary_project.entities.AvailableDate;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 //Doktorların müsait günlerini ekleme, bilgilerini güncelleme, görüntüleme ve silme
 @RestController
 @RequestMapping ("v1/availabledates") public class AvailableDateController {
@@ -29,10 +32,17 @@ import org.springframework.web.bind.annotation.*;
     void delete (@PathVariable("id") Long id){
         this.availableDateService.delete(id);
     }
+
     @GetMapping("/getById/{id}")
     @ResponseStatus(HttpStatus.OK)
     public AvailableDate getById(@PathVariable("id") Long id) {
         return this.availableDateService.getById(id);
+    }
+
+    @GetMapping("/getAvailableDatesByDoctor/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<AvailableDate> getAvailableDatesByDoctor(@PathVariable("id") Long id) {
+        return this.availableDateService.getAvailableDatesByDoctor(id);
     }
 }
 

@@ -11,4 +11,5 @@ public interface IAvailableDateService {
     AvailableDate getById(Long id);
     void delete(Long id);
     List<AvailableDate> findAll();
+    List<AvailableDate> getAvailableDatesByDoctor(long doctorId);
 }

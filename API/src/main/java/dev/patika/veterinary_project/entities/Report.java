@@ -28,10 +28,7 @@ public class Report {
     @Column (name = "price")
     private double price;
 
-    @OneToOne(mappedBy = "report", cascade = CascadeType.ALL)
-    private  Appointment appointment;
-
-    @ManyToOne  (fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "report_vaccine_id", referencedColumnName = "vaccine_id")
     private Vaccine vaccine;
 }

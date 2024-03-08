@@ -2,7 +2,7 @@
 import Navigation from '../Components/Navigation'
 import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { findAllDoctor, saveDoctor, deleteDoctor, updateDoctor } from '../Api';
+import { findAllDoctor, saveDoctor, deleteDoctor, updateDoctor, getAvailableDatesByDoctor } from '../Api';
 import { Formik, Field, Form } from 'formik';
 import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -10,7 +10,8 @@ import UpdateIcon from "@mui/icons-material/Update";
 function Doctor() {
     const [doctors, setDoctors] = useState([]);
     const [shouldFetchDoctors, setShouldFetchDoctors] = useState(false);
-    const [selectedRows, setSelectedRows] = useState([]);
+    const [availableDates, setAvailableDates] = useState([]);
+    const [selection, setSelection] = useState();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -65,6 +66,32 @@ function Doctor() {
         },
     ];
 
+    const availableDatesColumns = [
+        { field: 'id', headerName: 'ID', width: 70, editable: true, },
+        { field: 'availableDateDate', headerName: 'Uygun Saat', width: 130, editable: true, },
+        { field: 'doctorName', headerName: 'Doktor Adı', width: 150, valueGetter: (params) => params.row.doctor.name },
+        {
+            field: 'remove',
+            headerName: 'Kaldır',
+            width: 130,
+            renderCell: (params) => (
+                <IconButton onClick={() => handleDelete(params.row.id)}>
+                    <DeleteIcon />
+                </IconButton>
+            ),
+        },
+        {
+            field: 'update',
+            headerName: 'Güncelle',
+            width: 130,
+            renderCell: (params) => (
+                <IconButton onClick={() => handleUpdate(params.row)}>
+                    <UpdateIcon />
+                </IconButton>
+            ),
+        },
+    ];
+
     const handleUpdate = async (params) => {
         try {
             await updateDoctor(params);
@@ -83,6 +110,25 @@ function Doctor() {
         }
     };
 
+    const handleSelectionChange = (newSelection) => {
+        setSelection(newSelection[0])
+        if (newSelection[0] != undefined) {
+            const fetchData = async () => {
+                try {
+                    const data2 = await getAvailableDatesByDoctor(newSelection[0]);
+                    setAvailableDates(data2);
+
+                } catch (error) {
+                    console.error('Error fetching customer data:', error);
+                }
+            };
+
+            fetchData();
+        }
+        else {
+            setAvailableDates([]);
+        }
+    };
 
     return (
         <div>
@@ -99,9 +145,12 @@ function Doctor() {
                         },
                     }}
                     pageSizeOptions={[5, 10]}
+                    disableMultipleSelection
+                    onRowSelectionModelChange={(newRowSelectionModel) => {
+                        handleSelectionChange(newRowSelectionModel);
+                    }}
+
                     checkboxSelection
-                    onSelectionModelChange={(newSelection) => setSelectedRows(newSelection)}
-                    selectionModel={selectedRows}
                 />
             </div>
 
@@ -140,6 +189,24 @@ function Doctor() {
                     </Form>
                 </Formik>
             </div>
+            <br />
+            <br />
+            <br />
+            <br />
+            {selection !== undefined && (
+                <div style={{ height: 400, width: '100%' }}>
+                    <DataGrid
+                        rows={availableDates}
+                        columns={availableDatesColumns}
+                        initialState={{
+                            pagination: {
+                                paginationModel: { page: 0, pageSize: 5 },
+                            },
+                        }}
+                        pageSizeOptions={[5, 10]}
+                    />
+                </div>
+            )}
         </div>
 
 

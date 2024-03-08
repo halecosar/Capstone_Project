@@ -34,7 +34,6 @@ public class AvailableDateManager implements IAvailableDateService {
         }
     }
 
-
     @Override
     public AvailableDate update(AvailableDate availableDate) {
         getById(availableDate.getId());
@@ -43,7 +42,6 @@ public class AvailableDateManager implements IAvailableDateService {
 
     @Override
     public AvailableDate getById(Long id) {
-
         AvailableDate availableDate = this.availableDateRepo.findById(id).orElse(null);
         if (availableDate == null) {
             throw new RuntimeException(id + " id’li kayıt sistemde bulunamadı.");
@@ -73,6 +71,16 @@ public class AvailableDateManager implements IAvailableDateService {
         Query query = entityManager.createQuery(queryString);
         query.setParameter("doctor_id", availableDate.getDoctor().getId());
         query.setParameter("available_date", availableDate.getAvailableDateDate());
+
+        return query.getResultList();
+    }
+
+    @Override
+    public List<AvailableDate> getAvailableDatesByDoctor(long doctorId) {
+        String queryString = "SELECT a FROM AvailableDate a WHERE a.doctor.id = :doctor_id";
+
+        Query query = entityManager.createQuery(queryString);
+        query.setParameter("doctor_id", doctorId);
 
         return query.getResultList();
     }

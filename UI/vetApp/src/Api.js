@@ -210,3 +210,120 @@ export const deleteVaccine = async (id) => {
         throw error;
     }
 };
+
+
+//Report CRUD İşlemleri
+
+export const saveReport = async (reportModel) => {
+    try {
+        const response = await api.post('reports/save', reportModel);
+        return response.data;
+    } catch (error) {
+        console.error('Error', error);
+        throw error;
+    }
+};
+
+export const updateReport = async (reportModel) => {
+    try {
+        const response = await api.put('reports/update', reportModel);
+        return response.data;
+    } catch (error) {
+        console.error('Error', error);
+        throw error;
+    }
+};
+
+export const findAllReport = async () => {
+    try {
+        const response = await api.get('reports/findAll');
+        return response.data;
+    } catch (error) {
+        console.error('Error', error);
+        throw error;
+    }
+};
+
+export const getByIdReport = async (id) => {
+    try {
+        const response = await api.get('reports/getById/${id}');
+        return response.data;
+    } catch (error) {
+        console.error('Error', error);
+        throw error;
+    }
+};
+
+export const deleteReport = async (id) => {
+    try {
+        const response = await api.delete('reports/delete/' + id);
+        return response.data;
+    } catch (error) {
+        console.error('Error', error);
+        throw error;
+    }
+};
+
+//Appointment CRUD İşlemleri
+
+export const saveAppointment = async (appointmentModel) => {
+    try {
+        const response = await api.post('appointments/save', appointmentModel);
+        return response.data;
+    } catch (error) {
+        console.error('Error', error);
+        throw error;
+    }
+};
+
+export const updateAppointment = async (appointmentModel) => {
+    try {
+        const response = await api.put('appointments/update', appointmentModel);
+        return response.data;
+    } catch (error) {
+        console.error('Error', error);
+        throw error;
+    }
+};
+
+export const findAllAppointment = async () => {
+    try {
+        const response = await api.get('appointments/findAll');
+        return response.data;
+    } catch (error) {
+        console.error('Error', error);
+        throw error;
+    }
+};
+
+export const getByIdAppointment = async (id) => {
+    try {
+        const response = await api.get('appointments/getById/${id}');
+        return response.data;
+    } catch (error) {
+        console.error('Error', error);
+        throw error;
+    }
+};
+
+export const deleteAppointment = async (id) => {
+    try {
+        const response = await api.delete('appointments/delete/' + id);
+        return response.data;
+    } catch (error) {
+        console.error('Error', error);
+        throw error;
+    }
+};
+
+//AvailableDates CRUD İşlemleri
+
+export const getAvailableDatesByDoctor = async (id) => {
+    try {
+        const response = await api.get('availabledates/getAvailableDatesByDoctor/' + id);
+        return response.data;
+    } catch (error) {
+        console.error('Error', error);
+        throw error;
+    }
+};

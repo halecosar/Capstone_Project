@@ -6,6 +6,7 @@ import dev.patika.veterinary_project.dto.request.AppointmentFilterByAnimalDTO;
 import dev.patika.veterinary_project.dto.request.AppointmentFilterByDoctorDTO;
 import dev.patika.veterinary_project.entities.Animal;
 import dev.patika.veterinary_project.entities.Appointment;
+import dev.patika.veterinary_project.entities.Customer;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -56,4 +57,9 @@ public class AppointmentController {
         return this.appointmentService.filterbyAnimal(appointmentFilterByAnimalDTO);
     }
 
+    @GetMapping("/findAll")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Appointment> findAll() {
+        return this.appointmentService.findAll();
+    }
 }
