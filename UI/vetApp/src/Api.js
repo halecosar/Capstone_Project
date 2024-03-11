@@ -88,9 +88,9 @@ export const findAllDoctor = async () => {
     }
 };
 
-export const getByIdDoctor = async () => {
+export const getByIdDoctor = async (id) => {
     try {
-        const response = await api.get('doctors/getById/${id}');
+        const response = await api.get('doctors/getById/' + id);
         return response.data;
     } catch (error) {
         console.error('Error', error);
@@ -139,9 +139,9 @@ export const findAllAnimal = async () => {
     }
 };
 
-export const getByIdAnimal = async () => {
+export const getByIdAnimal = async (id) => {
     try {
-        const response = await api.get('animals/getById/${id}');
+        const response = await api.get('animals/getById/' + id);
         return response.data;
     } catch (error) {
         console.error('Error', error);
@@ -191,9 +191,9 @@ export const findAllVaccine = async () => {
     }
 };
 
-export const getByIdVaccine = async () => {
+export const getByIdVaccine = async (id) => {
     try {
-        const response = await api.get('vaccines/getById/${id}');
+        const response = await api.get('vaccines/getById/' + id);
         return response.data;
     } catch (error) {
         console.error('Error', error);
@@ -246,7 +246,7 @@ export const findAllReport = async () => {
 
 export const getByIdReport = async (id) => {
     try {
-        const response = await api.get('reports/getById/${id}');
+        const response = await api.get('reports/getById/' + id);
         return response.data;
     } catch (error) {
         console.error('Error', error);

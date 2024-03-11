@@ -6,7 +6,7 @@ import { IconButton, MenuItem, Select } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import UpdateIcon from "@mui/icons-material/Update";
 import AppointmentModel from '../Models/Appointment';
-import { saveAppointment, deleteAppointment, updateAppointment, findAllDoctor, findAllReport, findAllAnimal, findAllAppointment } from '../Api';
+import { saveAppointment, deleteAppointment, updateAppointment, findAllDoctor, findAllReport, findAllAnimal, findAllAppointment, getByIdReport, getByIdAnimal, getByIdDoctor } from '../Api';
 import '../Style/Appointment.css';
 import ErrorModal from '../Components/ErrorModal';
 
@@ -23,16 +23,112 @@ function Appointment() {
     const columns = [
         { field: 'id', headerName: 'ID', width: 70, editable: true },
         { field: 'appointmentDate', headerName: 'Randevu Zamanı', width: 130, editable: true },
+        {
+            field: 'animalName',
+            headerName: 'Hayvan Adı',
+            width: 150,
+            editable: true,
+            renderCell: (params) => {
+                const handleChange = async (e) => {
+                    const newValue = e.target.value;
+                    const { id } = params.row;
+                    const field = 'animal';
 
-        { field: 'animalName', headerName: 'Hayvan Adı', width: 150, valueGetter: (params) => params.row.animal.name },
+                    const updatedRows = await Promise.all(appointments.map(async (row) => {
+                        if (row.id === id) {
+                            const value = await getByIdAnimal(newValue);
+                            return { ...row, [field]: value };
+                        }
+                        return row;
+                    }));
 
-        { field: 'doctorName', headerName: 'Doktor Adı', width: 150, valueGetter: (params) => params.row.doctor.name },
+                    setAppointments(updatedRows);
+                };
 
-        { field: 'reportName', headerName: 'Rapor Başlığı', width: 150, valueGetter: (params) => params.row.report.title },
+                return (
+                    <Select
+                        value={params.row.animal.id}
+                        onChange={handleChange}
+                    >
+                        {animalOptions.map(option => (
+                            <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
+                        ))}
+                    </Select>
+                );
+            },
 
+        },
 
+        {
+            field: 'doctorName',
+            headerName: 'Doktor Adı',
+            width: 150,
+            editable: true,
+            renderCell: (params) => {
+                const handleChange = async (e) => {
+                    const newValue = e.target.value;
+                    const { id } = params.row;
+                    const field = 'doctor';
 
+                    const updatedRows = await Promise.all(appointments.map(async (row) => {
+                        if (row.id === id) {
+                            const value = await getByIdDoctor(newValue);
+                            return { ...row, [field]: value };
+                        }
+                        return row;
+                    }));
 
+                    setAppointments(updatedRows);
+                };
+
+                return (
+                    <Select
+                        value={params.row.doctor.id}
+                        onChange={handleChange}
+                    >
+                        {doctorOptions.map(option => (
+                            <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
+                        ))}
+                    </Select>
+                );
+            },
+
+        },
+        {
+            field: 'reportName',
+            headerName: 'Rapor Başlığı',
+            width: 150,
+            editable: true,
+            renderCell: (params) => {
+                const handleChange = async (e) => {
+                    const newValue = e.target.value;
+                    const { id } = params.row;
+                    const field = 'report';
+
+                    const updatedRows = await Promise.all(appointments.map(async (row) => {
+                        if (row.id === id) {
+                            const value = await getByIdReport(newValue);
+                            return { ...row, [field]: value };
+                        }
+                        return row;
+                    }));
+
+                    setAppointments(updatedRows);
+                };
+
+                return (
+                    <Select
+                        value={params.row.report.id}
+                        onChange={handleChange}
+                    >
+                        {reportOptions.map(option => (
+                            <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
+                        ))}
+                    </Select>
+                );
+            },
+
+        },
         {
             field: 'remove',
             headerName: 'Kaldır',
@@ -54,7 +150,6 @@ function Appointment() {
             ),
         },
     ];
-
 
     useEffect(() => {
         const fetchData = async () => {

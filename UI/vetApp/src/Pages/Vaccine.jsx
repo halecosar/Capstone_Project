@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Navigation from '../Components/Navigation'
-import { findAllVaccine, saveVaccine, deleteVaccine, updateVaccine, findAllAnimal } from '../Api';
+import { findAllVaccine, saveVaccine, deleteVaccine, updateVaccine, findAllAnimal, getByIdAnimal } from '../Api';
 import { DataGrid } from '@mui/x-data-grid';
 import { Formik, Field, Form } from 'formik';
 import { IconButton, MenuItem, Select } from '@mui/material';
@@ -25,7 +25,43 @@ function Vaccine() {
         { field: 'name', headerName: 'İsim', width: 130, editable: true, },
         { field: 'protectionStartDate', headerName: 'Koruyuculuk Başlangıç', width: 130, editable: true, },
         { field: 'protectionFinishDate', headerName: 'Koruyuculuk Bitiş', width: 130, editable: true, },
-        { field: 'animalName', headerName: 'Tabi Olduğu Hayvan', width: 150, valueGetter: (params) => params.row.animal.name },
+
+        {
+            field: 'animalName',
+            headerName: 'Tabi Olduğu Hayvan',
+            width: 150,
+            editable: true,
+            renderCell: (params) => {
+                const handleChange = async (e) => {
+                    const newValue = e.target.value;
+                    const { id } = params.row;
+                    const field = 'animal';
+
+                    const updatedRows = await Promise.all(vaccines.map(async (row) => {
+                        if (row.id === id) {
+                            const value = await getByIdAnimal(newValue);
+                            return { ...row, [field]: value };
+                        }
+                        return row;
+                    }));
+
+                    setVaccines(updatedRows);
+                };
+
+                return (
+                    <Select
+                        value={params.row.animal.id}
+                        onChange={handleChange}
+                    >
+                        {options.map(option => (
+                            <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
+                        ))}
+                    </Select>
+                );
+            },
+
+        },
+
         {
             field: 'remove',
             headerName: 'Kaldır',

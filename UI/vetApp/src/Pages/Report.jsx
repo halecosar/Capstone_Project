@@ -6,7 +6,7 @@ import { IconButton, MenuItem, Select } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import UpdateIcon from "@mui/icons-material/Update";
 import ReportModel from '../Models/Report';
-import { findAllReport, saveReport, deleteReport, updateReport, findAllVaccine } from '../Api';
+import { findAllReport, saveReport, deleteReport, updateReport, findAllVaccine, getByIdVaccine } from '../Api';
 import '../Style/Report.css';
 import ErrorModal from '../Components/ErrorModal';
 
@@ -24,7 +24,42 @@ function Report() {
         { field: 'title', headerName: 'Başlık', width: 130, editable: true },
         { field: 'diagnosis', headerName: 'Teşhis', width: 130, editable: true },
         { field: 'price', headerName: 'Ödeme', width: 130, editable: true },
-        { field: 'vaccineName', headerName: 'Yapılan Aşı', width: 150, valueGetter: (params) => params.row.vaccine.name },
+
+        {
+            field: 'vaccineName',
+            headerName: 'Yapılan Aşı',
+            width: 150,
+            editable: true,
+            renderCell: (params) => {
+                const handleChange = async (e) => {
+                    const newValue = e.target.value;
+                    const { id } = params.row;
+                    const field = 'vaccine';
+
+                    const updatedRows = await Promise.all(reports.map(async (row) => {
+                        if (row.id === id) {
+                            const value = await getByIdVaccine(newValue);
+                            return { ...row, [field]: value };
+                        }
+                        return row;
+                    }));
+
+                    setReports(updatedRows);
+                };
+
+                return (
+                    <Select
+                        value={params.row.vaccine.id}
+                        onChange={handleChange}
+                    >
+                        {options.map(option => (
+                            <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
+                        ))}
+                    </Select>
+                );
+            },
+
+        },
         {
             field: 'remove',
             headerName: 'Kaldır',

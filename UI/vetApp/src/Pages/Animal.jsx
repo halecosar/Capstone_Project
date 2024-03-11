@@ -50,7 +50,7 @@ function Animal() {
 
                 return (
                     <Select
-                        value={params.row.customer.id || ''} // Eğer customer yoksa boş değer göster
+                        value={params.row.customer.id}
                         onChange={handleChange}
                     >
                         {options.map(option => (
