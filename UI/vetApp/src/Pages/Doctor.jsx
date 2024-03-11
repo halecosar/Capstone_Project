@@ -200,7 +200,7 @@ function Doctor() {
             </div>
             <Navigation />
 
-            <div style={{ height: 400, width: '100%', marginLeft: '60px', marginTop: '10px' }}>
+            <div style={{ height: 400, width: '80%', marginLeft: '10%', marginTop: '10px' }}>
                 <DataGrid
                     rows={doctors}
                     columns={columns}
