@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Navigation from '../Components/Navigation';
-import { findAllCustomer, saveCustomer, deleteCustomer, updateCustomer } from '../Api';
+import { findAllCustomer, saveCustomer, deleteCustomer, updateCustomer, getFilteredCustomerByName } from '../Api';
 import { DataGrid } from '@mui/x-data-grid';
 import { Formik, Field, Form } from 'formik';
 import { IconButton } from '@mui/material';
@@ -15,6 +15,7 @@ function Customer() {
     const [error, setError] = useState("");
     const [openModal, setOpenModal] = useState(false);
     const [visible, setVisible] = useState(false);
+    const [searchValue, setSearchValue] = useState('');
 
     const columns = [
         { field: 'id', headerName: 'ID', width: 70 },
@@ -100,12 +101,39 @@ function Customer() {
         setVisible(true)
     }
 
+    const searchChange = (e) => {
+        setSearchValue(e.target.value);
+    };
+
+    const searchCustomer = async () => {
+        try {
+            const data = await getFilteredCustomerByName(searchValue);
+            setCustomers(data)
+            setSearchValue("");
+        } catch (error) {
+            console.error('Error', error);
+            setError("Müşteri araması yapılırken hata oluştu.");
+            setOpenModal(true);
+        }
+    }
+
     return (
         <div>
             <div>
                 {error && <ErrorModal errorMsg={error} openModal={openModal} setOpenModal={setOpenModal} />}
             </div>
             <Navigation />
+
+            <div>
+                <input
+                    type="text"
+                    value={searchValue}
+                    onChange={searchChange}
+                />
+
+                <button onClick={searchCustomer}> Ara </button>
+
+            </div>
 
             <div style={{ height: 400, width: '80%', marginLeft: '10%', marginTop: '10px' }}>
 

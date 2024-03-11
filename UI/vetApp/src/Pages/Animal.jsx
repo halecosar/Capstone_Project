@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Navigation from '../Components/Navigation';
-import { findAllAnimal, saveAnimal, deleteAnimal, updateAnimal, findAllCustomer, getByIdCustomer } from '../Api';
+import { findAllAnimal, saveAnimal, deleteAnimal, updateAnimal, findAllCustomer, getByIdCustomer, getFilteredAnimalByName } from '../Api';
 import { DataGrid } from '@mui/x-data-grid';
 import { Formik, Field, Form } from 'formik';
 import { IconButton, MenuItem, Modal, Select, TableCell } from '@mui/material';
@@ -17,6 +17,7 @@ function Animal() {
     const [error, setError] = useState("");
     const [openModal, setOpenModal] = useState(false);
     const [visible, setVisible] = useState(false);
+    const [searchValue, setSearchValue] = useState('');
 
     const columns = [
         { field: 'id', headerName: 'ID', width: 70, editable: true, },
@@ -83,7 +84,6 @@ function Animal() {
         },
     ];
 
-
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -117,8 +117,6 @@ function Animal() {
             setOpenModal(true);
         }
     }
-
-
 
     const handleUpdate = async (params) => {
         try {
@@ -156,6 +154,24 @@ function Animal() {
         setVisible(true);
     }
 
+    const searchChange = (e) => {
+        setSearchValue(e.target.value);
+    };
+
+
+    const searchAnimal = async () => {
+        try {
+            const data = await getFilteredAnimalByName(searchValue);
+            setAnimals(data)
+            setSearchValue("");
+
+        } catch (error) {
+            console.error('Error', error);
+            setError("Hayvan araması yapılırken hata oluştu.");
+            setOpenModal(true);
+        }
+    }
+
     return (
 
         <div>
@@ -164,7 +180,16 @@ function Animal() {
             </div>
             <Navigation />
 
+            <div>
+                <input
+                    type="text"
+                    value={searchValue}
+                    onChange={searchChange}
+                />
 
+                <button onClick={searchAnimal}> Ara </button>
+
+            </div>
 
             <div style={{ height: 400, width: '99%', marginLeft: '10%', marginTop: '10px' }}>
                 <DataGrid

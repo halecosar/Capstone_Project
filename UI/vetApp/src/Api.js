@@ -57,6 +57,16 @@ export const deleteCustomer = async (id) => {
     }
 };
 
+export const getFilteredCustomerByName = async (name) => {
+    try {
+        const response = await api.get('customers/getFilteredCustomerByName/' + name);
+        return response.data;
+    } catch (error) {
+        console.error('Error', error);
+        throw error;
+    }
+};
+
 //Doktor CRUD İşlemleri:
 export const saveDoctor = async (doctorModel) => {
     try {
@@ -158,6 +168,18 @@ export const deleteAnimal = async (id) => {
         throw error;
     }
 };
+
+export const getFilteredAnimalByName = async (name) => {
+    try {
+        const response = await api.get('animals/getFilteredAnimalByName/' + name);
+        return response.data;
+    } catch (error) {
+        console.error('Error', error);
+        throw error;
+    }
+};
+
+
 
 //Vaccine CRUD İşlemleri
 
