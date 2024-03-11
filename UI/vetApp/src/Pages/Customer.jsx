@@ -6,10 +6,13 @@ import { Formik, Field, Form } from 'formik';
 import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import UpdateIcon from "@mui/icons-material/Update";
+import ErrorModal from '../Components/ErrorModal';
 
 function Customer() {
     const [customers, setCustomers] = useState([]);
     const [shouldFetchCustomers, setShouldFetchCustomers] = useState(false);
+    const [error, setError] = useState("");
+    const [openModal, setOpenModal] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -19,7 +22,9 @@ function Customer() {
 
                 setShouldFetchCustomers(false);
             } catch (error) {
-                console.error('Error fetching customer data:', error);
+                console.error('Error', error);
+                setError("Müşteri listesi çekilirken kaydedilirken hata oluştu.");
+                setOpenModal(true);
             }
         };
 
@@ -32,6 +37,8 @@ function Customer() {
             setShouldFetchCustomers(true);
         } catch (error) {
             console.error('Error', error);
+            setError("Müşteri bilgisi silinirken hata oluştu.");
+            setOpenModal(true);
         }
     };
 
@@ -70,6 +77,8 @@ function Customer() {
             setShouldFetchCustomers(true);
         } catch (error) {
             console.error('Error', error);
+            setError("Müşteri bilgisi kaydedilirken hata oluştu.");
+            setOpenModal(true);
         }
     };
 
@@ -79,15 +88,19 @@ function Customer() {
             setShouldFetchCustomers(true);
         } catch (error) {
             console.error('Error', error);
+            setError("Müşteri bilgisi güncellenirken hata oluştu.");
+            setOpenModal(true);
         }
     };
 
     return (
         <div>
+            <div>
+                {error && <ErrorModal errorMsg={error} openModal={openModal} setOpenModal={setOpenModal} />}
+            </div>
             <Navigation />
-            <h1>Müşteri Yönetimi</h1>
-            <h2>Müşteri Listesi</h2>
-            <div style={{ height: 400, width: '100%' }}>
+
+            <div style={{ height: 400, width: '100%', marginLeft: '60px', marginTop: '10px' }}>
                 <DataGrid
                     rows={customers}
                     columns={columns}
@@ -101,7 +114,7 @@ function Customer() {
             </div>
 
             <div>
-                <h1>Müşteri Ekle</h1>
+
                 <Formik
                     initialValues={{
                         name: '',
@@ -114,23 +127,36 @@ function Customer() {
                         await submit(values);
                     }}
                 >
-                    <Form>
-                        <label htmlFor="name">İsim</label>
-                        <Field id="name" name="name" />
+                    <Form className="formik-container">
+                        <h1>Müşteri Ekle</h1>
+                        <div className="formik-field">
+                            <label htmlFor="name">İsim</label>
+                            <Field id="name" name="name" />
+                        </div>
 
-                        <label htmlFor="phone">Telefon Numarası</label>
-                        <Field id="phone" name="phone" />
+                        <div className="formik-field">
+                            <label htmlFor="phone">Telefon Numarası</label>
+                            <Field id="phone" name="phone" />
+                        </div>
 
-                        <label htmlFor="mail">Email</label>
-                        <Field id="mail" name="mail" type="mail" />
+                        <div className="formik-field">
+                            <label htmlFor="mail">Email</label>
+                            <Field id="mail" name="mail" type="mail" />
+                        </div>
 
-                        <label htmlFor="address">Adres</label>
-                        <Field id="address" name="address" />
+                        <div className="formik-field">
+                            <label htmlFor="address">Adres</label>
+                            <Field id="address" name="address" />
+                        </div>
 
-                        <label htmlFor="city">Şehir</label>
-                        <Field id="city" name="city" />
+                        <div className="formik-field">
+                            <label htmlFor="city">Şehir</label>
+                            <Field id="city" name="city" />
+                        </div>
 
-                        <button type="submit">Submit</button>
+
+
+                        <button type="submit" className="formik-submit-button">Kaydet</button>
                     </Form>
                 </Formik>
             </div>

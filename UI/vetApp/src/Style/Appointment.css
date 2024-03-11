@@ -1,0 +1,63 @@
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+    color: #6B555E;
+    width: 500px;
+    align-items: center;
+}
+
+.formik-label {
+    margin-bottom: 0.5rem;
+}
+
+.formik-select,
+.formik-input {
+    width: 30%;
+    padding: 0.5rem;
+    border-radius: 0.3rem;
+    border: 1px solid #ccc;
+}
+
+.formik-input {
+    width: 30%;
+}
+
+.formik-submit-button {
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 0.3rem;
+    border: 1px solid #ccc;
+    background-color: #FCACAC;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.formik-submit-button:hover {
+    background-color: #FCACAC;
+}
+
+.formik-field-group {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    color: #6B555E;
+}
+
+.appointment-form {
+    margin-top: 10px;
+    color: #6B555E;
+    font-weight: bolder;
+    border: 6px solid #FCACAC;
+    padding: 10px;
+    margin-left: 500px;
+    align-items: center;
+    width: 600px;
+    height: 500px;
+}
+
+.formik-container h1 {
+    text-align: center;
+}

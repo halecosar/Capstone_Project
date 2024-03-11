@@ -7,11 +7,15 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import UpdateIcon from "@mui/icons-material/Update";
 import ReportModel from '../Models/Report';
 import { findAllReport, saveReport, deleteReport, updateReport, findAllVaccine } from '../Api';
+import '../Style/Report.css';
+import ErrorModal from '../Components/ErrorModal';
 
 function Report() {
     const [reports, setReports] = useState([]);
     const [options, setOptions] = useState([]);
     const [shouldFetchReports, setShouldFetchReports] = useState(false);
+    const [error, setError] = useState("");
+    const [openModal, setOpenModal] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -30,7 +34,7 @@ function Report() {
                 setShouldFetchReports(false);
 
             } catch (error) {
-                console.error('Error fetching report data:', error);
+                console.error('Rapor listesi çekilirken hata oluştu.', error);
             }
         };
 
@@ -43,6 +47,8 @@ function Report() {
             setShouldFetchReports(true);
         } catch (error) {
             console.error('Error', error);
+            setError("Rapor bilgisi silinirken hata oluştu.");
+            setOpenModal(true);
         }
     }
 
@@ -80,6 +86,8 @@ function Report() {
             setShouldFetchReports(true);
         } catch (error) {
             console.error('Error', error);
+            setError("Rapor bilgisi güncellenirken hata oluştu.");
+            setOpenModal(true);
         }
     };
 
@@ -97,14 +105,19 @@ function Report() {
             setShouldFetchReports(true);
         } catch (error) {
             console.error('Error', error);
+            setError("Doktor bilgisi kaydedilirken hata oluştu.");
+            setOpenModal(true);
         }
     };
 
     return (
         <div>
+            <div>
+                {error && <ErrorModal errorMsg={error} openModal={openModal} setOpenModal={setOpenModal} />}
+            </div>
             <Navigation />
-            <h1>Rapor Sayfası</h1>
-            <div style={{ height: 400, width: '100%' }}>
+
+            <div style={{ height: 400, width: '100%', marginLeft: '60px', marginTop: '10px' }}>
                 <DataGrid
                     rows={reports}
                     columns={columns}
@@ -113,7 +126,7 @@ function Report() {
             </div>
 
             <div>
-                <h1>Rapor Ekle</h1>
+
                 <Formik
                     initialValues={{
                         title: '',
@@ -126,33 +139,42 @@ function Report() {
                     }}
                 >
                     {({ values, setFieldValue }) => (
-                        <Form>
-                            <label htmlFor="title"> Başlık</label>
-                            <Field id="title" name="title" />
+                        <Form className="formik-container">
+                            <h1>Rapor Ekle</h1>
+                            <div className='form-group'>
+                                <label htmlFor="title"> Başlık</label>
+                                <Field id="title" name="title" />
+                            </div>
 
-                            <label htmlFor="diagnosis">Teşhis</label>
-                            <Field id="diagnosis" name="diagnosis" />
+                            <div className='form-group'>
+                                <label htmlFor="diagnosis">Teşhis</label>
+                                <Field id="diagnosis" name="diagnosis" />
+                            </div>
 
-                            <label htmlFor="price">Fiyat</label>
-                            <Field id="price" name="price" />
+                            <div className='form-group'>
+                                <label htmlFor="price">Fiyat</label>
+                                <Field id="price" name="price" />
+                            </div>
 
-                            <label htmlFor="vaccineId">Aşı</label>
-                            <Field name="vaccineId">
-                                {({ field }) => (
-                                    <Select
-                                        {...field}
-                                        value={values.vaccineId}
-                                        onChange={(event) => setFieldValue('vaccineId', event.target.value)}
-                                    >
-                                        <MenuItem value="">Select an option</MenuItem>
-                                        {options.map(option => (
-                                            <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
-                                        ))}
-                                    </Select>
-                                )}
-                            </Field>
+                            <div className='form-group' >
+                                <label htmlFor="vaccineId">Aşı</label>
+                                <Field name="vaccineId" className="formik-select">
+                                    {({ field }) => (
+                                        <Select
+                                            {...field}
+                                            value={values.vaccineId}
+                                            onChange={(event) => setFieldValue('vaccineId', event.target.value)}
+                                        >
+                                            <MenuItem value="">Select an option</MenuItem>
+                                            {options.map(option => (
+                                                <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
+                                            ))}
+                                        </Select>
+                                    )}
+                                </Field>
+                            </div>
 
-                            <button type="submit">Submit</button>
+                            <button type="submit" className='formik-submit-button'>Kaydet</button>
                         </Form>
                     )}
                 </Formik>

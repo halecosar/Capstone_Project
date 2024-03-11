@@ -7,12 +7,16 @@ import { IconButton, MenuItem, Select } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import UpdateIcon from "@mui/icons-material/Update";
 import VaccineModel from '../Models/Vaccine';
+import '../Style/Vaccine.css';
+import ErrorModal from '../Components/ErrorModal';
 
 function Vaccine() {
 
     const [vaccines, setVaccines] = useState([]);
     const [options, setOptions] = useState([]);
     const [shouldFetchVaccines, setShouldFetchVaccines] = useState(false);
+    const [error, setError] = useState("");
+    const [openModal, setOpenModal] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -31,7 +35,7 @@ function Vaccine() {
                 setShouldFetchVaccines(false);
 
             } catch (error) {
-                console.error('Error fetching customer data:', error);
+                console.error('Aşı listesi çekilirken hata oluştu.', error);
             }
         };
 
@@ -44,6 +48,8 @@ function Vaccine() {
             setShouldFetchVaccines(true);
         } catch (error) {
             console.error('Error', error);
+            setError("Aşı bilgisi silinirken hata oluştu.");
+            setOpenModal(true);
         }
     }
 
@@ -81,6 +87,8 @@ function Vaccine() {
             setShouldFetchVaccines(true);
         } catch (error) {
             console.error('Error', error);
+            setError("Rapor bilgisi güncellenirken hata oluştu.");
+            setOpenModal(true);
         }
     };
 
@@ -98,13 +106,17 @@ function Vaccine() {
             setShouldFetchVaccines(true);
         } catch (error) {
             console.error('Error', error);
+            setError("Doktor bilgisi kaydedilirken hata oluştu.");
+            setOpenModal(true);
         }
     };
     return (
         <div>
+            <div>
+                {error && <ErrorModal errorMsg={error} openModal={openModal} setOpenModal={setOpenModal} />}
+            </div>
             <Navigation />
-            <h1>Aşı Sayfası</h1>
-            <div style={{ height: 400, width: '100%' }}>
+            <div style={{ height: 400, width: '100%', marginLeft: '60px', marginTop: '10px' }}>
                 <DataGrid
                     rows={vaccines}
                     columns={columns}
@@ -118,7 +130,7 @@ function Vaccine() {
             </div>
 
             <div>
-                <h1>Aşı Ekle</h1>
+
                 <Formik
                     initialValues={{
                         name: '',
@@ -133,39 +145,51 @@ function Vaccine() {
                     }}
                 >
                     {({ values, setFieldValue }) => (
-                        <Form>
-                            <label htmlFor="name"> Aşı İsim</label>
-                            <Field id="name" name="name" />
+                        <Form className="formik-container">
+                            <h1>Aşı Ekle</h1>
+                            <div className='form-group'>
+                                <label htmlFor="name"> Aşı İsim</label>
+                                <Field id="name" name="name" />
+                            </div>
 
-                            <label htmlFor="code">Kod</label>
-                            <Field id="code" name="code" />
+                            <div className='form-group'>
+                                <label htmlFor="code">Kod</label>
+                                <Field id="code" name="code" />
+                            </div>
 
-                            <label htmlFor="protectionStartDate">Koruyuculuk Başlangıç</label>
-                            <Field id="protectionStartDate" name="protectionStartDate" type="date" />
+                            <div className='form-group'>
+                                <label htmlFor="protectionStartDate">Koruyuculuk Başlangıç</label>
+                                <Field className="formik-input" id="protectionStartDate" name="protectionStartDate" type="date" />
+                            </div>
 
-                            <label htmlFor="protectionFinishDate">Koruyuculuk  Bitiş</label>
-                            <Field id="protectionFinishDate" name="protectionFinishDate" type="date" />
+                            <div className='form-group'>
+                                <label htmlFor="protectionFinishDate">Koruyuculuk  Bitiş</label>
+                                <Field
+                                    className="formik-input" id="protectionFinishDate" name="protectionFinishDate" type="date" />
+                            </div>
 
 
 
 
-                            <label htmlFor="animalId">Sahibi</label>
-                            <Field name="animalId">
-                                {({ field }) => (
-                                    <Select
-                                        {...field}
-                                        value={values.selectedOption}
-                                        onChange={(event) => setFieldValue('animalId', event.target.value)}
-                                    >
-                                        <MenuItem value="">Select an option</MenuItem>
-                                        {options.map(option => (
-                                            <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
-                                        ))}
-                                    </Select>
-                                )}
-                            </Field>
+                            <div className='form-group'>
+                                <label htmlFor="animalId">Sahibi</label>
+                                <Field name="animalId" className="formik-select">
+                                    {({ field }) => (
+                                        <Select
+                                            {...field}
+                                            value={values.selectedOption}
+                                            onChange={(event) => setFieldValue('animalId', event.target.value)}
+                                        >
+                                            <MenuItem value="">Select an option</MenuItem>
+                                            {options.map(option => (
+                                                <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
+                                            ))}
+                                        </Select>
+                                    )}
+                                </Field>
+                            </div>
 
-                            <button type="submit">Submit</button>
+                            <button type="submit" className='formik-submit-button'>Kaydet</button>
                         </Form>
                     )}
                 </Formik>

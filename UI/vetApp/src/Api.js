@@ -327,3 +327,37 @@ export const getAvailableDatesByDoctor = async (id) => {
         throw error;
     }
 };
+
+
+export const saveAvailableDate = async (availableDateModel) => {
+    try {
+        const response = await api.post('availabledates/save', availableDateModel);
+        return response.data;
+    } catch (error) {
+        console.error('Error', error);
+        throw error;
+    }
+};
+
+
+export const updateAvailableDate = async (availableDateModel) => {
+    try {
+        const response = await api.put('availabledates/update', availableDateModel);
+        return response.data;
+    } catch (error) {
+        console.error('Error', error);
+        throw error;
+    }
+};
+
+export const deleteAvailableDate = async (id) => {
+    try {
+        const response = await api.delete('availabledates/delete/' + id);
+        return response.data;
+    } catch (error) {
+        console.error('Error', error);
+        throw error;
+    }
+};
+
+

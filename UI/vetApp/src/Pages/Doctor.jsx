@@ -2,16 +2,22 @@
 import Navigation from '../Components/Navigation'
 import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { findAllDoctor, saveDoctor, deleteDoctor, updateDoctor, getAvailableDatesByDoctor } from '../Api';
+import { findAllDoctor, saveDoctor, deleteDoctor, updateDoctor, getAvailableDatesByDoctor, updateAvailableDate, deleteAvailableDate, saveAvailableDate } from '../Api';
 import { Formik, Field, Form } from 'formik';
 import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import UpdateIcon from "@mui/icons-material/Update";
+import AvailableDateModel from '../Models/AvailableDate';
+import '../Style/Doctor.css';
+import ErrorModal from '../Components/ErrorModal';
+
 function Doctor() {
     const [doctors, setDoctors] = useState([]);
     const [shouldFetchDoctors, setShouldFetchDoctors] = useState(false);
     const [availableDates, setAvailableDates] = useState([]);
     const [selection, setSelection] = useState();
+    const [error, setError] = useState("");
+    const [openModal, setOpenModal] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -21,7 +27,9 @@ function Doctor() {
 
                 setShouldFetchDoctors(false);
             } catch (error) {
-                console.error('Error fetching customer data:', error);
+                console.error('Error', error);
+                console.error(' Doktor listesi çekilirken hata oluştu.', error);
+                setError(error);
             }
         };
 
@@ -34,6 +42,8 @@ function Doctor() {
             setShouldFetchDoctors(true);
         } catch (error) {
             console.error('Error', error);
+            setError("Doktor bilgisi silinirken hata oluştu.");
+            setOpenModal(true);
         }
     };
 
@@ -75,7 +85,7 @@ function Doctor() {
             headerName: 'Kaldır',
             width: 130,
             renderCell: (params) => (
-                <IconButton onClick={() => handleDelete(params.row.id)}>
+                <IconButton onClick={() => dateDelete(params.row.id)}>
                     <DeleteIcon />
                 </IconButton>
             ),
@@ -85,7 +95,7 @@ function Doctor() {
             headerName: 'Güncelle',
             width: 130,
             renderCell: (params) => (
-                <IconButton onClick={() => handleUpdate(params.row)}>
+                <IconButton onClick={() => dateUpdate(params.row)}>
                     <UpdateIcon />
                 </IconButton>
             ),
@@ -98,15 +108,21 @@ function Doctor() {
             setShouldFetchDoctors(true);
         } catch (error) {
             console.error('Error', error);
+            setError("Doktor bilgisi güncellenirken hata oluştu.");
+            setOpenModal(true);
         }
     };
 
-    const submit = async (values) => {
+    const submit = async (values, formBag) => {
         try {
             await saveDoctor(values);
             setShouldFetchDoctors(true);
+
+            formBag.resetForm();
         } catch (error) {
             console.error('Error', error);
+            setError("Doktor bilgisi kaydedilirken hata oluştu.");
+            setOpenModal(true);
         }
     };
 
@@ -130,12 +146,61 @@ function Doctor() {
         }
     };
 
+
+    const dateUpdate = async (params) => {
+        try {
+            await updateAvailableDate(params);
+
+            const data2 = await getAvailableDatesByDoctor(selection);
+            setAvailableDates(data2);
+
+        } catch (error) {
+            console.error('Error', error);
+            setError("Tarih bilgisi güncellenirken hata oluştu.");
+            setOpenModal(true);
+        }
+    };
+
+    const dateDelete = async (availableDateId) => {
+        try {
+            await deleteAvailableDate(availableDateId);
+
+            const data2 = await getAvailableDatesByDoctor(selection);
+            setAvailableDates(data2);
+
+        } catch (error) {
+            console.error('Error', error);
+            setError("Tarih bilgisi silinirken hata oluştu.");
+            setOpenModal(true);
+        }
+    };
+
+    const dateSave = async (values, formBag) => {
+        try {
+            const model = new AvailableDateModel();
+            model.availableDateDate = values.availableDateDate;
+            model.doctor = {
+                id: selection
+            };
+
+            await saveAvailableDate(model);
+            const data2 = await getAvailableDatesByDoctor(selection);
+            setAvailableDates(data2);
+
+            formBag.resetForm();
+        } catch (error) {
+            console.error('Error', error);
+        }
+    };
+
     return (
         <div>
+            <div>
+                {error && <ErrorModal errorMsg={error} openModal={openModal} setOpenModal={setOpenModal} />}
+            </div>
             <Navigation />
-            <h1>Doktor Sayfası</h1>
-            <h2>Doktor Listesi</h2>
-            <div style={{ height: 400, width: '100%' }}>
+
+            <div style={{ height: 400, width: '100%', marginLeft: '60px', marginTop: '10px' }}>
                 <DataGrid
                     rows={doctors}
                     columns={columns}
@@ -149,14 +214,12 @@ function Doctor() {
                     onRowSelectionModelChange={(newRowSelectionModel) => {
                         handleSelectionChange(newRowSelectionModel);
                     }}
-
-                    checkboxSelection
                 />
             </div>
 
 
             <div>
-                <h1>Doktor Ekle</h1>
+
                 <Formik
                     initialValues={{
                         name: '',
@@ -165,27 +228,36 @@ function Doctor() {
                         address: '',
                         city: '',
                     }}
-                    onSubmit={async (values) => {
-                        await submit(values);
+                    onSubmit={async (values, formBag) => {
+                        await submit(values, formBag);
                     }}
                 >
-                    <Form>
-                        <label htmlFor="name">İsim</label>
-                        <Field id="name" name="name" />
+                    <Form className="formik-container">
+                        <h1>Doktor Ekle</h1>
+                        <div className="form-group"><label htmlFor="name">İsim</label>
+                            <Field id="name" name="name" /></div>
 
-                        <label htmlFor="phone">Telefon Numarası</label>
-                        <Field id="phone" name="phone" />
+                        <div className="form-group">
+                            <label htmlFor="phone">Telefon Numarası</label>
+                            <Field id="phone" name="phone" />
+                        </div>
 
-                        <label htmlFor="mail">Email</label>
-                        <Field id="mail" name="mail" type="mail" />
+                        <div className="form-group">
+                            <label htmlFor="mail">Email</label>
+                            <Field id="mail" name="mail" type="mail" />
+                        </div>
 
-                        <label htmlFor="address">Adres</label>
-                        <Field id="address" name="address" />
+                        <div className="form-group">
+                            <label htmlFor="address">Adres</label>
+                            <Field id="address" name="address" />
+                        </div>
 
-                        <label htmlFor="city">Şehir</label>
-                        <Field id="city" name="city" />
+                        <div className="form-group">
+                            <label htmlFor="city">Şehir</label>
+                            <Field id="city" name="city" />
+                        </div>
 
-                        <button type="submit">Submit</button>
+                        <button type="submit" className='formik-submit-button'>Kaydet</button>
                     </Form>
                 </Formik>
             </div>
@@ -194,8 +266,8 @@ function Doctor() {
             <br />
             <br />
             {selection !== undefined && (
-                <div style={{ height: 400, width: '100%' }}>
-                    <DataGrid
+                <div className='container' >
+                    <DataGrid style={{ height: 400, width: '50%', marginLeft: '60px', marginTop: '10px' }}
                         rows={availableDates}
                         columns={availableDatesColumns}
                         initialState={{
@@ -205,6 +277,27 @@ function Doctor() {
                         }}
                         pageSizeOptions={[5, 10]}
                     />
+                    <Formik
+                        initialValues={{
+                            availableDateDate: '',
+
+
+                        }}
+                        onSubmit={async (values, formBag) => {
+                            await dateSave(values, formBag);
+                        }}
+                    >
+                        <Form className='formik-container2'>
+
+                            <label htmlFor="availableDateDate">Uygun Tarih</label>
+                            <Field id="availableDateDate" name="availableDateDate" type="date" />
+
+
+                            <button type="submit" className='formik-submit-button' >Kaydet</button>
+                        </Form>
+
+
+                    </Formik>
                 </div>
             )}
         </div>

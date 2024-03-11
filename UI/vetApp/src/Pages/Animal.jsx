@@ -3,15 +3,19 @@ import Navigation from '../Components/Navigation';
 import { findAllAnimal, saveAnimal, deleteAnimal, updateAnimal, findAllCustomer } from '../Api';
 import { DataGrid } from '@mui/x-data-grid';
 import { Formik, Field, Form } from 'formik';
-import { IconButton, MenuItem, Select } from '@mui/material';
+import { IconButton, MenuItem, Modal, Select, TableCell } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import UpdateIcon from "@mui/icons-material/Update";
 import AnimalModel from '../Models/Animal';
+import '../Style/Animal.css';
+import ErrorModal from '../Components/ErrorModal';
 
 function Animal() {
     const [animals, setAnimals] = useState([]);
     const [options, setOptions] = useState([]);
     const [shouldFetchAnimals, setShouldFetchAnimals] = useState(false);
+    const [error, setError] = useState("");
+    const [openModal, setOpenModal] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -29,7 +33,8 @@ function Animal() {
 
                 setShouldFetchAnimals(false);
             } catch (error) {
-                console.error('Error fetching customer data:', error);
+                console.error(' Hayvan listesi çekilirken hata oluştu.', error);
+                setError(error);
             }
         };
 
@@ -41,7 +46,8 @@ function Animal() {
             await deleteAnimal(animalId);
             setShouldFetchAnimals(true);
         } catch (error) {
-            console.error('Error', error);
+            setError("Hayvan bilgisi silinirken hata oluştu.");
+            setOpenModal(true);
         }
     }
 
@@ -53,11 +59,29 @@ function Animal() {
         { field: 'gender', headerName: 'Cinsiyet', width: 190, editable: true, },
         { field: 'color', headerName: 'Renk', width: 130, editable: true, },
         { field: 'dateofBirth', headerName: 'Doğum Günü', width: 130, editable: true, },
-        { field: 'customerName', headerName: 'Tabi Olduğu Müşteri', width: 150, valueGetter: (params) => params.row.customer.name },
+        {
+            field: 'customerName',
+            headerName: 'Tabi Olduğu Müşteri',
+            width: 150,
+            editable: true,
+            renderCell: (params) => (
+                <Select
+                    value={params.row.customer.id}
+                    onChange={(e) => {
+                        const newValue = e.target.value;
+                        params.api.setEditCellValue({ id: params.id, field: 'customerName', value: newValue });
+                    }}
+                >
+                    {options.map(option => (
+                        <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
+                    ))}
+                </Select>
+            ),
+        },
         {
             field: 'remove',
             headerName: 'Kaldır',
-            width: 130,
+            width: 90,
             renderCell: (params) => (
                 <IconButton onClick={() => handleDelete(params.row.id)}>
                     <DeleteIcon />
@@ -67,7 +91,7 @@ function Animal() {
         {
             field: 'update',
             headerName: 'Güncelle',
-            width: 130,
+            width: 90,
             renderCell: (params) => (
                 <IconButton onClick={() => handleUpdate(params.row)}>
                     <UpdateIcon />
@@ -81,7 +105,8 @@ function Animal() {
             await updateAnimal(params);
             setShouldFetchAnimals(true);
         } catch (error) {
-            console.error('Error', error);
+            setError("Hayvan bilgisi güncellenirken hata oluştu.");
+            setOpenModal(true);
         }
     };
 
@@ -100,16 +125,22 @@ function Animal() {
             setShouldFetchAnimals(true);
         } catch (error) {
             console.error('Error', error);
+            setError("Hayvan bilgisi kaydedilirken hata oluştu.");
+            setOpenModal(true);
         }
     };
 
     return (
+
         <div>
+            <div>
+                {error && <ErrorModal errorMsg={error} openModal={openModal} setOpenModal={setOpenModal} />}
+            </div>
             <Navigation />
-            <h1>Hayvan Sayfası
-            </h1>
-            <h2>Hayvan Listesi</h2>
-            <div style={{ height: 400, width: '100%' }}>
+
+
+
+            <div style={{ height: 400, width: '100%', marginLeft: '60px', marginTop: '10px' }}>
                 <DataGrid
                     rows={animals}
                     columns={columns}
@@ -123,7 +154,7 @@ function Animal() {
             </div>
 
             <div>
-                <h1>Hayvan Ekle</h1>
+
                 <Formik
                     initialValues={{
                         name: '',
@@ -139,42 +170,52 @@ function Animal() {
                     }}
                 >
                     {({ values, setFieldValue }) => (
-                        <Form>
-                            <label htmlFor="name">İsim</label>
-                            <Field id="name" name="name" />
+                        <Form className="formik-container">
+                            <h1>Hayvan Ekle</h1>
+                            <div className="formik-field">
+                                <label htmlFor="name" className="formik-label">İsim: </label>
+                                <Field id="name" name="name" />
+                            </div>
 
-                            <label htmlFor="gender">Cinsiyet</label>
-                            <Field id="gender" name="gender" />
+                            <div className="formik-field-group">
+                                <label htmlFor="gender" className="formik-label">Cinsiyet:</label>
+                                <Field as="select" id="gender" name="gender" className="formik-select">
+                                    <option value="">Seçiniz</option>
+                                    <option value="erkek">Erkek</option>
+                                    <option value="dişi">Dişi</option>
+                                </Field>
+                            </div>
+                            <div className="formik-field-group">
+                                <label htmlFor="birthday" className="formik-label">Doğum Günü:</label>
+                                <Field id="birthday" name="birthday" type="date" className="formik-input" />
+                            </div>
 
-                            <label htmlFor="birthday">Doğum Günü</label>
-                            <Field id="birthday" name="birthday" type="date" />
+                            <div className="formik-field">
+                                <label htmlFor="species" className="formik-label">Tür:</label>
+                                <Field id="species" name="species" />
+                            </div>
 
-                            <label htmlFor="species">Tür</label>
-                            <Field id="species" name="species" />
+                            <div className="formik-field">
+                                <label htmlFor="breed" className="formik-label">Cins:</label>
+                                <Field id="breed" name="breed" />
+                            </div>
 
-                            <label htmlFor="breed">Cins</label>
-                            <Field id="breed" name="breed" />
+                            <div className="formik-field">
+                                <label htmlFor="color" className="formik-label">Renk:</label>
+                                <Field id="color" name="color" />
+                            </div>
 
-                            <label htmlFor="color">Renk</label>
-                            <Field id="color" name="color" />
+                            <div className="formik-field">
+                                <label htmlFor="customerId" className="formik-label">Sahibi:</label>
+                                <Field as="select" id="customerId" name="customerId" onChange={(event) => setFieldValue('customerId', event.target.value)} className="formik-select">
+                                    <option value="">Sahibi Seçin</option>
+                                    {options.map(option => (
+                                        <option key={option.value} value={option.value}>{option.label}</option>
+                                    ))}
+                                </Field>
+                            </div>
 
-                            <label htmlFor="customerId">Sahibi</label>
-                            <Field name="customerId">
-                                {({ field }) => (
-                                    <Select
-                                        {...field}
-                                        value={values.selectedOption}
-                                        onChange={(event) => setFieldValue('customerId', event.target.value)}
-                                    >
-                                        <MenuItem value="">Select an option</MenuItem>
-                                        {options.map(option => (
-                                            <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
-                                        ))}
-                                    </Select>
-                                )}
-                            </Field>
-
-                            <button type="submit">Submit</button>
+                            <button type="submit" className="formik-submit-button">Kaydet</button>
                         </Form>
                     )}
                 </Formik>

@@ -7,7 +7,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import UpdateIcon from "@mui/icons-material/Update";
 import AppointmentModel from '../Models/Appointment';
 import { saveAppointment, deleteAppointment, updateAppointment, findAllDoctor, findAllReport, findAllAnimal, findAllAppointment } from '../Api';
-
+import '../Style/Appointment.css';
+import ErrorModal from '../Components/ErrorModal';
 
 function Appointment() {
     const [appointments, setAppointments] = useState([]);
@@ -15,6 +16,10 @@ function Appointment() {
     const [doctorOptions, setDoctorOptions] = useState([]);
     const [reportOptions, setReportOptions] = useState([]);
     const [shouldFetchAppointments, setShouldFetchAppointments] = useState(false);
+    const [error, setError] = useState("");
+    const [openModal, setOpenModal] = useState(false);
+
+
 
 
     useEffect(() => {
@@ -48,6 +53,8 @@ function Appointment() {
 
             } catch (error) {
                 console.error('Error fetching report data:', error);
+                setError("Randevu listesi çekilirken hata oluştu.");
+                setOpenModal(true);
             }
         };
 
@@ -61,6 +68,8 @@ function Appointment() {
             setShouldFetchAppointments(true);
         } catch (error) {
             console.error('Error', error);
+            setError("Randevu bilgisi silinirken hata oluştu.");
+            setOpenModal(true);
         }
     }
 
@@ -81,7 +90,7 @@ function Appointment() {
         {
             field: 'remove',
             headerName: 'Kaldır',
-            width: 130,
+            width: 90,
             renderCell: (params) => (
                 <IconButton onClick={() => handleDelete(params.row.id)}>
                     <DeleteIcon />
@@ -91,7 +100,7 @@ function Appointment() {
         {
             field: 'update',
             headerName: 'Güncelle',
-            width: 130,
+            width: 90,
             renderCell: (params) => (
                 <IconButton onClick={() => handleUpdate(params.row)}>
                     <UpdateIcon />
@@ -107,6 +116,8 @@ function Appointment() {
             setShouldFetchAppointments(true);
         } catch (error) {
             console.error('Error', error);
+            setError("Randevu bilgisi güncellenirken hata oluştu.");
+            setOpenModal(true);
         }
     };
 
@@ -130,6 +141,8 @@ function Appointment() {
             setShouldFetchAppointments(true);
         } catch (error) {
             console.error('Error', error);
+            setError("Randevu bilgisi kaydedilirken hata oluştu.");
+            setOpenModal(true);
         }
     };
 
@@ -137,9 +150,12 @@ function Appointment() {
 
     return (
         <div>
+            <div>
+                {error && <ErrorModal errorMsg={error} openModal={openModal} setOpenModal={setOpenModal} />}
+            </div>
             <Navigation />
-            <h1>Randevu Yönetimi</h1>
-            <div style={{ height: 400, width: '100%' }}>
+
+            <div style={{ height: 400, width: '100%', marginLeft: '60px', marginTop: '10px' }}>
                 <DataGrid
                     rows={appointments}
                     columns={columns}
@@ -148,7 +164,7 @@ function Appointment() {
             </div>
 
             <div>
-                <h1>Randevu Ekle</h1>
+
                 <Formik
                     initialValues={{
                         appointmentDate: null,
@@ -162,60 +178,46 @@ function Appointment() {
                     }}
                 >
                     {({ values, setFieldValue }) => (
-                        <Form>
-                            <label htmlFor="appointmentDate"> Randevu Tarihi</label>
-                            <Field id="appointmentDate" name="appointmentDate" type="date" />
-                            <Field id="appointmentTime" name="appointmentTime" type="time" />
-
-
-                            <label htmlFor="animalId">Hayvan</label>
-                            <Field name="animalId">
-                                {({ field }) => (
-                                    <Select
-                                        {...field}
-                                        value={values.animalId}
-                                        onChange={(event) => setFieldValue('animalId', event.target.value)}
-                                    >
-                                        <MenuItem value="">Seçiniz</MenuItem>
-                                        {animalOptions.map(option => (
-                                            <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
-                                        ))}
-                                    </Select>
-                                )}
-                            </Field>
-                            <label htmlFor="doctorId">Doktor</label>
-                            <Field name="doctorId">
-                                {({ field }) => (
-                                    <Select
-                                        {...field}
-                                        value={values.doctorId}
-                                        onChange={(event) => setFieldValue('doctorId', event.target.value)}
-                                    >
-                                        <MenuItem value="">Seçiniz</MenuItem>
-                                        {doctorOptions.map(option => (
-                                            <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
-                                        ))}
-                                    </Select>
-                                )}
-                            </Field>
-                            <label htmlFor="reportId">Rapor</label>
-                            <Field name="reportId">
-                                {({ field }) => (
-                                    <Select
-                                        {...field}
-                                        value={values.reportId}
-                                        onChange={(event) => setFieldValue('reportId', event.target.value)}
-                                    >
-                                        <MenuItem value="">Seçiniz</MenuItem>
-                                        {reportOptions.map(option => (
-                                            <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
-                                        ))}
-                                    </Select>
-                                )}
-                            </Field>
-
-                            <button type="submit">Submit</button>
+                        <Form className="formik-container">
+                            <h1>Randevu Ekle</h1>
+                            <div className="form-group">
+                                <label htmlFor="appointmentDate" className="formik-label">Randevu Tarihi:</label>
+                                <Field id="appointmentDate" name="appointmentDate" type="date" className="formik-input" />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="appointmentTime" className="formik-label">Randevu Saati:</label>
+                                <Field id="appointmentTime" name="appointmentTime" type="time" className="formik-input" />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="animalId" className="formik-label">Hayvan:</label>
+                                <Field as="select" id="animalId" name="animalId" className="formik-select">
+                                    <option value="">Seçiniz</option>
+                                    {animalOptions.map(option => (
+                                        <option key={option.value} value={option.value}>{option.label}</option>
+                                    ))}
+                                </Field>
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="doctorId" className="formik-label">Doktor:</label>
+                                <Field as="select" id="doctorId" name="doctorId" className="formik-select">
+                                    <option value="">Seçiniz</option>
+                                    {doctorOptions.map(option => (
+                                        <option key={option.value} value={option.value}>{option.label}</option>
+                                    ))}
+                                </Field>
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="reportId" className="formik-label">Rapor:</label>
+                                <Field as="select" id="reportId" name="reportId" className="formik-select">
+                                    <option value="">Seçiniz</option>
+                                    {reportOptions.map(option => (
+                                        <option key={option.value} value={option.value}>{option.label}</option>
+                                    ))}
+                                </Field>
+                            </div>
+                            <button type="submit" className='formik-submit-button' >Kaydet</button>
                         </Form>
+
                     )}
                 </Formik>
             </div>

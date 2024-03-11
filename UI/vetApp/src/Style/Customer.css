@@ -1,0 +1,22 @@
+.formik-container {
+    margin-top: 10px;
+    color: #6B555E;
+    font-weight: bolder;
+    border: 6px solid #FCACAC;
+    padding: 10px;
+    margin-left: 500px;
+    align-items: center;
+    width: 600px;
+}
+
+
+.formik-container h1 {
+    text-align: center;
+}
+
+.formik-field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+    color: #6B555E;
+}

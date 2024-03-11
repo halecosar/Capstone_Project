@@ -14,13 +14,13 @@
     flex-direction: row;
     background-color: #FFF3F3;
     border: 2px solid #FCACAC;
-    width: 100vw;
     height: 50px;
 }
 
 
 .router {
     display: flex;
+    width: 100%;
 
 
 
@@ -38,4 +38,10 @@
 .router a:hover {
 
     color: #6B555E
+}
+
+.router a:target {
+    background-color: #6B555E;
+
+    color: #FCACAC;
 }
