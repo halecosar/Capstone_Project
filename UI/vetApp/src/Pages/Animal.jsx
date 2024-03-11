@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Navigation from '../Components/Navigation';
-import { findAllAnimal, saveAnimal, deleteAnimal, updateAnimal, findAllCustomer } from '../Api';
+import { findAllAnimal, saveAnimal, deleteAnimal, updateAnimal, findAllCustomer, getByIdCustomer } from '../Api';
 import { DataGrid } from '@mui/x-data-grid';
 import { Formik, Field, Form } from 'formik';
 import { IconButton, MenuItem, Modal, Select, TableCell } from '@mui/material';
@@ -16,6 +16,73 @@ function Animal() {
     const [shouldFetchAnimals, setShouldFetchAnimals] = useState(false);
     const [error, setError] = useState("");
     const [openModal, setOpenModal] = useState(false);
+    const [visible, setVisible] = useState(false);
+
+    const columns = [
+        { field: 'id', headerName: 'ID', width: 70, editable: true, },
+        { field: 'name', headerName: 'İsim', width: 130, editable: true, },
+        { field: 'species', headerName: 'Tür', width: 180, editable: true, },
+        { field: 'breed', headerName: 'Cins', width: 130, editable: true, },
+        { field: 'gender', headerName: 'Cinsiyet', width: 190, editable: true, },
+        { field: 'color', headerName: 'Renk', width: 130, editable: true, },
+        { field: 'dateofBirth', headerName: 'Doğum Günü', width: 130, editable: true, },
+        {
+            field: 'customer',
+            headerName: 'Tabi Olduğu Müşteri',
+            width: 150,
+            editable: true,
+            renderCell: (params) => {
+                const handleChange = async (e) => {
+                    const newValue = e.target.value;
+                    const { id } = params.row;
+                    const field = 'customer';
+
+                    const updatedRows = await Promise.all(animals.map(async (row) => {
+                        if (row.id === id) {
+                            const value = await getByIdCustomer(newValue);
+                            return { ...row, [field]: value };
+                        }
+                        return row;
+                    }));
+
+                    setAnimals(updatedRows);
+                };
+
+                return (
+                    <Select
+                        value={params.row.customer.id || ''} // Eğer customer yoksa boş değer göster
+                        onChange={handleChange}
+                    >
+                        {options.map(option => (
+                            <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
+                        ))}
+                    </Select>
+                );
+            },
+
+        },
+        {
+            field: 'remove',
+            headerName: 'Kaldır',
+            width: 90,
+            renderCell: (params) => (
+                <IconButton onClick={() => handleDelete(params.row.id)}>
+                    <DeleteIcon />
+                </IconButton>
+            ),
+        },
+        {
+            field: 'update',
+            headerName: 'Güncelle',
+            width: 90,
+            renderCell: (params) => (
+                <IconButton onClick={() => handleUpdate(params.row)}>
+                    <UpdateIcon />
+                </IconButton>
+            ),
+        },
+    ];
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -51,54 +118,7 @@ function Animal() {
         }
     }
 
-    const columns = [
-        { field: 'id', headerName: 'ID', width: 70, editable: true, },
-        { field: 'name', headerName: 'İsim', width: 130, editable: true, },
-        { field: 'species', headerName: 'Tür', width: 180, editable: true, },
-        { field: 'breed', headerName: 'Cins', width: 130, editable: true, },
-        { field: 'gender', headerName: 'Cinsiyet', width: 190, editable: true, },
-        { field: 'color', headerName: 'Renk', width: 130, editable: true, },
-        { field: 'dateofBirth', headerName: 'Doğum Günü', width: 130, editable: true, },
-        {
-            field: 'customerName',
-            headerName: 'Tabi Olduğu Müşteri',
-            width: 150,
-            editable: true,
-            renderCell: (params) => (
-                <Select
-                    value={params.row.customer.id}
-                    onChange={(e) => {
-                        const newValue = e.target.value;
-                        params.api.setEditCellValue({ id: params.id, field: 'customerName', value: newValue });
-                    }}
-                >
-                    {options.map(option => (
-                        <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
-                    ))}
-                </Select>
-            ),
-        },
-        {
-            field: 'remove',
-            headerName: 'Kaldır',
-            width: 90,
-            renderCell: (params) => (
-                <IconButton onClick={() => handleDelete(params.row.id)}>
-                    <DeleteIcon />
-                </IconButton>
-            ),
-        },
-        {
-            field: 'update',
-            headerName: 'Güncelle',
-            width: 90,
-            renderCell: (params) => (
-                <IconButton onClick={() => handleUpdate(params.row)}>
-                    <UpdateIcon />
-                </IconButton>
-            ),
-        },
-    ];
+
 
     const handleUpdate = async (params) => {
         try {
@@ -123,12 +143,18 @@ function Animal() {
 
             await saveAnimal(model);
             setShouldFetchAnimals(true);
+            setVisible(false);
+
         } catch (error) {
             console.error('Error', error);
             setError("Hayvan bilgisi kaydedilirken hata oluştu.");
             setOpenModal(true);
         }
     };
+
+    function visibleChange() {
+        setVisible(true);
+    }
 
     return (
 
@@ -140,7 +166,7 @@ function Animal() {
 
 
 
-            <div style={{ height: 400, width: '80%', marginLeft: '10%', marginTop: '10px' }}>
+            <div style={{ height: 400, width: '99%', marginLeft: '10%', marginTop: '10px' }}>
                 <DataGrid
                     rows={animals}
                     columns={columns}
@@ -151,11 +177,14 @@ function Animal() {
                     }}
                     pageSizeOptions={[5, 10]}
                 />
+
+                <div>
+                    <button className='add' onClick={visibleChange}> Yeni Hayvan Ekle</button>
+                </div>
             </div>
 
             <div>
-
-                <Formik
+                {visible && <Formik
                     initialValues={{
                         name: '',
                         gender: '',
@@ -218,7 +247,8 @@ function Animal() {
                             <button type="submit" className="formik-submit-button">Kaydet</button>
                         </Form>
                     )}
-                </Formik>
+                </Formik>}
+
             </div>
         </div>
     )

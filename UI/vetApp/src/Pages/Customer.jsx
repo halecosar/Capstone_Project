@@ -7,40 +7,14 @@ import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import UpdateIcon from "@mui/icons-material/Update";
 import ErrorModal from '../Components/ErrorModal';
+import '../Style/Customer.css';
 
 function Customer() {
     const [customers, setCustomers] = useState([]);
     const [shouldFetchCustomers, setShouldFetchCustomers] = useState(false);
     const [error, setError] = useState("");
     const [openModal, setOpenModal] = useState(false);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const data = await findAllCustomer();
-                setCustomers(data);
-
-                setShouldFetchCustomers(false);
-            } catch (error) {
-                console.error('Error', error);
-                setError("Müşteri listesi çekilirken kaydedilirken hata oluştu.");
-                setOpenModal(true);
-            }
-        };
-
-        fetchData();
-    }, [shouldFetchCustomers]);
-
-    const handleDelete = async (customerId) => {
-        try {
-            await deleteCustomer(customerId);
-            setShouldFetchCustomers(true);
-        } catch (error) {
-            console.error('Error', error);
-            setError("Müşteri bilgisi silinirken hata oluştu.");
-            setOpenModal(true);
-        }
-    };
+    const [visible, setVisible] = useState(false);
 
     const columns = [
         { field: 'id', headerName: 'ID', width: 70 },
@@ -71,10 +45,39 @@ function Customer() {
         },
     ];
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const data = await findAllCustomer();
+                setCustomers(data);
+
+                setShouldFetchCustomers(false);
+            } catch (error) {
+                console.error('Error', error);
+                setError("Müşteri listesi çekilirken hata oluştu.");
+                setOpenModal(true);
+            }
+        };
+
+        fetchData();
+    }, [shouldFetchCustomers]);
+
+    const handleDelete = async (customerId) => {
+        try {
+            await deleteCustomer(customerId);
+            setShouldFetchCustomers(true);
+        } catch (error) {
+            console.error('Error', error);
+            setError("Müşteri bilgisi silinirken hata oluştu.");
+            setOpenModal(true);
+        }
+    };
+
     const submit = async (values) => {
         try {
             await saveCustomer(values);
             setShouldFetchCustomers(true);
+            setVisible(false)
         } catch (error) {
             console.error('Error', error);
             setError("Müşteri bilgisi kaydedilirken hata oluştu.");
@@ -92,6 +95,10 @@ function Customer() {
             setOpenModal(true);
         }
     };
+
+    function visibleChange() {
+        setVisible(true)
+    }
 
     return (
         <div>
@@ -115,9 +122,12 @@ function Customer() {
                 />
             </div>
 
-            <div>
+            <div >
+                <button className='add' onClick={visibleChange} > Yeni Müşteri Ekle</button>
+            </div>
 
-                <Formik
+            <div>
+                {visible && <Formik
                     initialValues={{
                         name: '',
                         phone: '',
@@ -160,7 +170,8 @@ function Customer() {
 
                         <button type="submit" className="formik-submit-button">Kaydet</button>
                     </Form>
-                </Formik>
+                </Formik>}
+
             </div>
         </div>
     );

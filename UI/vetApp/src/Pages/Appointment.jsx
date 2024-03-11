@@ -18,8 +18,42 @@ function Appointment() {
     const [shouldFetchAppointments, setShouldFetchAppointments] = useState(false);
     const [error, setError] = useState("");
     const [openModal, setOpenModal] = useState(false);
+    const [visible, setVisible] = useState(false);
+
+    const columns = [
+        { field: 'id', headerName: 'ID', width: 70, editable: true },
+        { field: 'appointmentDate', headerName: 'Randevu Zamanı', width: 130, editable: true },
+
+        { field: 'animalName', headerName: 'Hayvan Adı', width: 150, valueGetter: (params) => params.row.animal.name },
+
+        { field: 'doctorName', headerName: 'Doktor Adı', width: 150, valueGetter: (params) => params.row.doctor.name },
+
+        { field: 'reportName', headerName: 'Rapor Başlığı', width: 150, valueGetter: (params) => params.row.report.title },
 
 
+
+
+        {
+            field: 'remove',
+            headerName: 'Kaldır',
+            width: 90,
+            renderCell: (params) => (
+                <IconButton onClick={() => handleDelete(params.row.id)}>
+                    <DeleteIcon />
+                </IconButton>
+            ),
+        },
+        {
+            field: 'update',
+            headerName: 'Güncelle',
+            width: 90,
+            renderCell: (params) => (
+                <IconButton onClick={() => handleUpdate(params.row)}>
+                    <UpdateIcon />
+                </IconButton>
+            ),
+        },
+    ];
 
 
     useEffect(() => {
@@ -74,40 +108,6 @@ function Appointment() {
     }
 
 
-    const columns = [
-        { field: 'id', headerName: 'ID', width: 70, editable: true },
-        { field: 'appointmentDate', headerName: 'Randevu Zamanı', width: 130, editable: true },
-
-        { field: 'animalName', headerName: 'Hayvan Adı', width: 150, valueGetter: (params) => params.row.animal.name },
-
-        { field: 'doctorName', headerName: 'Doktor Adı', width: 150, valueGetter: (params) => params.row.doctor.name },
-
-        { field: 'reportName', headerName: 'Rapor Başlığı', width: 150, valueGetter: (params) => params.row.report.title },
-
-
-
-
-        {
-            field: 'remove',
-            headerName: 'Kaldır',
-            width: 90,
-            renderCell: (params) => (
-                <IconButton onClick={() => handleDelete(params.row.id)}>
-                    <DeleteIcon />
-                </IconButton>
-            ),
-        },
-        {
-            field: 'update',
-            headerName: 'Güncelle',
-            width: 90,
-            renderCell: (params) => (
-                <IconButton onClick={() => handleUpdate(params.row)}>
-                    <UpdateIcon />
-                </IconButton>
-            ),
-        },
-    ];
 
 
     const handleUpdate = async (params) => {
@@ -139,6 +139,7 @@ function Appointment() {
 
             await saveAppointment(model);
             setShouldFetchAppointments(true);
+            setVisible(false)
         } catch (error) {
             console.error('Error', error);
             setError("Randevu bilgisi kaydedilirken hata oluştu.");
@@ -146,7 +147,9 @@ function Appointment() {
         }
     };
 
-
+    function visibleChange() {
+        setVisible(true);
+    }
 
     return (
         <div>
@@ -155,17 +158,17 @@ function Appointment() {
             </div>
             <Navigation />
 
-            <div style={{ height: 400, width: '80%', marginLeft: '10%', marginTop: '10px' }}>
+            <div style={{ height: 400, width: '60%', marginLeft: '10%', marginTop: '10px' }}>
                 <DataGrid
                     rows={appointments}
                     columns={columns}
                     pageSize={5}
                 />
             </div>
+            <div> <button className='add' onClick={visibleChange}> Randevu Ekle</button></div>
 
             <div>
-
-                <Formik
+                {visible && <Formik
                     initialValues={{
                         appointmentDate: null,
                         animalId: '',
@@ -219,7 +222,8 @@ function Appointment() {
                         </Form>
 
                     )}
-                </Formik>
+                </Formik>}
+
             </div>
 
         </div>

@@ -20,3 +20,15 @@
     margin-bottom: 1rem;
     color: #6B555E;
 }
+
+.add {
+    width: unset;
+    margin-left: 140px;
+    padding: 0.5rem;
+    border-radius: 0.3rem;
+    border: 1px solid #ccc;
+    background-color: #FCACAC;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}

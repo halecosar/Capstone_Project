@@ -16,6 +16,36 @@ function Report() {
     const [shouldFetchReports, setShouldFetchReports] = useState(false);
     const [error, setError] = useState("");
     const [openModal, setOpenModal] = useState(false);
+    const [visible, setVisible] = useState(false)
+
+
+    const columns = [
+        { field: 'id', headerName: 'ID', width: 70, editable: true },
+        { field: 'title', headerName: 'Başlık', width: 130, editable: true },
+        { field: 'diagnosis', headerName: 'Teşhis', width: 130, editable: true },
+        { field: 'price', headerName: 'Ödeme', width: 130, editable: true },
+        { field: 'vaccineName', headerName: 'Yapılan Aşı', width: 150, valueGetter: (params) => params.row.vaccine.name },
+        {
+            field: 'remove',
+            headerName: 'Kaldır',
+            width: 130,
+            renderCell: (params) => (
+                <IconButton onClick={() => handleDelete(params.row.id)}>
+                    <DeleteIcon />
+                </IconButton>
+            ),
+        },
+        {
+            field: 'update',
+            headerName: 'Güncelle',
+            width: 130,
+            renderCell: (params) => (
+                <IconButton onClick={() => handleUpdate(params.row)}>
+                    <UpdateIcon />
+                </IconButton>
+            ),
+        },
+    ];
 
     useEffect(() => {
         const fetchData = async () => {
@@ -52,33 +82,7 @@ function Report() {
         }
     }
 
-    const columns = [
-        { field: 'id', headerName: 'ID', width: 70, editable: true },
-        { field: 'title', headerName: 'Başlık', width: 130, editable: true },
-        { field: 'diagnosis', headerName: 'Teşhis', width: 130, editable: true },
-        { field: 'price', headerName: 'Ödeme', width: 130, editable: true },
-        { field: 'vaccineName', headerName: 'Yapılan Aşı', width: 150, valueGetter: (params) => params.row.vaccine.name },
-        {
-            field: 'remove',
-            headerName: 'Kaldır',
-            width: 130,
-            renderCell: (params) => (
-                <IconButton onClick={() => handleDelete(params.row.id)}>
-                    <DeleteIcon />
-                </IconButton>
-            ),
-        },
-        {
-            field: 'update',
-            headerName: 'Güncelle',
-            width: 130,
-            renderCell: (params) => (
-                <IconButton onClick={() => handleUpdate(params.row)}>
-                    <UpdateIcon />
-                </IconButton>
-            ),
-        },
-    ];
+
 
     const handleUpdate = async (params) => {
         try {
@@ -103,12 +107,17 @@ function Report() {
 
             await saveReport(model);
             setShouldFetchReports(true);
+            setVisible(false);
         } catch (error) {
             console.error('Error', error);
             setError("Doktor bilgisi kaydedilirken hata oluştu.");
             setOpenModal(true);
         }
     };
+
+    function visibleChange() {
+        setVisible(true)
+    }
 
     return (
         <div>
@@ -124,10 +133,11 @@ function Report() {
                     pageSize={5}
                 />
             </div>
-
             <div>
-
-                <Formik
+                <button className='add' onClick={visibleChange}>Yeni Rapor Ekle</button>
+            </div>
+            <div>
+                {visible && <Formik
                     initialValues={{
                         title: '',
                         diagnosis: '',
@@ -139,7 +149,7 @@ function Report() {
                     }}
                 >
                     {({ values, setFieldValue }) => (
-                        <Form className="formik-container">
+                        <Form className="formik-containerreport">
                             <h1>Rapor Ekle</h1>
                             <div className='form-group'>
                                 <label htmlFor="title"> Başlık</label>
@@ -177,7 +187,8 @@ function Report() {
                             <button type="submit" className='formik-submit-button'>Kaydet</button>
                         </Form>
                     )}
-                </Formik>
+                </Formik>}
+
             </div>
         </div>
     );

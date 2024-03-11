@@ -37,9 +37,9 @@ export const findAllCustomer = async () => {
     }
 };
 
-export const getByIdCustomer = async () => {
+export const getByIdCustomer = async (id) => {
     try {
-        const response = await api.get('customers/getById/${id}');
+        const response = await api.get('customers/getById/' + id);
         return response.data;
     } catch (error) {
         console.error('Error', error);

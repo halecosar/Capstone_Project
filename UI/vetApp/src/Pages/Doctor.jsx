@@ -18,34 +18,8 @@ function Doctor() {
     const [selection, setSelection] = useState();
     const [error, setError] = useState("");
     const [openModal, setOpenModal] = useState(false);
+    const [visible, setVisible] = useState(false)
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const data = await findAllDoctor();
-                setDoctors(data);
-
-                setShouldFetchDoctors(false);
-            } catch (error) {
-                console.error('Error', error);
-                console.error(' Doktor listesi çekilirken hata oluştu.', error);
-                setError(error);
-            }
-        };
-
-        fetchData();
-    }, [shouldFetchDoctors]);
-
-    const handleDelete = async (doctorId) => {
-        try {
-            await deleteDoctor(doctorId);
-            setShouldFetchDoctors(true);
-        } catch (error) {
-            console.error('Error', error);
-            setError("Doktor bilgisi silinirken hata oluştu.");
-            setOpenModal(true);
-        }
-    };
 
     const columns = [
         { field: 'id', headerName: 'ID', width: 70, editable: true, },
@@ -102,6 +76,36 @@ function Doctor() {
         },
     ];
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const data = await findAllDoctor();
+                setDoctors(data);
+
+                setShouldFetchDoctors(false);
+            } catch (error) {
+                console.error('Error', error);
+                console.error(' Doktor listesi çekilirken hata oluştu.', error);
+                setError(error);
+            }
+        };
+
+        fetchData();
+    }, [shouldFetchDoctors]);
+
+    const handleDelete = async (doctorId) => {
+        try {
+            await deleteDoctor(doctorId);
+            setShouldFetchDoctors(true);
+        } catch (error) {
+            console.error('Error', error);
+            setError("Doktor bilgisi silinirken hata oluştu.");
+            setOpenModal(true);
+        }
+    };
+
+
+
     const handleUpdate = async (params) => {
         try {
             await updateDoctor(params);
@@ -117,6 +121,7 @@ function Doctor() {
         try {
             await saveDoctor(values);
             setShouldFetchDoctors(true);
+            setVisible(false)
 
             formBag.resetForm();
         } catch (error) {
@@ -193,6 +198,10 @@ function Doctor() {
         }
     };
 
+    function visibleChange() {
+        setVisible(true)
+    }
+
     return (
         <div>
             <div>
@@ -215,12 +224,16 @@ function Doctor() {
                         handleSelectionChange(newRowSelectionModel);
                     }}
                 />
+                <div>
+                    <button className='add' onClick={visibleChange}>Doktor Ekle</button>
+                </div>
+
+
             </div>
 
 
             <div>
-
-                <Formik
+                {visible && <Formik
                     initialValues={{
                         name: '',
                         phone: '',
@@ -232,7 +245,7 @@ function Doctor() {
                         await submit(values, formBag);
                     }}
                 >
-                    <Form className="formik-container">
+                    <Form className="formik-containerdoctor">
                         <h1>Doktor Ekle</h1>
                         <div className="form-group"><label htmlFor="name">İsim</label>
                             <Field id="name" name="name" /></div>
@@ -259,7 +272,8 @@ function Doctor() {
 
                         <button type="submit" className='formik-submit-button'>Kaydet</button>
                     </Form>
-                </Formik>
+                </Formik>}
+
             </div>
             <br />
             <br />

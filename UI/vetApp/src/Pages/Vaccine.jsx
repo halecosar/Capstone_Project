@@ -17,6 +17,36 @@ function Vaccine() {
     const [shouldFetchVaccines, setShouldFetchVaccines] = useState(false);
     const [error, setError] = useState("");
     const [openModal, setOpenModal] = useState(false);
+    const [visible, setVisible] = useState(false)
+
+
+    const columns = [
+        { field: 'id', headerName: 'ID', width: 70, editable: true, },
+        { field: 'name', headerName: 'İsim', width: 130, editable: true, },
+        { field: 'protectionStartDate', headerName: 'Koruyuculuk Başlangıç', width: 130, editable: true, },
+        { field: 'protectionFinishDate', headerName: 'Koruyuculuk Bitiş', width: 130, editable: true, },
+        { field: 'animalName', headerName: 'Tabi Olduğu Hayvan', width: 150, valueGetter: (params) => params.row.animal.name },
+        {
+            field: 'remove',
+            headerName: 'Kaldır',
+            width: 130,
+            renderCell: (params) => (
+                <IconButton onClick={() => handleDelete(params.row.id)}>
+                    <DeleteIcon />
+                </IconButton>
+            ),
+        },
+        {
+            field: 'update',
+            headerName: 'Güncelle',
+            width: 130,
+            renderCell: (params) => (
+                <IconButton onClick={() => handleUpdate(params.row)}>
+                    <UpdateIcon />
+                </IconButton>
+            ),
+        },
+    ];
 
     useEffect(() => {
         const fetchData = async () => {
@@ -53,33 +83,7 @@ function Vaccine() {
         }
     }
 
-    const columns = [
-        { field: 'id', headerName: 'ID', width: 70, editable: true, },
-        { field: 'name', headerName: 'İsim', width: 130, editable: true, },
-        { field: 'protectionStartDate', headerName: 'Koruyuculuk Başlangıç', width: 130, editable: true, },
-        { field: 'protectionFinishDate', headerName: 'Koruyuculuk Bitiş', width: 130, editable: true, },
-        { field: 'animalName', headerName: 'Tabi Olduğu Hayvan', width: 150, valueGetter: (params) => params.row.animal.name },
-        {
-            field: 'remove',
-            headerName: 'Kaldır',
-            width: 130,
-            renderCell: (params) => (
-                <IconButton onClick={() => handleDelete(params.row.id)}>
-                    <DeleteIcon />
-                </IconButton>
-            ),
-        },
-        {
-            field: 'update',
-            headerName: 'Güncelle',
-            width: 130,
-            renderCell: (params) => (
-                <IconButton onClick={() => handleUpdate(params.row)}>
-                    <UpdateIcon />
-                </IconButton>
-            ),
-        },
-    ];
+
 
     const handleUpdate = async (params) => {
         try {
@@ -104,12 +108,18 @@ function Vaccine() {
 
             await saveVaccine(model);
             setShouldFetchVaccines(true);
+            setVisible(false)
         } catch (error) {
             console.error('Error', error);
             setError("Doktor bilgisi kaydedilirken hata oluştu.");
             setOpenModal(true);
         }
     };
+
+    function visibleChange() {
+        setVisible(true);
+    }
+
     return (
         <div>
             <div>
@@ -127,11 +137,15 @@ function Vaccine() {
                     }}
                     pageSizeOptions={[5, 10]}
                 />
+                <div>
+                    <button className='add' onClick={visibleChange}> Yeni Aşı Ekle</button>
+                </div>
             </div>
 
-            <div>
 
-                <Formik
+
+            <div>
+                {visible && <Formik
                     initialValues={{
                         name: '',
                         code: '',
@@ -192,7 +206,8 @@ function Vaccine() {
                             <button type="submit" className='formik-submit-button'>Kaydet</button>
                         </Form>
                     )}
-                </Formik>
+                </Formik>}
+
             </div>
         </div>
 

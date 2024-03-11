@@ -4,10 +4,7 @@
     box-sizing: border-box;
     text-decoration: none;
     font-family: 'Poppins', sans-serif;
-    max-width: 1400px;
-
 }
-
 
 .navbar {
     display: flex;
@@ -15,15 +12,14 @@
     background-color: #FFF3F3;
     border: 2px solid #FCACAC;
     height: 50px;
+    width: 100vw;
+    /* Genişlik: 100 viewport genişliği */
 }
-
 
 .router {
     display: flex;
-    width: 100%;
-
-
-
+    width: 100vw;
+    /* Genişlik: 100 viewport genişliği */
 }
 
 .router a {
@@ -32,16 +28,13 @@
     margin-left: 25px;
     transition: 0.5s;
     font-weight: bold;
-
 }
 
 .router a:hover {
-
-    color: #6B555E
+    color: #6B555E;
 }
 
 .router a:target {
     background-color: #6B555E;
-
     color: #FCACAC;
 }
