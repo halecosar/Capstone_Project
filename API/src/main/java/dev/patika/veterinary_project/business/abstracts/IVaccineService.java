@@ -1,6 +1,7 @@
 package dev.patika.veterinary_project.business.abstracts;
 
 import dev.patika.veterinary_project.dto.request.AnimalVaccineDTO;
+import dev.patika.veterinary_project.dto.request.VaccineDateFilterDTO;
 import dev.patika.veterinary_project.entities.Animal;
 import dev.patika.veterinary_project.entities.Vaccine;
 
@@ -15,4 +16,5 @@ public interface IVaccineService {
     List<Vaccine> findAll();
     List<Vaccine> getVaccinesByAnimalId(Long animalId); //animal id'ye göre aşı listesi döner.
     List<Animal> getAnimalsByComingVaccines(AnimalVaccineDTO animalVaccineDTO);
+    List<Vaccine> vaccineDateFilter(VaccineDateFilterDTO vaccineDateFilterDTO);
 }

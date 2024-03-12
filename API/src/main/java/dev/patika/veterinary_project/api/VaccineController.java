@@ -2,6 +2,7 @@ package dev.patika.veterinary_project.api;
 
 import dev.patika.veterinary_project.business.abstracts.IVaccineService;
 import dev.patika.veterinary_project.dto.request.AnimalVaccineDTO;
+import dev.patika.veterinary_project.dto.request.VaccineDateFilterDTO;
 import dev.patika.veterinary_project.entities.Animal;
 import dev.patika.veterinary_project.entities.Doctor;
 import dev.patika.veterinary_project.entities.Vaccine;
@@ -35,6 +36,7 @@ public class VaccineController {
     void delete (@PathVariable("id") Long id){
         this.vaccineService.delete(id);
     }
+
     @GetMapping("/getById/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Vaccine getById(@PathVariable("id") Long id) {
@@ -59,6 +61,12 @@ public class VaccineController {
     @ResponseStatus(HttpStatus.OK)
     public List<Vaccine> findAll() {
         return this.vaccineService.findAll();
+    }
+
+    @PostMapping("/vaccineDateFilter")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Vaccine> vaccineDateFilter(@RequestBody VaccineDateFilterDTO vaccineDateFilterDTO) {
+        return this.vaccineService.vaccineDateFilter(vaccineDateFilterDTO);
     }
 
 }

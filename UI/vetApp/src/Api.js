@@ -233,7 +233,15 @@ export const deleteVaccine = async (id) => {
     }
 };
 
-
+export const vaccineDateFilter = async (VaccineDateFilterDTO) => {
+    try {
+        const response = await api.post('vaccines/vaccineDateFilter', VaccineDateFilterDTO);
+        return response.data;
+    } catch (error) {
+        console.error('Error', error);
+        throw error;
+    }
+};
 //Report CRUD İşlemleri
 
 export const saveReport = async (reportModel) => {

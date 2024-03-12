@@ -3,20 +3,14 @@ package dev.patika.veterinary_project.business.concretes;
 import dev.patika.veterinary_project.business.abstracts.IVaccineService;
 import dev.patika.veterinary_project.dao.IVaccineRepo;
 import dev.patika.veterinary_project.dto.request.AnimalVaccineDTO;
+import dev.patika.veterinary_project.dto.request.VaccineDateFilterDTO;
 import dev.patika.veterinary_project.entities.Animal;
-import dev.patika.veterinary_project.entities.Customer;
 import dev.patika.veterinary_project.entities.Vaccine;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.chrono.ChronoLocalDate;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -108,6 +102,17 @@ public class VaccineManager implements IVaccineService {
         TypedQuery<Animal> query = entityManager.createQuery(queryString, Animal.class);
         query.setParameter("start_date", animalVaccineDTO.getProtectionStartDate());
         query.setParameter("end_date", animalVaccineDTO.getProtectionFinishDate());
+
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Vaccine> vaccineDateFilter(VaccineDateFilterDTO vaccineDateFilterDTO) {
+        String queryString = "SELECT v FROM Vaccine v WHERE v.protectionFinishDate > :startDate AND v.protectionFinishDate < :endDate ";
+
+        Query query = entityManager.createQuery(queryString);
+        query.setParameter("startDate", vaccineDateFilterDTO.getStartDate());
+        query.setParameter("endDate", vaccineDateFilterDTO.getEndDate());
 
         return query.getResultList();
     }

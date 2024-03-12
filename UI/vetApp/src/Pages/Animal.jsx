@@ -180,6 +180,8 @@ function Animal() {
             </div>
             <Navigation />
 
+
+
             <div>
                 <input
                     type="text"

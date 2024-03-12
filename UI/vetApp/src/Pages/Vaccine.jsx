@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Navigation from '../Components/Navigation'
-import { findAllVaccine, saveVaccine, deleteVaccine, updateVaccine, findAllAnimal, getByIdAnimal } from '../Api';
+import { findAllVaccine, saveVaccine, deleteVaccine, updateVaccine, findAllAnimal, getByIdAnimal, getFilteredAnimalByName, vaccineDateFilter } from '../Api';
 import { DataGrid } from '@mui/x-data-grid';
 import { Formik, Field, Form } from 'formik';
 import { IconButton, MenuItem, Select } from '@mui/material';
@@ -9,6 +9,7 @@ import UpdateIcon from "@mui/icons-material/Update";
 import VaccineModel from '../Models/Vaccine';
 import '../Style/Vaccine.css';
 import ErrorModal from '../Components/ErrorModal';
+import VaccineDateFilterDTO from '../Models/VaccineDateFilterDTO';
 
 function Vaccine() {
 
@@ -18,6 +19,8 @@ function Vaccine() {
     const [error, setError] = useState("");
     const [openModal, setOpenModal] = useState(false);
     const [visible, setVisible] = useState(false)
+    const [startsearchValue, setStartSearchValue] = useState('');
+    const [endsearchValue, setEndSearchValue] = useState('');
 
 
     const columns = [
@@ -119,8 +122,6 @@ function Vaccine() {
         }
     }
 
-
-
     const handleUpdate = async (params) => {
         try {
             await updateVaccine(params);
@@ -156,12 +157,54 @@ function Vaccine() {
         setVisible(true);
     }
 
+    const searchDate = async () => {
+        try {
+            const model = new VaccineDateFilterDTO();
+            model.startDate = startsearchValue;
+            model.endDate = endsearchValue;
+
+            const data = await vaccineDateFilter(model);
+            setVaccines(data)
+            setStartSearchValue("");
+            setEndSearchValue("");
+        } catch (error) {
+            console.error('Error', error);
+            setError("Tarih araması yapılırken hata oluştu.");
+            setOpenModal(true);
+        }
+    }
+
+    const searchChangeStart = (e) => {
+        setStartSearchValue(e.target.value);
+    };
+
+    const searchChangeEnd = (e) => {
+        setEndSearchValue(e.target.value);
+    };
+
+
     return (
         <div>
             <div>
                 {error && <ErrorModal errorMsg={error} openModal={openModal} setOpenModal={setOpenModal} />}
             </div>
             <Navigation />
+
+            <div>
+                <input
+                    type="date"
+                    value={startsearchValue}
+                    onChange={searchChangeStart}
+                />
+                <input
+                    type="date"
+                    value={endsearchValue}
+                    onChange={searchChangeEnd}
+                />
+                <button onClick={searchDate}> Ara </button>
+
+            </div>
+
             <div style={{ height: 400, width: '80%', marginLeft: '10%', marginTop: '10px' }}>
                 <DataGrid
                     rows={vaccines}
