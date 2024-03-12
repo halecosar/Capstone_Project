@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Navigation from '../Components/Navigation';
-import { findAllAnimal, saveAnimal, deleteAnimal, updateAnimal, findAllCustomer, getByIdCustomer, getFilteredAnimalByName } from '../Api';
+import { findAllAnimal, saveAnimal, deleteAnimal, updateAnimal, findAllCustomer, getByIdCustomer, getFilteredAnimalByName, getAnimalsByCustomerId } from '../Api';
 import { DataGrid } from '@mui/x-data-grid';
 import { Formik, Field, Form } from 'formik';
-import { IconButton, MenuItem, Modal, Select, TableCell } from '@mui/material';
+import { IconButton, MenuItem, Select } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import UpdateIcon from "@mui/icons-material/Update";
 import AnimalModel from '../Models/Animal';
@@ -18,6 +18,7 @@ function Animal() {
     const [openModal, setOpenModal] = useState(false);
     const [visible, setVisible] = useState(false);
     const [searchValue, setSearchValue] = useState('');
+    const [selectedCustomer, setSelectedCustomer] = useState('');
 
     const columns = [
         { field: 'id', headerName: 'ID', width: 70, editable: true, },
@@ -172,6 +173,23 @@ function Animal() {
         }
     }
 
+    const handleCustomerChange = (event) => {
+        setSelectedCustomer(event.target.value);
+    };
+
+    const searchAnimalbyCustomer = async () => {
+        try {
+            const data = await getAnimalsByCustomerId(selectedCustomer);
+            setAnimals(data)
+            setSearchValue("");
+
+        } catch (error) {
+            console.error('Error', error);
+            setError("Hayvan araması yapılırken hata oluştu.");
+            setOpenModal(true);
+        }
+    }
+
     return (
 
         <div>
@@ -188,9 +206,19 @@ function Animal() {
                     value={searchValue}
                     onChange={searchChange}
                 />
-
                 <button className='searchButton' onClick={searchAnimal}>  Hayvan Ara </button>
+            </div>
 
+            <div className='search'>
+                <label>Müşteri Seçiniz</label>
+                <Select className='searchList' value={selectedCustomer} onChange={handleCustomerChange}>
+                    <MenuItem value="">Seçiniz</MenuItem>
+                    {options.map(option => (
+                        <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
+                    ))}
+                </Select>
+
+                <button className='searchButton' onClick={searchAnimalbyCustomer}>  Hayvan Ara </button>
             </div>
 
             <div style={{ height: 400, width: '80%', marginLeft: '10%', marginTop: '10px' }}>

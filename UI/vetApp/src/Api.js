@@ -179,7 +179,15 @@ export const getFilteredAnimalByName = async (name) => {
     }
 };
 
-
+export const getAnimalsByCustomerId = async (id) => {
+    try {
+        const response = await api.get('animals/getAnimalsByCustomerId/' + id);
+        return response.data;
+    } catch (error) {
+        console.error('Error', error);
+        throw error;
+    }
+};
 
 //Vaccine CRUD İşlemleri
 
@@ -375,7 +383,6 @@ export const filterbyAnimal = async (appointmentFilterByAnimalDTO) => {
         throw error;
     }
 };
-
 
 //AvailableDates CRUD İşlemleri
 
