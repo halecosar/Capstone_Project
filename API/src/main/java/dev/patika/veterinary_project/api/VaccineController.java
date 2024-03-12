@@ -68,5 +68,9 @@ public class VaccineController {
     public List<Vaccine> vaccineDateFilter(@RequestBody VaccineDateFilterDTO vaccineDateFilterDTO) {
         return this.vaccineService.vaccineDateFilter(vaccineDateFilterDTO);
     }
-
+    @GetMapping("/getVaccinesByAnimalName/{name}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Vaccine> getVaccinesByAnimalName(@PathVariable("name") String animalName) {
+        return this.vaccineService.getVaccinesByAnimalName(animalName);
+    }
 }

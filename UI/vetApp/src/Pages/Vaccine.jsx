@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Navigation from '../Components/Navigation'
-import { findAllVaccine, saveVaccine, deleteVaccine, updateVaccine, findAllAnimal, getByIdAnimal, getFilteredAnimalByName, vaccineDateFilter } from '../Api';
+import { findAllVaccine, saveVaccine, deleteVaccine, updateVaccine, findAllAnimal, getByIdAnimal, getVaccinesByAnimalName, vaccineDateFilter } from '../Api';
 import { DataGrid } from '@mui/x-data-grid';
 import { Formik, Field, Form } from 'formik';
 import { IconButton, MenuItem, Select } from '@mui/material';
@@ -21,18 +21,19 @@ function Vaccine() {
     const [visible, setVisible] = useState(false)
     const [startsearchValue, setStartSearchValue] = useState('');
     const [endsearchValue, setEndSearchValue] = useState('');
+    const [nameSearchValue, setNameSearchValue] = useState('')
 
 
     const columns = [
         { field: 'id', headerName: 'ID', width: 70, editable: true, },
         { field: 'name', headerName: 'İsim', width: 130, editable: true, },
-        { field: 'protectionStartDate', headerName: 'Koruyuculuk Başlangıç', width: 130, editable: true, },
-        { field: 'protectionFinishDate', headerName: 'Koruyuculuk Bitiş', width: 130, editable: true, },
+        { field: 'protectionStartDate', headerName: 'Koruma Başlangıç', width: 130, editable: true, },
+        { field: 'protectionFinishDate', headerName: 'Koruma Bitiş', width: 130, editable: true, },
 
         {
             field: 'animalName',
-            headerName: 'Tabi Olduğu Hayvan',
-            width: 150,
+            headerName: 'Hayvan Adı',
+            width: 140,
             editable: true,
             renderCell: (params) => {
                 const handleChange = async (e) => {
@@ -174,6 +175,20 @@ function Vaccine() {
         }
     }
 
+    const searchName = async () => {
+        try {
+            const data = await getVaccinesByAnimalName(nameSearchValue);
+            setVaccines(data)
+            setNameSearchValue("");
+
+        } catch (error) {
+            console.error('Error', error);
+            setError("Tarih araması yapılırken hata oluştu.");
+            setOpenModal(true);
+        }
+
+    }
+
     const searchChangeStart = (e) => {
         setStartSearchValue(e.target.value);
     };
@@ -182,6 +197,9 @@ function Vaccine() {
         setEndSearchValue(e.target.value);
     };
 
+    const searchChangeName = (e) => {
+        setNameSearchValue(e.target.value);
+    };
 
     return (
         <div>
@@ -190,22 +208,32 @@ function Vaccine() {
             </div>
             <Navigation />
 
-            <div>
-                <input
+            <div className='search'>
+                <input className='dateInput'
                     type="date"
                     value={startsearchValue}
                     onChange={searchChangeStart}
                 />
-                <input
+                <input className='dateInput'
                     type="date"
                     value={endsearchValue}
                     onChange={searchChangeEnd}
                 />
-                <button onClick={searchDate}> Ara </button>
+                <button className='searchButton' onClick={searchDate}> Tarihe Göre Ara </button>
 
             </div>
 
-            <div style={{ height: 400, width: '80%', marginLeft: '10%', marginTop: '10px' }}>
+            <div className='search'>
+                <input className='nameInput'
+                    type="text"
+                    value={nameSearchValue}
+                    onChange={searchChangeName}
+                />
+                <button className='searchButton1' onClick={searchName}> İsme Göre Ara </button>
+
+            </div>
+
+            <div style={{ height: 400, width: '80%', marginLeft: '10%', marginTop: '10px', }}>
                 <DataGrid
                     rows={vaccines}
                     columns={columns}
@@ -216,8 +244,8 @@ function Vaccine() {
                     }}
                     pageSizeOptions={[5, 10]}
                 />
-                <div>
-                    <button className='add' onClick={visibleChange}> Yeni Aşı Ekle</button>
+                <div style={{ marginTop: '15px' }}>
+                    <button className='addVaccine' onClick={visibleChange}> Yeni Aşı Ekle</button>
                 </div>
             </div>
 
@@ -238,33 +266,32 @@ function Vaccine() {
                     }}
                 >
                     {({ values, setFieldValue }) => (
-                        <Form className="formik-container">
+                        <Form className="formik-containerVaccine">
                             <h1>Aşı Ekle</h1>
-                            <div className='form-group'>
-                                <label htmlFor="name"> Aşı İsim</label>
-                                <Field id="name" name="name" />
+                            <div className='formikStyle' >
+                                <div className='form-group'>
+                                    <label htmlFor="name"> Aşı İsim</label>
+                                    <Field id="name" name="name" />
+                                </div>
+                                <div className='form-group'>
+                                    <label htmlFor="code">Kod</label>
+                                    <Field id="code" name="code" />
+                                </div>
+                                <div className='form-group'>
+                                    <label htmlFor="protectionStartDate">Koruyuculuk Başlangıç</label>
+                                    <Field className="formik-input" id="protectionStartDate" name="protectionStartDate" type="date" />
+                                </div>
+                                <div className='form-group'>
+                                    <label htmlFor="protectionFinishDate">Koruyuculuk  Bitiş</label>
+                                    <Field
+                                        className="formik-input" id="protectionFinishDate" name="protectionFinishDate" type="date" />
+                                </div>
                             </div>
 
-                            <div className='form-group'>
-                                <label htmlFor="code">Kod</label>
-                                <Field id="code" name="code" />
-                            </div>
-
-                            <div className='form-group'>
-                                <label htmlFor="protectionStartDate">Koruyuculuk Başlangıç</label>
-                                <Field className="formik-input" id="protectionStartDate" name="protectionStartDate" type="date" />
-                            </div>
-
-                            <div className='form-group'>
-                                <label htmlFor="protectionFinishDate">Koruyuculuk  Bitiş</label>
-                                <Field
-                                    className="formik-input" id="protectionFinishDate" name="protectionFinishDate" type="date" />
-                            </div>
 
 
 
-
-                            <div className='form-group'>
+                            <div className='form-groupOwner'>
                                 <label htmlFor="animalId">Sahibi</label>
                                 <Field name="animalId" className="formik-select">
                                     {({ field }) => (
@@ -273,7 +300,7 @@ function Vaccine() {
                                             value={values.selectedOption}
                                             onChange={(event) => setFieldValue('animalId', event.target.value)}
                                         >
-                                            <MenuItem value="">Select an option</MenuItem>
+                                            <MenuItem disabled selected value="">Select an option</MenuItem>
                                             {options.map(option => (
                                                 <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
                                             ))}

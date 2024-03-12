@@ -1,17 +1,24 @@
-.formik-container {
-    margin-top: 10px;
+.formik-containerVaccine {
+    margin-top: 50px;
     color: #6B555E;
     font-weight: bolder;
     border: 6px solid #FCACAC;
     padding: 10px;
-    margin-left: 500px;
+    margin-left: 375px;
     align-items: center;
     width: 600px;
     height: 500px;
 }
 
-.formik-container h1 {
+.formikStyle {
     text-align: center;
+    align-items: center;
+    margin-left: 30px;
+}
+
+.formik-containerVaccine h1 {
+    text-align: center;
+    margin-bottom: 10px;
 }
 
 .form-group {
@@ -48,6 +55,8 @@
     color: #fff;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    margin-top: 50px;
+    margin-left: 250px
 }
 
 .formik-submit-button:hover {
@@ -62,9 +71,9 @@
     color: #6B555E;
 }
 
-.add {
-    width: unset;
-    margin-left: 140px;
+.addVaccine {
+
+    margin-left: 0px;
     padding: 0.5rem;
     border-radius: 0.3rem;
     border: 1px solid #ccc;
@@ -72,4 +81,52 @@
     color: #fff;
     cursor: pointer;
     transition: background-color 0.3s ease;
+}
+
+.search {
+    margin-top: 20px;
+    margin-left: 160px;
+
+}
+
+.searchButton {
+
+    padding: 0.5rem;
+    background-color: #FCACAC;
+    color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 0.3rem;
+    cursor: pointer;
+    height: 40px;
+    margin-left: 15px;
+    width: 120px;
+}
+
+.searchButton1 {
+    padding: 0.5rem;
+    background-color: #FCACAC;
+    color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 0.3rem;
+    cursor: pointer;
+    height: 40px;
+    margin-left: 62px;
+    width: 120px;
+}
+
+.dateInput,
+.nameInput {
+
+    border: 1px solid #ccc;
+    border-radius: 0.3rem;
+}
+
+.form-groupOwner {
+    margin-left: 30px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+    color: #6B555E;
+    width: 500px;
+    align-items: center;
 }

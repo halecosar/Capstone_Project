@@ -116,4 +116,14 @@ public class VaccineManager implements IVaccineService {
 
         return query.getResultList();
     }
+
+    @Override
+    public List<Vaccine> getVaccinesByAnimalName(String animalName) {
+        String queryString = "SELECT v FROM Vaccine v WHERE v.animal.name ILIKE :animal_name";
+
+        Query query = entityManager.createQuery(queryString, Vaccine.class);
+        query.setParameter("animal_name", "%" + animalName + "%");
+
+        return query.getResultList();
+    }
 }

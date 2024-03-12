@@ -182,18 +182,18 @@ function Animal() {
 
 
 
-            <div>
-                <input
+            <div className='search'>
+                <input className='searchInput'
                     type="text"
                     value={searchValue}
                     onChange={searchChange}
                 />
 
-                <button onClick={searchAnimal}> Ara </button>
+                <button className='searchButton' onClick={searchAnimal}>  Hayvan Ara </button>
 
             </div>
 
-            <div style={{ height: 400, width: '99%', marginLeft: '10%', marginTop: '10px' }}>
+            <div style={{ height: 400, width: '80%', marginLeft: '10%', marginTop: '10px' }}>
                 <DataGrid
                     rows={animals}
                     columns={columns}
@@ -204,10 +204,10 @@ function Animal() {
                     }}
                     pageSizeOptions={[5, 10]}
                 />
+            </div>
 
-                <div>
-                    <button className='add' onClick={visibleChange}> Yeni Hayvan Ekle</button>
-                </div>
+            <div>
+                <button className='addAnimal' onClick={visibleChange}> Yeni Hayvan Ekle</button>
             </div>
 
             <div>
@@ -226,7 +226,7 @@ function Animal() {
                     }}
                 >
                     {({ values, setFieldValue }) => (
-                        <Form className="formik-container">
+                        <Form className="formik-containerAnimal">
                             <h1>Hayvan Ekle</h1>
                             <div className="formik-field">
                                 <label htmlFor="name" className="formik-label">İsim: </label>
@@ -236,7 +236,7 @@ function Animal() {
                             <div className="formik-field-group">
                                 <label htmlFor="gender" className="formik-label">Cinsiyet:</label>
                                 <Field as="select" id="gender" name="gender" className="formik-select">
-                                    <option value="">Seçiniz</option>
+                                    <option disabled selected value="">Seçiniz</option>
                                     <option value="erkek">Erkek</option>
                                     <option value="dişi">Dişi</option>
                                 </Field>
@@ -262,9 +262,9 @@ function Animal() {
                             </div>
 
                             <div className="formik-field">
-                                <label htmlFor="customerId" className="formik-label">Sahibi:</label>
+                                <label htmlFor="customerId" className="formik-label"> Hayvan Sahibi:</label>
                                 <Field as="select" id="customerId" name="customerId" onChange={(event) => setFieldValue('customerId', event.target.value)} className="formik-select">
-                                    <option value="">Sahibi Seçin</option>
+                                    <option disabled selected value=""> Hayvan Sahibini Seçiniz</option>
                                     {options.map(option => (
                                         <option key={option.value} value={option.value}>{option.label}</option>
                                     ))}
@@ -275,6 +275,7 @@ function Animal() {
                         </Form>
                     )}
                 </Formik>}
+                <br />
 
             </div>
         </div>

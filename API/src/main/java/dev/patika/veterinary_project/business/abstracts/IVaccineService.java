@@ -17,4 +17,5 @@ public interface IVaccineService {
     List<Vaccine> getVaccinesByAnimalId(Long animalId); //animal id'ye göre aşı listesi döner.
     List<Animal> getAnimalsByComingVaccines(AnimalVaccineDTO animalVaccineDTO);
     List<Vaccine> vaccineDateFilter(VaccineDateFilterDTO vaccineDateFilterDTO);
+    List<Vaccine> getVaccinesByAnimalName (String animalName);
 }

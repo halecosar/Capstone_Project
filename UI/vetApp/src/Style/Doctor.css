@@ -1,6 +1,6 @@
 .container {
     display: flex;
-    flex-direction: row;
+
 }
 
 .formik-containerdoctor {
@@ -12,7 +12,7 @@
     margin-left: 500px;
     align-items: center;
     width: 600px;
-    height: 400px;
+    height: 415px;
 }
 
 
@@ -31,7 +31,6 @@
     margin-top: 10px;
     color: #6B555E;
     font-weight: bolder;
-    border: 6px solid #FCACAC;
     padding: 10px;
     margin-left: 500px;
     align-items: center;
@@ -49,9 +48,20 @@
     transition: background-color 0.3s ease;
 }
 
+.addDoctor {
+    margin-top: 10px;
+    padding: 0.5rem;
+    border-radius: 0.3rem;
+    border: 1px solid #ccc;
+    background-color: #FCACAC;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
 .add {
-    width: unset;
-    margin-left: 140px;
+    margin-left: 152px;
+    margin-top: 20px;
     padding: 0.5rem;
     border-radius: 0.3rem;
     border: 1px solid #ccc;

@@ -242,6 +242,16 @@ export const vaccineDateFilter = async (VaccineDateFilterDTO) => {
         throw error;
     }
 };
+
+export const getVaccinesByAnimalName = async (name) => {
+    try {
+        const response = await api.get('vaccines/getVaccinesByAnimalName/' + name);
+        return response.data;
+    } catch (error) {
+        console.error('Error', error);
+        throw error;
+    }
+};
 //Report CRUD İşlemleri
 
 export const saveReport = async (reportModel) => {

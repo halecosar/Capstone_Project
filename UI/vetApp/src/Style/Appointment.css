@@ -58,13 +58,24 @@
     height: 500px;
 }
 
-.formik-container h1 {
+.formik-appointment-container {
+    margin-top: 10px;
+    color: #6B555E;
+    font-weight: bolder;
+    border: 6px solid #FCACAC;
+    padding: 10px;
+    margin-left: 400px;
+    align-items: center;
+    width: 600px;
+    height: 550px;
+}
+
+.formik-appointment-container h1 {
     text-align: center;
 }
 
 .add {
     width: unset;
-    margin-left: 140px;
     padding: 0.5rem;
     border-radius: 0.3rem;
     border: 1px solid #ccc;

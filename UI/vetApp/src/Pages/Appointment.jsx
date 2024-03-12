@@ -26,7 +26,7 @@ function Appointment() {
         {
             field: 'animalName',
             headerName: 'Hayvan Adı',
-            width: 150,
+            width: 100,
             editable: true,
             renderCell: (params) => {
                 const handleChange = async (e) => {
@@ -202,9 +202,6 @@ function Appointment() {
         }
     }
 
-
-
-
     const handleUpdate = async (params) => {
         try {
             await updateAppointment(params);
@@ -215,7 +212,6 @@ function Appointment() {
             setOpenModal(true);
         }
     };
-
 
     const submit = async (values) => {
         try {
@@ -253,7 +249,7 @@ function Appointment() {
             </div>
             <Navigation />
 
-            <div style={{ height: 400, width: '60%', marginLeft: '10%', marginTop: '10px' }}>
+            <div style={{ height: 400, width: '80%', marginLeft: '10%', marginTop: '10px' }}>
                 <DataGrid
                     rows={appointments}
                     columns={columns}
@@ -276,7 +272,7 @@ function Appointment() {
                     }}
                 >
                     {({ values, setFieldValue }) => (
-                        <Form className="formik-container">
+                        <Form className="formik-appointment-container">
                             <h1>Randevu Ekle</h1>
                             <div className="form-group">
                                 <label htmlFor="appointmentDate" className="formik-label">Randevu Tarihi:</label>
@@ -289,7 +285,7 @@ function Appointment() {
                             <div className="form-group">
                                 <label htmlFor="animalId" className="formik-label">Hayvan:</label>
                                 <Field as="select" id="animalId" name="animalId" className="formik-select">
-                                    <option value="">Seçiniz</option>
+                                    <option disabled selected value="">Seçiniz</option>
                                     {animalOptions.map(option => (
                                         <option key={option.value} value={option.value}>{option.label}</option>
                                     ))}
@@ -298,7 +294,7 @@ function Appointment() {
                             <div className="form-group">
                                 <label htmlFor="doctorId" className="formik-label">Doktor:</label>
                                 <Field as="select" id="doctorId" name="doctorId" className="formik-select">
-                                    <option value="">Seçiniz</option>
+                                    <option disabled selected value="">Seçiniz</option>
                                     {doctorOptions.map(option => (
                                         <option key={option.value} value={option.value}>{option.label}</option>
                                     ))}
@@ -307,7 +303,7 @@ function Appointment() {
                             <div className="form-group">
                                 <label htmlFor="reportId" className="formik-label">Rapor:</label>
                                 <Field as="select" id="reportId" name="reportId" className="formik-select">
-                                    <option value="">Seçiniz</option>
+                                    <option disabled selected value="">Seçiniz</option>
                                     {reportOptions.map(option => (
                                         <option key={option.value} value={option.value}>{option.label}</option>
                                     ))}
@@ -318,7 +314,7 @@ function Appointment() {
 
                     )}
                 </Formik>}
-
+                <br />
             </div>
 
         </div>

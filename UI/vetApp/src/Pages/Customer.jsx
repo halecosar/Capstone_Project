@@ -124,14 +124,14 @@ function Customer() {
             </div>
             <Navigation />
 
-            <div>
-                <input
+            <div className='search'>
+                <input className='searchInput'
                     type="text"
                     value={searchValue}
                     onChange={searchChange}
                 />
 
-                <button onClick={searchCustomer}> Ara </button>
+                <button className='searchButton' onClick={searchCustomer}> Müşteri Ara </button>
 
             </div>
 
@@ -151,7 +151,7 @@ function Customer() {
             </div>
 
             <div >
-                <button className='add' onClick={visibleChange} > Yeni Müşteri Ekle</button>
+                <button className='addCustomer' onClick={visibleChange} > Yeni Müşteri Ekle</button>
             </div>
 
             <div>
@@ -167,7 +167,7 @@ function Customer() {
                         await submit(values);
                     }}
                 >
-                    <Form className="formik-container">
+                    <Form className="formik-container-customer">
                         <h1>Müşteri Ekle</h1>
                         <div className="formik-field">
                             <label htmlFor="name">İsim</label>
@@ -196,9 +196,10 @@ function Customer() {
 
 
 
-                        <button type="submit" className="formik-submit-button">Kaydet</button>
+                        <button type="submit" className="formik-customer-submit-button">Kaydet</button>
                     </Form>
                 </Formik>}
+                <br />
 
             </div>
         </div>

@@ -30,6 +30,7 @@ function Report() {
             headerName: 'Yapılan Aşı',
             width: 150,
             editable: true,
+            cellClassName: 'custom-cell',
             renderCell: (params) => {
                 const handleChange = async (e) => {
                     const newValue = e.target.value;
@@ -169,7 +170,7 @@ function Report() {
                 />
             </div>
             <div>
-                <button className='add' onClick={visibleChange}>Yeni Rapor Ekle</button>
+                <button className='addReport' onClick={visibleChange}>Yeni Rapor Ekle</button>
             </div>
             <div>
                 {visible && <Formik

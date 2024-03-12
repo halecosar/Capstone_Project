@@ -53,7 +53,7 @@ function Doctor() {
     const availableDatesColumns = [
         { field: 'id', headerName: 'ID', width: 70, editable: true, },
         { field: 'availableDateDate', headerName: 'Uygun Saat', width: 130, editable: true, },
-        { field: 'doctorName', headerName: 'Doktor Adı', width: 150, valueGetter: (params) => params.row.doctor.name },
+        { field: 'doctorName', headerName: '  Doktor Adı', width: 150, valueGetter: (params) => params.row.doctor.name },
         {
             field: 'remove',
             headerName: 'Kaldır',
@@ -224,13 +224,14 @@ function Doctor() {
                         handleSelectionChange(newRowSelectionModel);
                     }}
                 />
-                <div>
-                    <button className='add' onClick={visibleChange}>Doktor Ekle</button>
-                </div>
+
 
 
             </div>
 
+            <div>
+                <button className='add' onClick={visibleChange}>Doktor Ekle</button>
+            </div>
 
             <div>
                 {visible && <Formik
@@ -269,8 +270,10 @@ function Doctor() {
                             <label htmlFor="city">Şehir</label>
                             <Field id="city" name="city" />
                         </div>
+                        <div>
+                            <button type="submit" className='formik-submit-button'>Kaydet</button>
+                        </div>
 
-                        <button type="submit" className='formik-submit-button'>Kaydet</button>
                     </Form>
                 </Formik>}
 
@@ -280,39 +283,42 @@ function Doctor() {
             <br />
             <br />
             {selection !== undefined && (
-                <div className='container' >
-                    <DataGrid style={{ height: 400, width: '50%', marginLeft: '60px', marginTop: '10px' }}
-                        rows={availableDates}
-                        columns={availableDatesColumns}
-                        initialState={{
-                            pagination: {
-                                paginationModel: { page: 0, pageSize: 5 },
-                            },
-                        }}
-                        pageSizeOptions={[5, 10]}
-                    />
-                    <Formik
-                        initialValues={{
-                            availableDateDate: '',
+                <Formik
+                    initialValues={{
+                        availableDateDate: '',
 
 
-                        }}
-                        onSubmit={async (values, formBag) => {
-                            await dateSave(values, formBag);
-                        }}
-                    >
-                        <Form className='formik-container2'>
+                    }}
+                    onSubmit={async (values, formBag) => {
+                        await dateSave(values, formBag);
+                    }}
+                >
+                    <Form className='formik-container2'>
 
-                            <label htmlFor="availableDateDate">Uygun Tarih</label>
-                            <Field id="availableDateDate" name="availableDateDate" type="date" />
-
-
-                            <button type="submit" className='formik-submit-button' >Kaydet</button>
-                        </Form>
+                        <label htmlFor="availableDateDate"> Doktorun Uygun Tarihini Ekleyiniz</label>
+                        <Field id="availableDateDate" name="availableDateDate" type="date" />
 
 
-                    </Formik>
-                </div>
+                        <button type="submit" className='formik-submit-button' >Kaydet</button>
+                    </Form>
+
+
+                </Formik>
+            )}
+            {selection !== undefined && (
+                <DataGrid style={{ height: 400, width: '50%', marginLeft: '30%', marginTop: '10px' }}
+                    rows={availableDates}
+                    columns={availableDatesColumns}
+                    initialState={{
+                        pagination: {
+                            paginationModel: { page: 0, pageSize: 5 },
+                        },
+                    }}
+                    pageSizeOptions={[5, 10]}
+                    disableMultipleSelection
+                />
+
+
             )}
         </div>
 

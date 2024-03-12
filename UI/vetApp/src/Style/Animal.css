@@ -10,6 +10,22 @@
 
 }
 
+.formik-containerAnimal {
+    margin-top: 10px;
+    color: #6B555E;
+    font-weight: bolder;
+    border: 6px solid #FCACAC;
+    padding: 10px;
+    margin-left: 400px;
+    align-items: center;
+    width: 600px;
+    height: 550px;
+}
+
+.formik-containerAnimal h1 {
+    text-align: center;
+}
+
 .formik-select,
 .formik-input {
     width: 30%;
@@ -53,19 +69,19 @@
 }
 
 .formik-container {
-    margin-top: 10px;
+    margin-top: 55px;
     color: #6B555E;
     font-weight: bolder;
     border: 6px solid #FCACAC;
     padding: 10px;
-    margin-left: 500px;
+    margin-left: 375px;
     align-items: center;
     width: 600px;
 }
 
-.add {
-    width: unset;
-    margin-left: 140px;
+.addAnimal {
+    margin-left: 152px;
+    margin-top: 20px;
     padding: 0.5rem;
     border-radius: 0.3rem;
     border: 1px solid #ccc;
@@ -73,4 +89,28 @@
     color: #fff;
     cursor: pointer;
     transition: background-color 0.3s ease;
+}
+
+.search {
+    margin-top: 20px;
+    margin-left: 160px;
+
+}
+
+.searchButton {
+
+    padding: 0.5rem;
+    background-color: #FCACAC;
+    color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 0.3rem;
+    cursor: pointer;
+    height: 40px;
+    margin-left: 15px;
+}
+
+.searchInput {
+
+    border: 1px solid #ccc;
+    border-radius: 0.3rem;
 }
