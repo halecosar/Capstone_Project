@@ -320,17 +320,17 @@ function Appointment() {
                     onChange={searchEndDateChange}
                 />
 
-                <label>Doktor Seçiniz</label>
-                <Select className='searchList' value={selectedDoctor} onChange={handleDoctorChange} disabled={selectedAnimal !== ''}>
+                <label style={{ fontSize: '12px', color: '#FCACAC', fontWeight: 'bold', marginRight: '10px' }}>Doktor ile Arama</label>
+                <Select style={{ fontSize: '10px', width: '100px' }} className='searchList' value={selectedDoctor} onChange={handleDoctorChange} disabled={selectedAnimal !== ''}>
                     <MenuItem value="">Seçiniz</MenuItem>
                     {doctorOptions.map(option => (
                         <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
                     ))}
                 </Select>
 
-                <label>Hayvan Seçiniz</label>
+                <label style={{ fontSize: '12px', color: '#FCACAC', fontWeight: 'bold', marginRight: '10px' }}>Hayvan ile Arama</label>
 
-                <Select className='searchList' value={selectedAnimal} onChange={handleAnimalChange} disabled={selectedDoctor !== ''}>
+                <Select style={{ fontSize: '10px', width: '100px' }} className='searchList' value={selectedAnimal} onChange={handleAnimalChange} disabled={selectedDoctor !== ''}>
                     <MenuItem value="">Seçiniz</MenuItem>
                     {animalOptions.map(option => (
                         <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>

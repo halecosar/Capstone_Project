@@ -206,19 +206,19 @@ function Animal() {
                     value={searchValue}
                     onChange={searchChange}
                 />
-                <button className='searchButton' onClick={searchAnimal}>  Hayvan Ara </button>
+                <button style={{ marginLeft: '35px' }} className='searchButton' onClick={searchAnimal}>  Hayvan Ara </button>
             </div>
 
             <div className='search'>
-                <label>Müşteri Seçiniz</label>
-                <Select className='searchList' value={selectedCustomer} onChange={handleCustomerChange}>
+
+                <Select style={{ fontSize: '10px', width: '165px' }} className='searchList' value={selectedCustomer} onChange={handleCustomerChange}>
                     <MenuItem value="">Seçiniz</MenuItem>
                     {options.map(option => (
                         <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
                     ))}
                 </Select>
 
-                <button className='searchButton' onClick={searchAnimalbyCustomer}>  Hayvan Ara </button>
+                <button className='searchButton' onClick={searchAnimalbyCustomer}>   Müşteri İsmiyle Hayvan Ara </button>
             </div>
 
             <div style={{ height: 400, width: '80%', marginLeft: '10%', marginTop: '10px' }}>
