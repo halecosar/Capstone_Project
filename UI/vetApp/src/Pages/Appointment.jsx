@@ -6,9 +6,11 @@ import { IconButton, MenuItem, Select } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import UpdateIcon from "@mui/icons-material/Update";
 import AppointmentModel from '../Models/Appointment';
-import { saveAppointment, deleteAppointment, updateAppointment, findAllDoctor, findAllReport, findAllAnimal, findAllAppointment, getByIdReport, getByIdAnimal, getByIdDoctor } from '../Api';
+import { saveAppointment, deleteAppointment, updateAppointment, findAllDoctor, findAllReport, findAllAnimal, findAllAppointment, getByIdReport, getByIdAnimal, getByIdDoctor, filterbyDoctor, filterbyAnimal } from '../Api';
 import '../Style/Appointment.css';
 import ErrorModal from '../Components/ErrorModal';
+import AppointmentFilterByDoctorDTO from '../Models/AppointmentFilterByDoctorDTO';
+import AppointmentFilterByAnimalDTO from '../Models/AppointmentFilterByAnimalDTO';
 
 function Appointment() {
     const [appointments, setAppointments] = useState([]);
@@ -19,10 +21,14 @@ function Appointment() {
     const [error, setError] = useState("");
     const [openModal, setOpenModal] = useState(false);
     const [visible, setVisible] = useState(false);
+    const [searchStartDateValue, setSearchStartDateValue] = useState("");
+    const [searchEndDateValue, setsearchEndDateValue] = useState("");
+    const [selectedDoctor, setSelectedDoctor] = useState('');
+    const [selectedAnimal, setSelectedAnimal] = useState('');
 
     const columns = [
         { field: 'id', headerName: 'ID', width: 70, editable: true },
-        { field: 'appointmentDate', headerName: 'Randevu Zamanı', width: 130, editable: true },
+        { field: 'appointmentDate', headerName: 'Randevu Zamanı', width: 180, editable: true },
         {
             field: 'animalName',
             headerName: 'Hayvan Adı',
@@ -242,12 +248,98 @@ function Appointment() {
         setVisible(true);
     }
 
+    const searchStartDateChange = (e) => {
+        setSearchStartDateValue(e.target.value);
+    };
+
+    const searchEndDateChange = (e) => {
+        setsearchEndDateValue(e.target.value);
+    };
+
+    const handleDoctorChange = (event) => {
+        setSelectedDoctor(event.target.value);
+        setSelectedAnimal('');
+    };
+
+    const handleAnimalChange = (event) => {
+        setSelectedAnimal(event.target.value);
+        setSelectedDoctor('');
+    };
+
+    const searchAppointment = async () => {
+        try {
+            if (selectedDoctor > 0) {
+                const value = new AppointmentFilterByDoctorDTO();
+                value.startDate = searchStartDateValue;
+                value.endDate = searchEndDateValue;
+                value.doctorId = selectedDoctor;
+
+                const data = await filterbyDoctor(value);
+                setAppointments(data)
+            }
+            else if (selectedAnimal > 0) {
+                const value = new AppointmentFilterByAnimalDTO();
+                value.startDate = searchStartDateValue;
+                value.endDate = searchEndDateValue;
+                value.animalId = selectedAnimal;
+
+                const data = await filterbyAnimal(value);
+                setAppointments(data)
+            }
+            else {
+                setError("Lütfen doğru arama kriterleri giriniz");
+                setOpenModal(true);
+            }
+
+            setSearchStartDateValue(null);
+            setsearchEndDateValue(null);
+        } catch (error) {
+            console.error('Error', error);
+            setError("Randevu araması yapılırken hata oluştu.");
+            setOpenModal(true);
+        }
+    }
+
     return (
         <div>
             <div>
                 {error && <ErrorModal errorMsg={error} openModal={openModal} setOpenModal={setOpenModal} />}
             </div>
             <Navigation />
+
+            <div className='searchAppointment'>
+                <input className='searchStartDate'
+                    type="datetime-local"
+                    value={searchStartDateValue}
+                    onChange={searchStartDateChange}
+                />
+
+                <input className='searchEndDate'
+                    type="datetime-local"
+                    value={searchEndDateValue}
+                    onChange={searchEndDateChange}
+                />
+
+                <label>Doktor Seçiniz</label>
+                <Select className='searchList' value={selectedDoctor} onChange={handleDoctorChange} disabled={selectedAnimal !== ''}>
+                    <MenuItem value="">Seçiniz</MenuItem>
+                    {doctorOptions.map(option => (
+                        <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
+                    ))}
+                </Select>
+
+                <label>Hayvan Seçiniz</label>
+
+                <Select className='searchList' value={selectedAnimal} onChange={handleAnimalChange} disabled={selectedDoctor !== ''}>
+                    <MenuItem value="">Seçiniz</MenuItem>
+                    {animalOptions.map(option => (
+                        <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
+                    ))}
+                </Select>
+
+
+                <button className='searchButton' onClick={searchAppointment}> Randevu Ara </button>
+            </div>
 
             <div style={{ height: 400, width: '80%', marginLeft: '10%', marginTop: '10px' }}>
                 <DataGrid

@@ -356,6 +356,27 @@ export const deleteAppointment = async (id) => {
     }
 };
 
+export const filterbyDoctor = async (appointmentFilterByDoctorDTO) => {
+    try {
+        const response = await api.post('appointments/filterbyDoctor', appointmentFilterByDoctorDTO);
+        return response.data;
+    } catch (error) {
+        console.error('Error', error);
+        throw error;
+    }
+};
+
+export const filterbyAnimal = async (appointmentFilterByAnimalDTO) => {
+    try {
+        const response = await api.post('appointments/filterbyAnimal', appointmentFilterByAnimalDTO);
+        return response.data;
+    } catch (error) {
+        console.error('Error', error);
+        throw error;
+    }
+};
+
+
 //AvailableDates CRUD İşlemleri
 
 export const getAvailableDatesByDoctor = async (id) => {

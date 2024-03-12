@@ -45,13 +45,13 @@ public class AppointmentController {
     }
 
     //Randevular kullanıcı tarafından girilen tarih aralığına ve doktora göre filtrelenmelidir. Buna ait API end point’i oluşturulmalıdır.
-    @GetMapping("/filterbyDoctor")
+    @PostMapping("/filterbyDoctor")
     @ResponseStatus(HttpStatus.OK)
     public List<Appointment> filterbyDoctor(@RequestBody AppointmentFilterByDoctorDTO appointmentFilterByDoctorDTO) {
         return this.appointmentService.filterbyDoctor(appointmentFilterByDoctorDTO);
     }
     // Randevular kullanıcı tarafından girilen tarih aralığına ve hayvana göre filtrelenmelidir.
-    @GetMapping("/filterbyAnimal")
+    @PostMapping("/filterbyAnimal")
     @ResponseStatus(HttpStatus.OK)
     public List<Appointment> filterbyAnimal(@RequestBody AppointmentFilterByAnimalDTO appointmentFilterByAnimalDTO) {
         return this.appointmentService.filterbyAnimal(appointmentFilterByAnimalDTO);
