@@ -185,7 +185,7 @@ function Report() {
                     }}
                 >
                     {({ values, setFieldValue }) => (
-                        <Form className="formik-containerreport">
+                        <Form className="formik-container-report">
                             <h1>Rapor Ekle</h1>
                             <div className='form-group'>
                                 <label htmlFor="title"> Başlık</label>
@@ -211,7 +211,7 @@ function Report() {
                                             value={values.vaccineId}
                                             onChange={(event) => setFieldValue('vaccineId', event.target.value)}
                                         >
-                                            <MenuItem value="">Select an option</MenuItem>
+                                            <MenuItem disabled selected value="">Seçiniz</MenuItem>
                                             {options.map(option => (
                                                 <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
                                             ))}
