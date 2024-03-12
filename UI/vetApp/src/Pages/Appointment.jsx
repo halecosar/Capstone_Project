@@ -32,7 +32,7 @@ function Appointment() {
         {
             field: 'animalName',
             headerName: 'Hayvan Adı',
-            width: 100,
+            width: 150,
             editable: true,
             renderCell: (params) => {
                 const handleChange = async (e) => {
@@ -52,7 +52,7 @@ function Appointment() {
                 };
 
                 return (
-                    <Select
+                    <Select style={{ width: '230px' }}
                         value={params.row.animal.id}
                         onChange={handleChange}
                     >
@@ -88,7 +88,7 @@ function Appointment() {
                 };
 
                 return (
-                    <Select
+                    <Select style={{ width: '200px' }}
                         value={params.row.doctor.id}
                         onChange={handleChange}
                     >
@@ -103,7 +103,7 @@ function Appointment() {
         {
             field: 'reportName',
             headerName: 'Rapor Başlığı',
-            width: 150,
+            width: 230,
             editable: true,
             renderCell: (params) => {
                 const handleChange = async (e) => {
@@ -123,7 +123,7 @@ function Appointment() {
                 };
 
                 return (
-                    <Select
+                    <Select style={{ width: '200px' }}
                         value={params.row.report.id}
                         onChange={handleChange}
                     >
