@@ -49,7 +49,7 @@ function Report() {
                 };
 
                 return (
-                    <Select
+                    <Select style={{ width: '200px' }}
                         value={params.row.vaccine.id}
                         onChange={handleChange}
                     >

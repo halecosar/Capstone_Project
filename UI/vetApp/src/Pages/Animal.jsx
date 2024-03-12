@@ -30,7 +30,7 @@ function Animal() {
         { field: 'dateofBirth', headerName: 'Doğum Günü', width: 130, editable: true, },
         {
             field: 'customer',
-            headerName: 'Tabi Olduğu Müşteri',
+            headerName: 'Sahibi',
             width: 150,
             editable: true,
             renderCell: (params) => {
@@ -51,7 +51,7 @@ function Animal() {
                 };
 
                 return (
-                    <Select
+                    <Select style={{ width: '200px' }}
                         value={params.row.customer.id}
                         onChange={handleChange}
                     >

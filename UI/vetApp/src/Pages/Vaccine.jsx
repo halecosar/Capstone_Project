@@ -53,7 +53,7 @@ function Vaccine() {
                 };
 
                 return (
-                    <Select
+                    <Select style={{ width: '200px' }}
                         value={params.row.animal.id}
                         onChange={handleChange}
                     >
