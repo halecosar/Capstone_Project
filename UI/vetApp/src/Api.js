@@ -1,7 +1,6 @@
 import axios from "axios";
-import CustomerModel from "./Models/Customer"; //Her bir entity json'u için obje modelleri oluşturuldu.
 
-const baseURL = "http://localhost:8080/v1/"
+const baseURL = "https://vet-app-api.onrender.com/v1/"
 const api = axios.create({ baseURL });
 
 
