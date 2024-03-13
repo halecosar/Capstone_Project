@@ -22,7 +22,7 @@ function Doctor() {
 
 
     const columns = [
-        { field: 'id', headerName: 'ID', width: 70, editable: true, },
+        { field: 'id', headerName: 'ID', width: 90, editable: true, },
         { field: 'name', headerName: 'İsim', width: 130, editable: true, },
         { field: 'phone', headerName: 'Telefon', width: 190, editable: true, },
         { field: 'mail', headerName: 'Mail', width: 130, editable: true, },
@@ -30,8 +30,8 @@ function Doctor() {
         { field: 'city', headerName: 'Şehir', width: 130, editable: true, },
         {
             field: 'remove',
-            headerName: 'Kaldır',
-            width: 130,
+            headerName: 'Sil',
+            width: 110,
             renderCell: (params) => (
                 <IconButton onClick={() => handleDelete(params.row.id)}>
                     <DeleteIcon />
@@ -51,13 +51,13 @@ function Doctor() {
     ];
 
     const availableDatesColumns = [
-        { field: 'id', headerName: 'ID', width: 70, editable: true, },
-        { field: 'availableDateDate', headerName: 'Uygun Saat', width: 130, editable: true, },
-        { field: 'doctorName', headerName: '  Doktor Adı', width: 150, valueGetter: (params) => params.row.doctor.name },
+        { field: 'id', headerName: 'ID', width: 90, editable: true, },
+        { field: 'availableDateDate', headerName: 'Uygun Saat', width: 160, editable: true, },
+        { field: 'doctorName', headerName: '  Doktor Adı', width: 160, valueGetter: (params) => params.row.doctor.name },
         {
             field: 'remove',
-            headerName: 'Kaldır',
-            width: 130,
+            headerName: ' Uygun Saati Sil',
+            width: 180,
             renderCell: (params) => (
                 <IconButton onClick={() => dateDelete(params.row.id)}>
                     <DeleteIcon />
@@ -66,8 +66,8 @@ function Doctor() {
         },
         {
             field: 'update',
-            headerName: 'Güncelle',
-            width: 130,
+            headerName: ' Uygun Saati Güncelle',
+            width: 2150,
             renderCell: (params) => (
                 <IconButton onClick={() => dateUpdate(params.row)}>
                     <UpdateIcon />
@@ -209,7 +209,7 @@ function Doctor() {
             </div>
             <Navigation />
 
-            <div style={{ height: 400, width: '80%', marginLeft: '10%', marginTop: '10px' }}>
+            <div style={{ height: 400, width: '80%', marginLeft: '10%', marginTop: '40px' }}>
                 <DataGrid
                     rows={doctors}
                     columns={columns}
@@ -248,30 +248,30 @@ function Doctor() {
                 >
                     <Form className="formik-containerdoctor">
                         <h1>Doktor Ekle</h1>
-                        <div className="form-group"><label htmlFor="name">İsim</label>
+                        <div className="form-groupDoctor"><label htmlFor="name">İsim</label>
                             <Field id="name" name="name" /></div>
 
-                        <div className="form-group">
+                        <div className="form-groupDoctor">
                             <label htmlFor="phone">Telefon Numarası</label>
                             <Field id="phone" name="phone" />
                         </div>
 
-                        <div className="form-group">
+                        <div className="form-groupDoctor">
                             <label htmlFor="mail">Email</label>
                             <Field id="mail" name="mail" type="mail" />
                         </div>
 
-                        <div className="form-group">
+                        <div className="form-groupDoctor">
                             <label htmlFor="address">Adres</label>
                             <Field id="address" name="address" />
                         </div>
 
-                        <div className="form-group">
+                        <div className="form-groupDoctor">
                             <label htmlFor="city">Şehir</label>
                             <Field id="city" name="city" />
                         </div>
                         <div>
-                            <button type="submit" className='formik-submit-button'>Kaydet</button>
+                            <button type="submit" className='formik-submit-buttonDoctor'>Kaydet</button>
                         </div>
 
                     </Form>
@@ -295,18 +295,21 @@ function Doctor() {
                 >
                     <Form className='formik-container2'>
 
-                        <label htmlFor="availableDateDate"> Doktorun Uygun Tarihini Ekleyiniz</label>
-                        <Field id="availableDateDate" name="availableDateDate" type="date" />
+                        <label htmlFor="availableDateDate"> Doktor için Uygun Tarih Ekleyiniz! </label> <br />
+                        <Field id="availableDateDate" name="availableDateDate" type="date" /> <br />
 
 
-                        <button type="submit" className='formik-submit-button' >Kaydet</button>
+                        <button type="submit" className='formik-submit-buttonDoctor' >Kaydet</button>
                     </Form>
 
 
                 </Formik>
+
             )}
             {selection !== undefined && (
-                <DataGrid style={{ height: 400, width: '50%', marginLeft: '30%', marginTop: '10px' }}
+
+                <DataGrid style={{ height: 400, width: '80%', marginLeft: '10%', marginTop: '10px' }}
+
                     rows={availableDates}
                     columns={availableDatesColumns}
                     initialState={{

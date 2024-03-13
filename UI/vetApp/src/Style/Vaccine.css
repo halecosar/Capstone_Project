@@ -1,38 +1,22 @@
 .formik-containerVaccine {
-    margin-top: 50px;
+    margin-top: 80px;
     color: #6B555E;
     font-weight: bolder;
     border: 6px solid #FCACAC;
     padding: 10px;
-    margin-left: 375px;
+    margin-left: 410px;
     align-items: center;
-    width: 600px;
+    width: 550px;
     height: 500px;
 }
 
-.formikStyle {
-    text-align: center;
-    align-items: center;
-    margin-left: 30px;
-}
+
 
 .formik-containerVaccine h1 {
     text-align: center;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 
-.form-group {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 1rem;
-    color: #6B555E;
-    width: 500px;
-    align-items: center;
-}
-
-.formik-label {
-    margin-bottom: 0.5rem;
-}
 
 .formik-select,
 .formik-input {
@@ -46,7 +30,7 @@
     width: 30%;
 }
 
-.formik-submit-button {
+.formik-submit-buttonVaccine {
     width: 60px;
     padding: 0.5rem;
     border-radius: 0.3rem;
@@ -54,9 +38,7 @@
     background-color: #FCACAC;
     color: #fff;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-top: 50px;
-    margin-left: 250px
+
 }
 
 .formik-submit-button:hover {
@@ -80,12 +62,12 @@
     background-color: #FCACAC;
     color: #fff;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+
 }
 
 .search {
     margin-top: 20px;
-    margin-left: 160px;
+    /* margin-left: 160px; */
 
 }
 
@@ -110,23 +92,32 @@
     border-radius: 0.3rem;
     cursor: pointer;
     height: 40px;
-    margin-left: 62px;
+    margin-left: 22px;
     width: 120px;
 }
 
-.dateInput,
-.nameInput {
 
-    border: 1px solid #ccc;
-    border-radius: 0.3rem;
-}
 
 .form-groupOwner {
-    margin-left: 30px;
+
     display: flex;
     flex-direction: column;
     margin-bottom: 1rem;
     color: #6B555E;
     width: 500px;
+    align-items: center;
+}
+
+#name,
+#code,
+#protectionStartDate,
+#protectionFinishDate {
+    width: 480px;
+    align-items: center;
+    margin-left: 0px
+}
+
+.formik-select {
+    width: 480px;
     align-items: center;
 }

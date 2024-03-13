@@ -9,10 +9,30 @@
     font-weight: bolder;
     border: 6px solid #FCACAC;
     padding: 10px;
-    margin-left: 500px;
+    margin-left: 413px;
     align-items: center;
-    width: 600px;
+    width: 500px;
     height: 415px;
+}
+
+.form-groupDoctor {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+    color: #6B555E;
+
+
+}
+
+#name,
+#phone,
+#mail,
+#address,
+#city {
+
+    width: 475px;
+    align-items: center;
+
 }
 
 
@@ -32,12 +52,20 @@
     color: #6B555E;
     font-weight: bolder;
     padding: 10px;
-    margin-left: 500px;
+    margin-left: 125px;
     align-items: center;
-    width: 200px;
+    width: 400px;
 }
 
-.formik-submit-button {
+
+#availableDateDate {
+    margin-top: 5px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+}
+
+
+.formik-submit-buttonDoctor {
     width: 60px;
     padding: 0.5rem;
     border-radius: 0.3rem;
@@ -45,8 +73,10 @@
     background-color: #FCACAC;
     color: #fff;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+
+    margin-left: 10px;
 }
+
 
 .addDoctor {
     margin-top: 10px;
@@ -56,11 +86,11 @@
     background-color: #FCACAC;
     color: #fff;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+
 }
 
 .add {
-    margin-left: 152px;
+    margin-left: 145px;
     margin-top: 20px;
     padding: 0.5rem;
     border-radius: 0.3rem;
@@ -68,5 +98,5 @@
     background-color: #FCACAC;
     color: #fff;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+
 }

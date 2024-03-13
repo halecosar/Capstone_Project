@@ -11,19 +11,12 @@
     margin-bottom: 0.5rem;
 }
 
-.formik-select,
-.formik-input {
-    width: 30%;
-    padding: 0.5rem;
-    border-radius: 0.3rem;
-    border: 1px solid #ccc;
+.select-date,
+.select-time {
+    width: 472px;
 }
 
-.formik-input {
-    width: 30%;
-}
-
-.formik-submit-button {
+.formik-submit-buttonAp {
     width: 60px;
     padding: 0.5rem;
     border-radius: 0.3rem;
@@ -32,11 +25,10 @@
     color: #fff;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    margin-left: 10px;
 }
 
-.formik-submit-button:hover {
-    background-color: #FCACAC;
-}
+
 
 .formik-field-group {
     display: flex;
@@ -66,16 +58,17 @@
     padding: 10px;
     margin-left: 400px;
     align-items: center;
-    width: 600px;
-    height: 550px;
+    width: 544px;
+    height: 511px;
 }
 
 .formik-appointment-container h1 {
     text-align: center;
+    margin-bottom: 10px;
 }
 
-.add {
-    width: unset;
+.addAp {
+    margin-left: 211px;
     padding: 0.5rem;
     border-radius: 0.3rem;
     border: 1px solid #ccc;
@@ -83,11 +76,12 @@
     color: #fff;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    margin-top: 10px;
 }
 
 .searchAppointment {
     margin-top: 20px;
-    margin-left: 160px;
+    margin-left: 235px;
     gap: 20px;
 }
 

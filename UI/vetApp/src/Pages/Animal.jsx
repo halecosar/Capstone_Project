@@ -21,13 +21,13 @@ function Animal() {
     const [selectedCustomer, setSelectedCustomer] = useState('');
 
     const columns = [
-        { field: 'id', headerName: 'ID', width: 70, editable: true, },
+        { field: 'id', headerName: 'ID', width: 85, editable: true, },
         { field: 'name', headerName: 'İsim', width: 130, editable: true, },
-        { field: 'species', headerName: 'Tür', width: 180, editable: true, },
-        { field: 'breed', headerName: 'Cins', width: 130, editable: true, },
-        { field: 'gender', headerName: 'Cinsiyet', width: 190, editable: true, },
-        { field: 'color', headerName: 'Renk', width: 130, editable: true, },
-        { field: 'dateofBirth', headerName: 'Doğum Günü', width: 130, editable: true, },
+        { field: 'species', headerName: 'Tür', width: 100, editable: true, },
+        { field: 'breed', headerName: 'Cins', width: 100, editable: true, },
+        { field: 'gender', headerName: 'Cinsiyet', width: 120, editable: true, },
+        { field: 'color', headerName: 'Renk', width: 150, editable: true, },
+        { field: 'dateofBirth', headerName: 'D. Günü', width: 130, editable: true, },
         {
             field: 'customer',
             headerName: 'Sahibi',
@@ -65,8 +65,8 @@ function Animal() {
         },
         {
             field: 'remove',
-            headerName: 'Kaldır',
-            width: 90,
+            headerName: 'Sil',
+            width: 100,
             renderCell: (params) => (
                 <IconButton onClick={() => handleDelete(params.row.id)}>
                     <DeleteIcon />
@@ -76,7 +76,7 @@ function Animal() {
         {
             field: 'update',
             headerName: 'Güncelle',
-            width: 90,
+            width: 150,
             renderCell: (params) => (
                 <IconButton onClick={() => handleUpdate(params.row)}>
                     <UpdateIcon />
@@ -211,7 +211,9 @@ function Animal() {
 
             <div className='search'>
 
-                <Select style={{ fontSize: '10px', width: '165px' }} className='searchList' value={selectedCustomer} onChange={handleCustomerChange}>
+                <Select style={{ fontSize: '10px', width: '165px', height: '30px' }} className='searchList' value={selectedCustomer} onChange={handleCustomerChange}>
+
+
                     <MenuItem value="">Seçiniz</MenuItem>
                     {options.map(option => (
                         <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>

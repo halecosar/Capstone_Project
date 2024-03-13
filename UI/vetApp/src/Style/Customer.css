@@ -23,7 +23,7 @@
 }
 
 .addCustomer {
-    margin-left: 152px;
+    margin-left: 140px;
     margin-top: 20px;
     padding: 0.5rem;
     border-radius: 0.3rem;
@@ -56,6 +56,7 @@
 
     border: 1px solid #ccc;
     border-radius: 0.3rem;
+
 }
 
 .formik-customer-submit-button {
@@ -72,4 +73,12 @@
 
 .formik-customer-submit-button:hover {
     background-color: #FCACAC;
+}
+
+#nameC,
+#phoneC,
+#mailC,
+#addressC,
+#cityC {
+    width: 550px;
 }

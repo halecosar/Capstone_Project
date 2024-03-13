@@ -25,7 +25,7 @@ function Vaccine() {
 
 
     const columns = [
-        { field: 'id', headerName: 'ID', width: 70, editable: true, },
+        { field: 'id', headerName: 'ID', width: 90, editable: true, },
         { field: 'name', headerName: 'İsim', width: 130, editable: true, },
         { field: 'protectionStartDate', headerName: 'Koruma Başlangıç', width: 130, editable: true, },
         { field: 'protectionFinishDate', headerName: 'Koruma Bitiş', width: 130, editable: true, },
@@ -53,7 +53,7 @@ function Vaccine() {
                 };
 
                 return (
-                    <Select style={{ width: '200px' }}
+                    <Select style={{ width: '200px', textAlign: 'center' }}
                         value={params.row.animal.id}
                         onChange={handleChange}
                     >
@@ -224,7 +224,7 @@ function Vaccine() {
             </div>
 
             <div className='search'>
-                <input className='nameInput'
+                <input style={{ width: '210px', height: '20px' }} className='nameInput'
                     type="text"
                     value={nameSearchValue}
                     onChange={searchChangeName}
@@ -233,7 +233,7 @@ function Vaccine() {
 
             </div>
 
-            <div style={{ height: 400, width: '80%', marginLeft: '10%', marginTop: '10px', }}>
+            <div style={{ height: 400, width: '60%', marginLeft: '20%', marginTop: '30px', }}>
                 <DataGrid
                     rows={vaccines}
                     columns={columns}
@@ -295,7 +295,7 @@ function Vaccine() {
                                 <label htmlFor="animalId">Sahibi</label>
                                 <Field name="animalId" className="formik-select">
                                     {({ field }) => (
-                                        <Select
+                                        <Select style={{ width: '490px', height: '40px' }}
                                             {...field}
                                             value={values.selectedOption}
                                             onChange={(event) => setFieldValue('animalId', event.target.value)}
@@ -309,7 +309,7 @@ function Vaccine() {
                                 </Field>
                             </div>
 
-                            <button type="submit" className='formik-submit-button'>Kaydet</button>
+                            <button type="submit" className='formik-submit-buttonVaccine'>Kaydet</button>
                         </Form>
                     )}
                 </Formik>}

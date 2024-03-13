@@ -20,7 +20,7 @@ function Report() {
 
 
     const columns = [
-        { field: 'id', headerName: 'ID', width: 70, editable: true },
+        { field: 'id', headerName: 'ID', width: 90, editable: true },
         { field: 'title', headerName: 'Başlık', width: 130, editable: true },
         { field: 'diagnosis', headerName: 'Teşhis', width: 130, editable: true },
         { field: 'price', headerName: 'Ödeme', width: 130, editable: true },
@@ -162,7 +162,7 @@ function Report() {
             </div>
             <Navigation />
 
-            <div style={{ height: 400, width: '80%', marginLeft: '10%', marginTop: '10px' }}>
+            <div style={{ height: 400, width: '60%', marginLeft: '20%', marginTop: '40px' }}>
                 <DataGrid
                     rows={reports}
                     columns={columns}
@@ -204,9 +204,11 @@ function Report() {
 
                             <div className='form-group' >
                                 <label htmlFor="vaccineId">Aşı</label>
-                                <Field name="vaccineId" className="formik-select">
+
+
+                                <Field name="vaccineId" className="formik-selectVaccine">
                                     {({ field }) => (
-                                        <Select
+                                        <Select style={{ width: '455px', height: '40px', marginRight: ' 30px' }}
                                             {...field}
                                             value={values.vaccineId}
                                             onChange={(event) => setFieldValue('vaccineId', event.target.value)}
@@ -220,7 +222,7 @@ function Report() {
                                 </Field>
                             </div>
 
-                            <button type="submit" className='formik-submit-button'>Kaydet</button>
+                            <button type="submit" className='formik-submit-buttonReport'>Kaydet</button>
                         </Form>
                     )}
                 </Formik>}

@@ -18,16 +18,16 @@ function Customer() {
     const [searchValue, setSearchValue] = useState('');
 
     const columns = [
-        { field: 'id', headerName: 'ID', width: 70 },
-        { field: 'name', headerName: 'İsim', width: 130, editable: true, },
-        { field: 'phone', headerName: 'Telefon', width: 190, editable: true, },
-        { field: 'mail', headerName: 'Mail', width: 130, editable: true, },
-        { field: 'address', headerName: 'Adres', width: 180, editable: true, },
-        { field: 'city', headerName: 'Şehir', width: 130, editable: true, },
+        { field: 'id', headerName: 'ID', width: 90, align: 'left' },
+        { field: 'name', headerName: 'İsim', width: 130, editable: true, align: 'left' },
+        { field: 'phone', headerName: 'Telefon', width: 120, editable: true, align: 'left' },
+        { field: 'mail', headerName: 'Mail', width: 150, editable: true, align: 'left' },
+        { field: 'address', headerName: 'Adres', width: 180, editable: true, align: 'left' },
+        { field: 'city', headerName: 'Şehir', width: 130, editable: true, align: 'left' },
         {
             field: 'remove',
-            headerName: 'Kaldır',
-            width: 130,
+            headerName: 'Sil',
+            width: 100,
             renderCell: (params) => (
                 <IconButton onClick={() => handleDelete(params.row.id)}>
                     <DeleteIcon />
@@ -147,6 +147,7 @@ function Customer() {
                         },
                     }}
                     pageSizeOptions={[5, 10]}
+                    headerClassName="custom-header"
                 />
             </div>
 
@@ -171,27 +172,27 @@ function Customer() {
                         <h1>Müşteri Ekle</h1>
                         <div className="formik-field">
                             <label htmlFor="name">İsim</label>
-                            <Field id="name" name="name" />
+                            <Field id="nameC" name="name" />
                         </div>
 
                         <div className="formik-field">
                             <label htmlFor="phone">Telefon Numarası</label>
-                            <Field id="phone" name="phone" />
+                            <Field id="phoneC" name="phone" />
                         </div>
 
                         <div className="formik-field">
                             <label htmlFor="mail">Email</label>
-                            <Field id="mail" name="mail" type="mail" />
+                            <Field id="mailC" name="mail" type="mail" />
                         </div>
 
                         <div className="formik-field">
                             <label htmlFor="address">Adres</label>
-                            <Field id="address" name="address" />
+                            <Field id="addressC" name="address" />
                         </div>
 
                         <div className="formik-field">
                             <label htmlFor="city">Şehir</label>
-                            <Field id="city" name="city" />
+                            <Field id="cityC" name="city" />
                         </div>
 
 

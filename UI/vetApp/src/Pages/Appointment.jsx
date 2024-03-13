@@ -27,7 +27,7 @@ function Appointment() {
     const [selectedAnimal, setSelectedAnimal] = useState('');
 
     const columns = [
-        { field: 'id', headerName: 'ID', width: 70, editable: true },
+        { field: 'id', headerName: 'ID', width: 90, editable: true },
         { field: 'appointmentDate', headerName: 'Randevu Zamanı', width: 180, editable: true },
         {
             field: 'animalName',
@@ -52,7 +52,7 @@ function Appointment() {
                 };
 
                 return (
-                    <Select style={{ width: '230px' }}
+                    <Select style={{ width: '230px', textAlign: 'center', }}
                         value={params.row.animal.id}
                         onChange={handleChange}
                     >
@@ -88,7 +88,7 @@ function Appointment() {
                 };
 
                 return (
-                    <Select style={{ width: '200px' }}
+                    <Select style={{ width: '200px', textAlign: 'center' }}
                         value={params.row.doctor.id}
                         onChange={handleChange}
                     >
@@ -123,7 +123,7 @@ function Appointment() {
                 };
 
                 return (
-                    <Select style={{ width: '200px' }}
+                    <Select style={{ width: '200px', textAlign: 'center' }}
                         value={params.row.report.id}
                         onChange={handleChange}
                     >
@@ -137,7 +137,7 @@ function Appointment() {
         },
         {
             field: 'remove',
-            headerName: 'Kaldır',
+            headerName: 'Sil',
             width: 90,
             renderCell: (params) => (
                 <IconButton onClick={() => handleDelete(params.row.id)}>
@@ -148,7 +148,7 @@ function Appointment() {
         {
             field: 'update',
             headerName: 'Güncelle',
-            width: 90,
+            width: 130,
             renderCell: (params) => (
                 <IconButton onClick={() => handleUpdate(params.row)}>
                     <UpdateIcon />
@@ -321,7 +321,7 @@ function Appointment() {
                 />
 
                 <label style={{ fontSize: '12px', color: '#FCACAC', fontWeight: 'bold', marginRight: '10px' }}>Doktor ile Arama</label>
-                <Select style={{ fontSize: '10px', width: '100px' }} className='searchList' value={selectedDoctor} onChange={handleDoctorChange} disabled={selectedAnimal !== ''}>
+                <Select style={{ fontSize: '10px', width: '100px', height: '30px' }} className='searchList' value={selectedDoctor} onChange={handleDoctorChange} disabled={selectedAnimal !== ''}>
                     <MenuItem value="">Seçiniz</MenuItem>
                     {doctorOptions.map(option => (
                         <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
@@ -330,7 +330,7 @@ function Appointment() {
 
                 <label style={{ fontSize: '12px', color: '#FCACAC', fontWeight: 'bold', marginRight: '10px' }}>Hayvan ile Arama</label>
 
-                <Select style={{ fontSize: '10px', width: '100px' }} className='searchList' value={selectedAnimal} onChange={handleAnimalChange} disabled={selectedDoctor !== ''}>
+                <Select style={{ fontSize: '10px', width: '100px', height: '30px' }} className='searchList' value={selectedAnimal} onChange={handleAnimalChange} disabled={selectedDoctor !== ''}>
                     <MenuItem value="">Seçiniz</MenuItem>
                     {animalOptions.map(option => (
                         <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
@@ -341,14 +341,14 @@ function Appointment() {
                 <button className='searchButton' onClick={searchAppointment}> Randevu Ara </button>
             </div>
 
-            <div style={{ height: 400, width: '80%', marginLeft: '10%', marginTop: '10px' }}>
+            <div style={{ height: 400, width: '70%', marginLeft: '15%', marginTop: '10px' }}>
                 <DataGrid
                     rows={appointments}
                     columns={columns}
                     pageSize={5}
                 />
             </div>
-            <div> <button className='add' onClick={visibleChange}> Randevu Ekle</button></div>
+            <div> <button className='addAp' onClick={visibleChange}> Randevu Ekle</button></div>
 
             <div>
                 {visible && <Formik
@@ -368,11 +368,11 @@ function Appointment() {
                             <h1>Randevu Ekle</h1>
                             <div className="form-group">
                                 <label htmlFor="appointmentDate" className="formik-label">Randevu Tarihi:</label>
-                                <Field id="appointmentDate" name="appointmentDate" type="date" className="formik-input" />
+                                <Field id="appointmentDate" name="appointmentDate" type="date" className="select-date" />
                             </div>
                             <div className="form-group">
                                 <label htmlFor="appointmentTime" className="formik-label">Randevu Saati:</label>
-                                <Field id="appointmentTime" name="appointmentTime" type="time" className="formik-input" />
+                                <Field id="appointmentTime" name="appointmentTime" type="time" className="select-time" />
                             </div>
                             <div className="form-group">
                                 <label htmlFor="animalId" className="formik-label">Hayvan:</label>
@@ -401,7 +401,7 @@ function Appointment() {
                                     ))}
                                 </Field>
                             </div>
-                            <button type="submit" className='formik-submit-button' >Kaydet</button>
+                            <button type="submit" className='formik-submit-buttonAp' >Kaydet</button>
                         </Form>
 
                     )}

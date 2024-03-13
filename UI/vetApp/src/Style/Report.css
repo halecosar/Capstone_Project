@@ -14,42 +14,32 @@
     font-weight: bolder;
     border: 6px solid #FCACAC;
     padding: 10px;
-    margin-left: 500px;
+    margin-left: 415px;
     align-items: center;
-    width: 600px;
+    width: 500px;
     height: 350px;
 }
 
-.formik-containerreport h1 {
+.formik-container-report h1 {
     text-align: center;
+    margin-bottom: 10px;
 }
 
-.form-group {
+/* .form-group {
     display: flex;
     flex-direction: column;
     margin-bottom: 1rem;
     color: #6B555E;
-    width: 500px;
-    align-items: center;
-}
+
+
+} */
 
 .formik-label {
     margin-bottom: 0.5rem;
 }
 
-.formik-select,
-.formik-input {
-    width: 30%;
-    padding: 0.5rem;
-    border-radius: 0.3rem;
-    border: 1px solid #ccc;
-}
 
-.formik-input {
-    width: 30%;
-}
-
-.formik-submit-button {
+.formik-submit-buttonReport {
     width: 60px;
     padding: 0.5rem;
     border-radius: 0.3rem;
@@ -57,28 +47,33 @@
     background-color: #FCACAC;
     color: #fff;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    margin-left: 7px;
 }
 
-.formik-submit-button:hover {
-    background-color: #FCACAC;
-}
 
-.formik-field-group {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    color: #6B555E;
-}
+
 
 .addReport {
-    margin-left: 140px;
+    margin-left: 280px;
     padding: 0.5rem;
     border-radius: 0.3rem;
     border: 1px solid #ccc;
     background-color: #FCACAC;
     color: #fff;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+#title,
+#diagnosis,
+#price {
+
+    width: 455px;
+    align-items: center;
+    margin-left: -30px
+}
+
+.formik-selectVaccine {
+
+    width: 480px;
 }
