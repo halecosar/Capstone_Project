@@ -199,7 +199,7 @@ function Report() {
 
                             <div className='form-group'>
                                 <label htmlFor="price">Fiyat</label>
-                                <Field id="price" name="price" />
+                                <Field id="price" name="price" type="number" />
                             </div>
 
                             <div className='form-group' >
