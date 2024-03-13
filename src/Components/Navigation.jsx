@@ -1,37 +1,27 @@
-import React from 'react'
+import React from 'react';
+import { Link } from 'react-router-dom';
+import logo from '../assets/logo.jpg';
 import './Navigation.css';
-// import logo from '../assets/logo.ico';
-import logo from '../assets/logo.jpg'
 
 function Navigation() {
     return (
         <div className='navbar'>
-
-
             <div className='router'>
                 <div className='logo'>
-                    <a href="/">
+                    <Link to="/">
                         <img src={logo} style={{ width: '35px', height: '40px' }} alt="logo" />
-                    </a>
-
+                    </Link>
                 </div>
-
-                <a href="/">Anasayfa</a>
-                <a href="/customer">Müşteri</a>
-                <a href="/animal">Hayvan</a>
-                <a href="/appointment">Randevular</a>
-                <a href="/doctor">Doktorlar</a>
-                <a href="/vaccine">Aşılar</a>
-                <a href="/report">Raporlar</a>
-
+                <Link to="/">Anasayfa</Link>
+                <Link to="/customer">Müşteri</Link>
+                <Link to="/animal">Hayvan</Link>
+                <Link to="/appointment">Randevular</Link>
+                <Link to="/doctor">Doktorlar</Link>
+                <Link to="/vaccine">Aşılar</Link>
+                <Link to="/report">Raporlar</Link>
             </div>
-
-
-
-
-
         </div>
-    )
+    );
 }
 
-export default Navigation
+export default Navigation;
