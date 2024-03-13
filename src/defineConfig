@@ -1,0 +1,13 @@
+import { defineConfig } from 'vite';
+
+export default defineConfig({
+    build: {
+        outDir: 'build', // Çıktı dizinini belirtin
+        assetsDir: 'assets', // Varlık dosyalarının klasörünü belirtin
+        emptyOutDir: true, // Çıktı dizinini temizleme
+        rollupOptions: {
+            // Rollup yapılandırma seçeneklerini belirtin
+            // Gerekirse burada ek yapılandırma yapabilirsiniz
+        },
+    },
+});
