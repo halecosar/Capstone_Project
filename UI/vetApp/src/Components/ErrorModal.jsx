@@ -1,7 +1,7 @@
 import { Modal, Button } from '@mui/material';
 
-function ErrorModal({ errorMsg, openModal, setOpenModal }) {
 
+function ErrorModal({ errorMsg, openModal, setOpenModal }) {
     const handleCloseModal = () => {
         setOpenModal(false);
     };
@@ -13,14 +13,14 @@ function ErrorModal({ errorMsg, openModal, setOpenModal }) {
                 aria-labelledby="modal-title"
                 aria-describedby="modal-description"
             >
-                <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: 400, bgcolor: 'background.paper', boxShadow: 24, p: 4 }}>
-                    <h2 id="modal-title">Error</h2>
-                    <p id="modal-description">{errorMsg}</p>
-                    <Button onClick={handleCloseModal}>Kapat</Button>
+                <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: 400, backgroundColor: 'rgba(255, 192, 203, 0.5)', borderRadius: 8, padding: 24 }}>
+                    <h2 style={{ color: '#6B555E' }}
+                        id="modal-title">HATA</h2> <br />
+                    <p id="modal-description">{errorMsg}</p> <br />
+                    <Button style={{ color: '#6B555E', }} onClick={handleCloseModal}>Kapat</Button>
                 </div>
             </Modal>
         </div>
     )
 }
-
 export default ErrorModal;
