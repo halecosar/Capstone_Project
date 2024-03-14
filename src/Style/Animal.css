@@ -14,7 +14,7 @@
     margin-top: 10px;
     color: #6B555E;
     font-weight: bolder;
-    border: 6px solid #FCACAC;
+
     padding: 10px;
     margin-left: 400px;
     align-items: center;
@@ -28,7 +28,7 @@
 
 .formik-select,
 .formik-input {
-    width: 30%;
+
     padding: 0.5rem;
     border-radius: 0.3rem;
     border: 1px solid #ccc;
@@ -113,4 +113,17 @@
 
     border: 1px solid #ccc;
     border-radius: 0.3rem;
+}
+
+#gender {
+    width: 175px;
+    ;
+}
+
+#nameAnimal {
+    width: 575px;
+}
+
+#animalcustomerId {
+    width: 583px;
 }

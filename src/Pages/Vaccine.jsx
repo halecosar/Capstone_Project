@@ -208,29 +208,28 @@ function Vaccine() {
             </div>
             <Navigation />
 
-            <div className='search'>
-                <input className='dateInput'
-                    type="date"
-                    value={startsearchValue}
-                    onChange={searchChangeStart}
-                />
-                <input className='dateInput'
-                    type="date"
-                    value={endsearchValue}
-                    onChange={searchChangeEnd}
-                />
-                <button className='searchButton' onClick={searchDate}> Tarihe Göre Ara </button>
-
-            </div>
-
-            <div className='search'>
-                <input style={{ width: '210px', height: '20px' }} className='nameInput'
-                    type="text"
-                    value={nameSearchValue}
-                    onChange={searchChangeName}
-                />
-                <button className='searchButton1' onClick={searchName}> İsme Göre Ara </button>
-
+            <div className='searchVaccineContainer'>
+                <div className='searchVaccines1'>
+                    <input className='dateInput'
+                        type="date"
+                        value={startsearchValue}
+                        onChange={searchChangeStart}
+                    />
+                    <input className='dateInput'
+                        type="date"
+                        value={endsearchValue}
+                        onChange={searchChangeEnd}
+                    />
+                    <button className='searchButtonVaccine' onClick={searchDate}> Tarihe Göre Ara </button>
+                </div>
+                <div className='searchVaccines2'>
+                    <input style={{ width: '140px', height: '20px' }} className='nameInput'
+                        type="text"
+                        value={nameSearchValue}
+                        onChange={searchChangeName}
+                    />
+                    <button className='searchButtonVaccine1' onClick={searchName}> İsme Göre Ara </button>
+                </div>
             </div>
 
             <div style={{ height: 400, width: '60%', marginLeft: '20%', marginTop: '30px', }}>

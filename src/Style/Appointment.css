@@ -13,8 +13,16 @@
 
 .select-date,
 .select-time {
-    width: 472px;
+    width: 470px;
 }
+
+#animalId,
+#doctorId,
+#reportId {
+    width: 470px;
+
+}
+
 
 .formik-submit-buttonAp {
     width: 60px;
@@ -54,9 +62,9 @@
     margin-top: 10px;
     color: #6B555E;
     font-weight: bolder;
-    border: 6px solid #FCACAC;
+
     padding: 10px;
-    margin-left: 400px;
+    margin-left: 450px;
     align-items: center;
     width: 544px;
     height: 511px;

@@ -2,12 +2,13 @@
     margin-top: 80px;
     color: #6B555E;
     font-weight: bolder;
-    border: 6px solid #FCACAC;
+
     padding: 10px;
     margin-left: 410px;
     align-items: center;
     width: 550px;
-    height: 500px;
+    height: 450px;
+
 }
 
 
@@ -65,13 +66,9 @@
 
 }
 
-.search {
-    margin-top: 20px;
-    /* margin-left: 160px; */
 
-}
 
-.searchButton {
+.searchButtonVaccine {
 
     padding: 0.5rem;
     background-color: #FCACAC;
@@ -79,19 +76,19 @@
     border: 1px solid #ccc;
     border-radius: 0.3rem;
     cursor: pointer;
-    height: 40px;
+    height: 30px;
     margin-left: 15px;
     width: 120px;
 }
 
-.searchButton1 {
+.searchButtonVaccine1 {
     padding: 0.5rem;
     background-color: #FCACAC;
     color: #fff;
     border: 1px solid #ccc;
     border-radius: 0.3rem;
     cursor: pointer;
-    height: 40px;
+    height: 30px;
     margin-left: 22px;
     width: 120px;
 }
@@ -120,4 +117,24 @@
 .formik-select {
     width: 480px;
     align-items: center;
+}
+
+.searchVaccines2 {
+    margin-top: 40px;
+}
+
+.dateInput {
+    margin-right: 10px;
+}
+
+
+.searchVaccines1 {
+    margin-top: 40px;
+    margin-left: 250px;
+}
+
+.searchVaccineContainer {
+    display: flex;
+    gap: 40px;
+    margin-left: 80px;
 }

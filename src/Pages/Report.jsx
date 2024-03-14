@@ -188,22 +188,22 @@ function Report() {
                         <Form className="formik-container-report">
                             <h1>Rapor Ekle</h1>
                             <div className='form-group'>
-                                <label htmlFor="title"> Başlık</label>
+                                <label htmlFor="title">     Başlık :</label>
                                 <Field id="title" name="title" />
                             </div>
 
                             <div className='form-group'>
-                                <label htmlFor="diagnosis">Teşhis</label>
+                                <label htmlFor="diagnosis">Teşhis:</label>
                                 <Field id="diagnosis" name="diagnosis" />
                             </div>
 
                             <div className='form-group'>
-                                <label htmlFor="price">Fiyat</label>
+                                <label htmlFor="price">Fiyat:</label>
                                 <Field id="price" name="price" type="number" />
                             </div>
 
                             <div className='form-group' >
-                                <label htmlFor="vaccineId">Aşı</label>
+                                <label htmlFor="vaccineId">  Yapılan Aşı:</label>
 
 
                                 <Field name="vaccineId" className="formik-selectVaccine">

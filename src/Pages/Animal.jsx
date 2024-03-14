@@ -260,7 +260,7 @@ function Animal() {
                             <h1>Hayvan Ekle</h1>
                             <div className="formik-field">
                                 <label htmlFor="name" className="formik-label">İsim: </label>
-                                <Field id="name" name="name" />
+                                <Field id="nameAnimal" name="name" />
                             </div>
 
                             <div className="formik-field-group">
@@ -293,7 +293,7 @@ function Animal() {
 
                             <div className="formik-field">
                                 <label htmlFor="customerId" className="formik-label"> Hayvan Sahibi:</label>
-                                <Field as="select" id="customerId" name="customerId" onChange={(event) => setFieldValue('customerId', event.target.value)} className="formik-select">
+                                <Field as="select" id="animalcustomerId" name="customerId" onChange={(event) => setFieldValue('customerId', event.target.value)} className="formik-select">
                                     <option disabled selected value=""> Hayvan Sahibini Seçiniz</option>
                                     {options.map(option => (
                                         <option key={option.value} value={option.value}>{option.label}</option>
