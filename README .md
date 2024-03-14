@@ -9,7 +9,7 @@ This project is a web application for managing veterinary clinics. It enables th
 -Saving, listing, editing, searching, and deleting animals belonging to customers.     
 -Saving, listing, editing, searching, and deleting veterinary doctors.   
 -Saving, listing, editing, searching, and deleting available days of veterinary doctors.    
--Creating appointments for animals.
+-Creating appointments for animals.                                                                                                                                                                                           
 -Saving reports and vaccination records for animals.
 
 # Live Link
