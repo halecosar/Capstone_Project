@@ -1,5 +1,5 @@
 import { Modal, Button } from '@mui/material';
-
+import React from 'react';
 
 function ErrorModal({ errorMsg, openModal, setOpenModal }) {
     const handleCloseModal = () => {

@@ -52,11 +52,11 @@ function Doctor() {
 
     const availableDatesColumns = [
         { field: 'id', headerName: 'ID', width: 90, editable: true, },
-        { field: 'availableDateDate', headerName: 'Uygun Saat', width: 160, editable: true, },
+        { field: 'availableDateDate', headerName: 'Uygun Tatih', width: 160, editable: true, },
         { field: 'doctorName', headerName: '  Doktor Adı', width: 160, valueGetter: (params) => params.row.doctor.name },
         {
             field: 'remove',
-            headerName: ' Uygun Saati Sil',
+            headerName: ' Uygun Tarihi Sil',
             width: 180,
             renderCell: (params) => (
                 <IconButton onClick={() => dateDelete(params.row.id)}>
@@ -66,7 +66,7 @@ function Doctor() {
         },
         {
             field: 'update',
-            headerName: ' Uygun Saati Güncelle',
+            headerName: ' Uygun Tarihi Güncelle',
             width: 2150,
             renderCell: (params) => (
                 <IconButton onClick={() => dateUpdate(params.row)}>
