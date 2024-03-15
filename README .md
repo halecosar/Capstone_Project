@@ -1,24 +1,30 @@
 
 # Veterinary Management System Application
 
-This project is a web application for managing veterinary clinics. It enables the management of customers, animals, doctors, appointments, reports, and vaccinations.
+Bu proje, veteriner kliniklerinin yönetimi için bir web uygulamasıdır. Müşterilerin, hayvanların, doktorların, randevuların, raporların ve aşıların yönetimini sağlar.
 
-# Features
+# Özellikler
 
--Saving, listing, editing, searching, and deleting customers.   
--Saving, listing, editing, searching, and deleting animals belonging to customers.     
--Saving, listing, editing, searching, and deleting veterinary doctors.   
--Saving, listing, editing, searching, and deleting available days of veterinary doctors.    
--Creating appointments for animals.                                                                                                                                                                                           
--Saving reports and vaccination records for animals.
+Müşterilerin kaydedilmesi, listelenmesi, düzenlenmesi, aranması ve silinmesi.
+Müşterilere ait hayvanların kaydedilmesi, listelenmesi, düzenlenmesi, aranması ve silinmesi.
+Veteriner doktorların kaydedilmesi, listelenmesi, düzenlenmesi, aranması ve silinmesi.
+Veteriner doktorların müsait günlerinin kaydedilmesi, listelenmesi, düzenlenmesi, aranması ve silinmesi.
+Hayvanlar için randevuların oluşturulması.
+Hayvanlara ait raporların ve aşı kayıtlarının kaydedilmesi.
 
-# Live Link
+**Silmek ve güncellemek için ilgili satır seçilir, güncelleme işlemi için  çift tıklanarak hücrede değişiklik yapılır veya listeden değişiklik yapılır. Ardından güncelleme butonuna basılır. Silme işleminde ilgili satıra tıklanır ve silme butonuna tıklanır.
+
+**Doktora müsait gün eklemek için doktor listesinden ilgili doktor seçilir aşağıda açılan datepicker üzerinden uygun tarih seçilir, kaydet butonuna basılır. Altında açılan datagridde güncelleme ve silme işlemleri yapılır.
+
+
+
+# Canlı Link
 https://veterinaryapp.netlify.app/
 
 
 
 
-## Tech Stack
+## Teknolojiler:
 
 **Client:**  React.js, React Router, Material-UI, Formik
 
@@ -27,11 +33,7 @@ https://veterinaryapp.netlify.app/
 
 ## Screenshots
 
-![müsteri](https://github.com/halecosar/Capstone_Project/assets/142445977/1dc41917-e9ba-4fdc-b8ac-75ed7ed212d3)
 
-![randevu](https://github.com/halecosar/Capstone_Project/assets/142445977/b3eff4c0-a740-4213-89fb-d41ada3d1948)
-
-![doktor](https://github.com/halecosar/Capstone_Project/assets/142445977/4a9ffb34-0661-4e41-94d7-af982e1e0b9a)
 
 
 
