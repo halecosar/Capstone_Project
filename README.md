@@ -34,6 +34,12 @@ https://veterinaryapp.netlify.app/
 ## Screenshots
 
 
+![vetappUML](https://github.com/halecosar/Capstone_Project/assets/142445977/655b0e8e-9282-44d4-a6b1-0dd49d3cadee)
+![vetapphome](https://github.com/halecosar/Capstone_Project/assets/142445977/fbd85774-c6a3-4ded-b133-88a711b2ea59)
+![vetappappointment](https://github.com/halecosar/Capstone_Project/assets/142445977/2e9a2d1a-0855-43df-b63f-454b17725dc4)
+![vetappdoctor](https://github.com/halecosar/Capstone_Project/assets/142445977/78e88c9d-375a-4567-b6fb-bb0ec1117b9f)
+![vetappreports](https://github.com/halecosar/Capstone_Project/assets/142445977/2afc8373-5652-4a51-b283-11b36ac42b2e)
+
 
 
 
