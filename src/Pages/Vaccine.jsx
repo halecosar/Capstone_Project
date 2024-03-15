@@ -201,6 +201,17 @@ function Vaccine() {
         setNameSearchValue(e.target.value);
     };
 
+    const refresh = async () => {
+        try {
+            const data = await findAllVaccine();
+            setVaccines(data);
+        } catch (error) {
+            console.error('Error', error);
+            setError("Yenile işlemi yapılırken hata oluştu.");
+            setOpenModal(true);
+        }
+    }
+
     return (
         <div>
             <div>
@@ -229,6 +240,7 @@ function Vaccine() {
                         onChange={searchChangeName}
                     />
                     <button className='searchButtonVaccine1' onClick={searchName}> İsme Göre Ara </button>
+                    <button className='searchButtonVaccine1' onClick={refresh}> Yenile </button>
                 </div>
             </div>
 

@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import Navigation from '../Components/Navigation';
 import { findAllCustomer, saveCustomer, deleteCustomer, updateCustomer, getFilteredCustomerByName } from '../Api';
 import { DataGrid } from '@mui/x-data-grid';
-import { Formik, Field, Form } from 'formik';
+import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import UpdateIcon from "@mui/icons-material/Update";
 import ErrorModal from '../Components/ErrorModal';
 import '../Style/Customer.css';
+import * as Yup from 'yup';
 
 function Customer() {
     const [customers, setCustomers] = useState([]);
@@ -117,6 +118,17 @@ function Customer() {
         }
     }
 
+    const refresh = async () => {
+        try {
+            const data = await findAllCustomer();
+            setCustomers(data);
+        } catch (error) {
+            console.error('Error', error);
+            setError("Yenile işlemi yapılırken hata oluştu.");
+            setOpenModal(true);
+        }
+    }
+
     return (
         <div>
             <div>
@@ -132,6 +144,7 @@ function Customer() {
                 />
 
                 <button className='searchButton' onClick={searchCustomer}> Müşteri Ara </button>
+                <button className='searchButton' onClick={refresh}> Yenile </button>
 
             </div>
 
@@ -164,6 +177,13 @@ function Customer() {
                         address: '',
                         city: '',
                     }}
+                    validationSchema={Yup.object().shape({
+                        name: Yup.string().required('İsim alanı zorunludur.'),
+                        phone: Yup.string().required('Telefon numarası alanı zorunludur.'),
+                        mail: Yup.string().email('Geçerli bir e-posta adresi girin.').required('E-posta adresi alanı zorunludur.'),
+                        address: Yup.string().required('Adres alanı zorunludur.'),
+                        city: Yup.string().required('Şehir alanı zorunludur.'),
+                    })}
                     onSubmit={async (values) => {
                         await submit(values);
                     }}
@@ -173,26 +193,34 @@ function Customer() {
                         <div className="formik-field">
                             <label htmlFor="name">İsim</label>
                             <Field id="nameC" name="name" />
+                            <ErrorMessage name="name" component="div" className="error-message" />
                         </div>
 
                         <div className="formik-field">
                             <label htmlFor="phone">Telefon Numarası</label>
                             <Field id="phoneC" name="phone" />
+                            <ErrorMessage name="phone" component="div" className="error-message" />
+
                         </div>
 
                         <div className="formik-field">
                             <label htmlFor="mail">Email</label>
                             <Field id="mailC" name="mail" type="mail" />
+                            <ErrorMessage name="mail" component="div" className="error-message" />
+
                         </div>
 
                         <div className="formik-field">
                             <label htmlFor="address">Adres</label>
                             <Field id="addressC" name="address" />
+                            <ErrorMessage name="address" component="div" className="error-message" />
+
                         </div>
 
                         <div className="formik-field">
                             <label htmlFor="city">Şehir</label>
                             <Field id="cityC" name="city" />
+                            <ErrorMessage name="city" component="div" className="error-message" />
                         </div>
 
 

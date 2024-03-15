@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import Navigation from '../Components/Navigation';
 import { findAllAnimal, saveAnimal, deleteAnimal, updateAnimal, findAllCustomer, getByIdCustomer, getFilteredAnimalByName, getAnimalsByCustomerId } from '../Api';
 import { DataGrid } from '@mui/x-data-grid';
-import { Formik, Field, Form } from 'formik';
+import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { IconButton, MenuItem, Select } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import UpdateIcon from "@mui/icons-material/Update";
 import AnimalModel from '../Models/Animal';
 import '../Style/Animal.css';
 import ErrorModal from '../Components/ErrorModal';
+import * as Yup from 'yup';
 
 function Animal() {
     const [animals, setAnimals] = useState([]);
@@ -182,10 +183,21 @@ function Animal() {
             const data = await getAnimalsByCustomerId(selectedCustomer);
             setAnimals(data)
             setSearchValue("");
-
+            setSelectedCustomer("");
         } catch (error) {
             console.error('Error', error);
             setError("Hayvan araması yapılırken hata oluştu.");
+            setOpenModal(true);
+        }
+    }
+
+    const refresh = async () => {
+        try {
+            const data = await findAllAnimal();
+            setAnimals(data);
+        } catch (error) {
+            console.error('Error', error);
+            setError("Yenile işlemi yapılırken hata oluştu.");
             setOpenModal(true);
         }
     }
@@ -197,8 +209,6 @@ function Animal() {
                 {error && <ErrorModal errorMsg={error} openModal={openModal} setOpenModal={setOpenModal} />}
             </div>
             <Navigation />
-
-
 
             <div className='search'>
                 <input className='searchInput'
@@ -221,6 +231,11 @@ function Animal() {
                 </Select>
 
                 <button className='searchButton' onClick={searchAnimalbyCustomer}>   Müşteri İsmiyle Hayvan Ara </button>
+            </div>
+
+
+            <div className='search'>
+                <button className='searchButton' onClick={refresh}> Yenile </button>
             </div>
 
             <div style={{ height: 400, width: '80%', marginLeft: '10%', marginTop: '10px' }}>
@@ -251,6 +266,13 @@ function Animal() {
                         color: '',
                         customerId: '',
                     }}
+                    validationSchema={Yup.object().shape({
+                        name: Yup.string().required('İsim gereklidir'),
+                        species: Yup.string().required('Tür gereklidir'),
+                        breed: Yup.string().required('Cins gereklidir'),
+                        color: Yup.string().required('Renk gereklidir'),
+                        customerId: Yup.string().required('Hayvan sahibi gereklidir'),
+                    })}
                     onSubmit={async (values) => {
                         await submit(values);
                     }}
@@ -261,6 +283,7 @@ function Animal() {
                             <div className="formik-field">
                                 <label htmlFor="name" className="formik-label">İsim: </label>
                                 <Field id="nameAnimal" name="name" />
+                                <ErrorMessage name="name" component="div" className="error-message" />
                             </div>
 
                             <div className="formik-field-group">
@@ -279,16 +302,19 @@ function Animal() {
                             <div className="formik-field">
                                 <label htmlFor="species" className="formik-label">Tür:</label>
                                 <Field id="species" name="species" />
+                                <ErrorMessage name="species" component="div" className="error-message" />
                             </div>
 
                             <div className="formik-field">
                                 <label htmlFor="breed" className="formik-label">Cins:</label>
                                 <Field id="breed" name="breed" />
+                                <ErrorMessage name="breed" component="div" className="error-message" />
                             </div>
 
                             <div className="formik-field">
                                 <label htmlFor="color" className="formik-label">Renk:</label>
                                 <Field id="color" name="color" />
+                                <ErrorMessage name="color" component="div" className="error-message" />
                             </div>
 
                             <div className="formik-field">
@@ -299,6 +325,7 @@ function Animal() {
                                         <option key={option.value} value={option.value}>{option.label}</option>
                                     ))}
                                 </Field>
+                                <ErrorMessage name="customerId" component="div" className="error-message" />
                             </div>
 
                             <button type="submit" className="formik-submit-button">Kaydet</button>

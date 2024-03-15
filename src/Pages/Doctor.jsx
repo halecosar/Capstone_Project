@@ -3,13 +3,14 @@ import Navigation from '../Components/Navigation'
 import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { findAllDoctor, saveDoctor, deleteDoctor, updateDoctor, getAvailableDatesByDoctor, updateAvailableDate, deleteAvailableDate, saveAvailableDate } from '../Api';
-import { Formik, Field, Form } from 'formik';
+import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import UpdateIcon from "@mui/icons-material/Update";
 import AvailableDateModel from '../Models/AvailableDate';
 import '../Style/Doctor.css';
 import ErrorModal from '../Components/ErrorModal';
+import * as Yup from 'yup';
 
 function Doctor() {
     const [doctors, setDoctors] = useState([]);
@@ -242,6 +243,13 @@ function Doctor() {
                         address: '',
                         city: '',
                     }}
+                    validationSchema={Yup.object().shape({
+                        name: Yup.string().required('İsim gereklidir'),
+                        phone: Yup.string().required('Telefon gereklidir'),
+                        mail: Yup.string().email('Geçerli bir e-posta adresi girin.').required('E-posta adresi alanı zorunludur.'),
+                        address: Yup.string().required('Adres gereklidir'),
+                        city: Yup.string().required('Şehir gereklidir'),
+                    })}
                     onSubmit={async (values, formBag) => {
                         await submit(values, formBag);
                     }}
@@ -249,26 +257,32 @@ function Doctor() {
                     <Form className="formik-containerdoctor">
                         <h1>Doktor Ekle</h1>
                         <div className="form-groupDoctor"><label htmlFor="name">İsim</label>
-                            <Field id="name" name="name" /></div>
+                            <Field id="name" name="name" />
+                            <ErrorMessage name="name" component="div" className="error-message" />
+                        </div>
 
                         <div className="form-groupDoctor">
                             <label htmlFor="phone">Telefon Numarası</label>
                             <Field id="phone" name="phone" />
+                            <ErrorMessage name="phone" component="div" className="error-message" />
                         </div>
 
                         <div className="form-groupDoctor">
                             <label htmlFor="mail">Email</label>
                             <Field id="mail" name="mail" type="mail" />
+                            <ErrorMessage name="mail" component="div" className="error-message" />
                         </div>
 
                         <div className="form-groupDoctor">
                             <label htmlFor="address">Adres</label>
                             <Field id="address" name="address" />
+                            <ErrorMessage name="address" component="div" className="error-message" />
                         </div>
 
                         <div className="form-groupDoctor">
                             <label htmlFor="city">Şehir</label>
                             <Field id="city" name="city" />
+                            <ErrorMessage name="city" component="div" className="error-message" />
                         </div>
                         <div>
                             <button type="submit" className='formik-submit-buttonDoctor'>Kaydet</button>
@@ -286,19 +300,18 @@ function Doctor() {
                 <Formik
                     initialValues={{
                         availableDateDate: '',
-
-
                     }}
+                    validationSchema={Yup.object().shape({
+                        availableDateDate: Yup.date().required('Tarih gereklidir')
+                    })}
                     onSubmit={async (values, formBag) => {
                         await dateSave(values, formBag);
                     }}
                 >
                     <Form className='formik-container2'>
-
                         <label htmlFor="availableDateDate"> Doktor için Uygun Tarih Ekleyiniz! </label> <br />
                         <Field id="availableDateDate" name="availableDateDate" type="date" /> <br />
-
-
+                        <ErrorMessage name="availableDateDate" component="div" className="error-message" />
                         <button type="submit" className='formik-submit-buttonDoctor' >Kaydet</button>
                     </Form>
 

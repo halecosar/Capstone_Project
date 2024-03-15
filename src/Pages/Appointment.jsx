@@ -20,10 +20,10 @@ function Appointment() {
     const [error, setError] = useState("");
     const [openModal, setOpenModal] = useState(false);
     const [visible, setVisible] = useState(false);
-    const [searchStartDateValue, setSearchStartDateValue] = useState("");
-    const [searchEndDateValue, setsearchEndDateValue] = useState("");
-    const [selectedDoctor, setSelectedDoctor] = useState('');
-    const [selectedAnimal, setSelectedAnimal] = useState('');
+    const [searchStartDateValue, setSearchStartDateValue] = useState(null);
+    const [searchEndDateValue, setsearchEndDateValue] = useState(null);
+    const [selectedDoctor, setSelectedDoctor] = useState("");
+    const [selectedAnimal, setSelectedAnimal] = useState("");
 
     const columns = [
         { field: 'id', headerName: 'ID', width: 90, editable: true },
@@ -249,11 +249,25 @@ function Appointment() {
                 setOpenModal(true);
             }
 
-            setSearchStartDateValue(null);
-            setsearchEndDateValue(null);
+            setSearchStartDateValue('');
+            setsearchEndDateValue('');
+            setSelectedDoctor("");
+            setSelectedAnimal("");
         } catch (error) {
             console.error('Error', error);
             setError("Randevu araması yapılırken hata oluştu.");
+            setOpenModal(true);
+        }
+    }
+
+
+    const refresh = async () => {
+        try {
+            const data = await findAllAppointment();
+            setAppointments(data);
+        } catch (error) {
+            console.error('Error', error);
+            setError("Yenile işlemi yapılırken hata oluştu.");
             setOpenModal(true);
         }
     }
@@ -297,6 +311,7 @@ function Appointment() {
 
 
                 <button className='searchButton' onClick={searchAppointment}> Randevu Ara </button>
+                <button className='searchButton' onClick={refresh}> Yenile </button>
             </div>
 
             <div style={{ height: 400, width: '70%', marginLeft: '15%', marginTop: '10px' }}>
