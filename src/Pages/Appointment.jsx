@@ -16,7 +16,6 @@ function Appointment() {
     const [appointments, setAppointments] = useState([]);
     const [animalOptions, setAnimalOptions] = useState([]);
     const [doctorOptions, setDoctorOptions] = useState([]);
-    const [reportOptions, setReportOptions] = useState([]);
     const [shouldFetchAppointments, setShouldFetchAppointments] = useState(false);
     const [error, setError] = useState("");
     const [openModal, setOpenModal] = useState(false);
@@ -101,41 +100,6 @@ function Appointment() {
 
         },
         {
-            field: 'reportName',
-            headerName: 'Rapor Başlığı',
-            width: 230,
-            editable: true,
-            renderCell: (params) => {
-                const handleChange = async (e) => {
-                    const newValue = e.target.value;
-                    const { id } = params.row;
-                    const field = 'report';
-
-                    const updatedRows = await Promise.all(appointments.map(async (row) => {
-                        if (row.id === id) {
-                            const value = await getByIdReport(newValue);
-                            return { ...row, [field]: value };
-                        }
-                        return row;
-                    }));
-
-                    setAppointments(updatedRows);
-                };
-
-                return (
-                    <Select style={{ width: '200px', textAlign: 'center' }}
-                        value={params.row.report.id}
-                        onChange={handleChange}
-                    >
-                        {reportOptions.map(option => (
-                            <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
-                        ))}
-                    </Select>
-                );
-            },
-
-        },
-        {
             field: 'remove',
             headerName: 'Sil',
             width: 90,
@@ -177,13 +141,6 @@ function Appointment() {
                 }));
                 setDoctorOptions(doctorOptions);
 
-                const data4 = await findAllReport();
-                const reportOptions = data4.map(report => ({
-                    value: report.id,
-                    label: report.title
-                }));
-                setReportOptions(reportOptions);
-
                 setShouldFetchAppointments(false);
 
             } catch (error) {
@@ -223,6 +180,7 @@ function Appointment() {
         try {
             const model = new AppointmentModel();
             const appointmentDateTime = new Date(values.appointmentDate + ' ' + values.appointmentTime);
+            appointmentDateTime.setHours(appointmentDateTime.getHours() + 3);
             model.appointmentDate = appointmentDateTime;
             model.doctor = {
                 id: values.doctorId
@@ -388,15 +346,6 @@ function Appointment() {
                                 <Field as="select" id="doctorId" name="doctorId" className="formik-select">
                                     <option disabled selected value="">Seçiniz</option>
                                     {doctorOptions.map(option => (
-                                        <option key={option.value} value={option.value}>{option.label}</option>
-                                    ))}
-                                </Field>
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="reportId" className="formik-label">Rapor:</label>
-                                <Field as="select" id="reportId" name="reportId" className="formik-select">
-                                    <option disabled selected value="">Seçiniz</option>
-                                    {reportOptions.map(option => (
                                         <option key={option.value} value={option.value}>{option.label}</option>
                                     ))}
                                 </Field>

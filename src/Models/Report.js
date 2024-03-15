@@ -6,6 +6,9 @@ class ReportModel {
         this.vaccine = {
             id: ""
         };
+        this.appointment = {
+            id: ""
+        };
     }
 }
 

@@ -6,13 +6,14 @@ import { IconButton, MenuItem, Select } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import UpdateIcon from "@mui/icons-material/Update";
 import ReportModel from '../Models/Report';
-import { findAllReport, saveReport, deleteReport, updateReport, findAllVaccine, getByIdVaccine } from '../Api';
+import { findAllReport, saveReport, deleteReport, updateReport, findAllVaccine, getByIdVaccine, findAllAppointment, getByIdAppointment } from '../Api';
 import '../Style/Report.css';
 import ErrorModal from '../Components/ErrorModal';
 
 function Report() {
     const [reports, setReports] = useState([]);
     const [options, setOptions] = useState([]);
+    const [appointmentOptions, setAppointmentOptions] = useState([]);
     const [shouldFetchReports, setShouldFetchReports] = useState(false);
     const [error, setError] = useState("");
     const [openModal, setOpenModal] = useState(false);
@@ -24,7 +25,6 @@ function Report() {
         { field: 'title', headerName: 'Başlık', width: 130, editable: true },
         { field: 'diagnosis', headerName: 'Teşhis', width: 130, editable: true },
         { field: 'price', headerName: 'Ödeme', width: 130, editable: true },
-
         {
             field: 'vaccineName',
             headerName: 'Yapılan Aşı',
@@ -54,6 +54,42 @@ function Report() {
                         onChange={handleChange}
                     >
                         {options.map(option => (
+                            <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
+                        ))}
+                    </Select>
+                );
+            },
+
+        },
+        {
+            field: 'appointmentName',
+            headerName: 'Randevu',
+            width: 250,
+            editable: true,
+            cellClassName: 'custom-cell',
+            renderCell: (params) => {
+                const handleChange = async (e) => {
+                    const newValue = e.target.value;
+                    const { id } = params.row;
+                    const field = 'appointment';
+
+                    const updatedRows = await Promise.all(reports.map(async (row) => {
+                        if (row.id === id) {
+                            const value = await getByIdAppointment(newValue);
+                            return { ...row, [field]: value };
+                        }
+                        return row;
+                    }));
+
+                    setReports(updatedRows);
+                };
+
+                return (
+                    <Select style={{ width: '250px' }}
+                        value={params.row.appointment.id}
+                        onChange={handleChange}
+                    >
+                        {appointmentOptions.map(option => (
                             <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
                         ))}
                     </Select>
@@ -96,6 +132,13 @@ function Report() {
                     label: vaccine.name
                 }));
                 setOptions(vaccineOptions);
+
+                const data3 = await findAllAppointment();
+                const appointmentOptionsValues = data3.map(appointment => ({
+                    value: appointment.id,
+                    label: appointment.animal.name + "-" + appointment.appointmentDate
+                }));
+                setAppointmentOptions(appointmentOptionsValues);
 
                 setShouldFetchReports(false);
 
@@ -140,6 +183,9 @@ function Report() {
             model.vaccine = {
                 id: values.vaccineId
             };
+            model.appointment = {
+                id: values.appointmentId
+            }
 
             await saveReport(model);
             setShouldFetchReports(true);
@@ -204,8 +250,6 @@ function Report() {
 
                             <div className='form-group' >
                                 <label htmlFor="vaccineId">  Yapılan Aşı:</label>
-
-
                                 <Field name="vaccineId" className="formik-selectVaccine">
                                     {({ field }) => (
                                         <Select style={{ width: '455px', height: '40px', marginRight: ' 30px' }}
@@ -215,6 +259,24 @@ function Report() {
                                         >
                                             <MenuItem disabled selected value="">Seçiniz</MenuItem>
                                             {options.map(option => (
+                                                <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
+                                            ))}
+                                        </Select>
+                                    )}
+                                </Field>
+                            </div>
+
+                            <div className='form-group' >
+                                <label htmlFor="appointmentId">  Randevu:</label>
+                                <Field name="appointmentId" className="formik-selectVaccine">
+                                    {({ field }) => (
+                                        <Select style={{ width: '455px', height: '40px', marginRight: ' 30px' }}
+                                            {...field}
+                                            value={values.appointmentId}
+                                            onChange={(event) => setFieldValue('appointmentId', event.target.value)}
+                                        >
+                                            <MenuItem disabled selected value="">Seçiniz</MenuItem>
+                                            {appointmentOptions.map(option => (
                                                 <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
                                             ))}
                                         </Select>
